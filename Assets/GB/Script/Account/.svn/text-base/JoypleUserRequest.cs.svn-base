@@ -1,0 +1,120 @@
+using UnityEngine;
+using System;
+using System.Collections;
+using SimpleJSON;
+using Joycity;
+
+public class JoypleUserRequest : JoypleRequest {
+
+	public static readonly string TAG = "[JoypleUserRequest]";
+	
+	public static void RequestFriends(Action<bool, JoypleException> callback) {
+
+		GameObject gameObject = new GameObject("RequestFriends" + DateTime.Now.Ticks);
+		JoypleUserRequest userRequest = gameObject.AddComponent<JoypleUserRequest>();
+		
+		Action<bool,string> wrapperCallback = (success, result) => {
+			JLog.verbose(TAG + "Callback Get Friends");
+
+			JSONNode root = JSON.Parse(result);
+			var response = root[API_RESPONSE_RESULT_KEY];
+
+			if (success) {				
+				JoypleUser.Instance.UpdateFriends(response[API_RESPONSE_DATA_KEY]);
+				
+				callback(success, null);
+			} else {
+				callback(success, new JoypleException(response[API_RESPONSE_ERROR_KEY].ToString()));
+			}
+		};
+		
+		userRequest.RequestFriendsWithCallback(wrapperCallback);
+	}
+
+	public static void RequestAddFriend(int userKey, Action<bool, JoypleException> callback) {
+
+		GameObject gameObject = new GameObject("RequestAddFriend" + DateTime.Now.Ticks);
+		JoypleUserRequest userRequest = gameObject.AddComponent<JoypleUserRequest>();
+		
+		Action<bool,string> wrapperCallback = (success, result) => {
+			JLog.verbose(TAG + "Callback Add Friend");
+
+			JSONNode root = JSON.Parse(result);
+			var response = root[API_RESPONSE_RESULT_KEY];
+
+			if (success) {				
+//				JoypleUser.Instance.UpdateFriends(response[API_RESPONSE_DATA_KEY]);
+				
+				callback(success, null);
+			} else {
+				callback(success, new JoypleException(response[API_RESPONSE_ERROR_KEY].ToString()));
+			}
+		};
+		
+		userRequest.RequestAddFriendWithCallback(userKey, wrapperCallback);
+	}
+
+	public static void RequestUpdateFriendStatus(int userKey, JoypleUser.FriendStatus status, Action<bool, JoypleException> callback) {
+		GameObject gameObject = new GameObject("RequestUpdateFriendStatus" + DateTime.Now.Ticks);
+		JoypleUserRequest userRequest = gameObject.AddComponent<JoypleUserRequest>();
+		
+		Action<bool,string> wrapperCallback = (success, result) => {
+			JLog.verbose(TAG + "Callback Update Friend Status");
+			
+			JSONNode root = JSON.Parse(result);
+			var response = root[API_RESPONSE_RESULT_KEY];
+
+			if (success) {				
+//				JoypleUser.Instance.UpdateFriends(response[API_RESPONSE_DATA_KEY]);
+				
+				callback(success, null);
+			} else {
+				callback(success, new JoypleException(response[API_RESPONSE_ERROR_KEY].ToString()));
+			}
+		};
+		
+		userRequest.RequestUpdateFriendStatusWithCallback(userKey, status, wrapperCallback);
+	}
+
+	public static void RequestSearchUsers(string searchText, Action<bool, JoypleException> callback) {
+		GameObject gameObject = new GameObject("RequestUpdateFriendStatus" + DateTime.Now.Ticks);
+		JoypleUserRequest userRequest = gameObject.AddComponent<JoypleUserRequest>();
+		
+		Action<bool,string> wrapperCallback = (success, result) => {
+			JSONNode root = JSON.Parse(result);
+			var response = root[API_RESPONSE_RESULT_KEY];
+
+			if (success) {				
+//				JoypleUser.Instance.UpdateFriends(response[API_RESPONSE_DATA_KEY]);
+				
+				callback(success, null);
+			} else {
+				callback(success, new JoypleException(response[API_RESPONSE_ERROR_KEY].ToString()));
+			}
+		};
+		
+		userRequest.RequestSearchUserWithCallback(searchText, wrapperCallback);
+	}
+
+	private void RequestFriendsWithCallback(Action<bool, string> callback) {
+		JoypleRequest request = createRequestCallbackObject (callback);
+		JoypleManager.Instance.PluginManager.RequestFriends (request);
+	}
+
+	private void RequestAddFriendWithCallback(int userKey, Action<bool, string> callback) {
+		JoypleRequest request = createRequestCallbackObject(callback);
+		
+		JoypleManager.Instance.PluginManager.AddFriend(userKey, request);
+	}
+
+	private void RequestUpdateFriendStatusWithCallback(int userKey, JoypleUser.FriendStatus status, Action<bool, string> callback) {
+		JoypleRequest request = createRequestCallbackObject (callback);
+		JoypleManager.Instance.PluginManager.UpdateFriendsStatus(userKey, status, request);
+	}
+
+	private void RequestSearchUserWithCallback(string searchText, Action<bool, string> callback) {
+		JoypleRequest request = createRequestCallbackObject(callback);
+		JoypleManager.Instance.PluginManager.RequestSearchInFriends(searchText, request);
+	}
+}
+

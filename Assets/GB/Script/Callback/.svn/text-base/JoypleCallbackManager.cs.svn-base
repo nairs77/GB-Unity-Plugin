@@ -1,0 +1,119 @@
+﻿
+namespace Joycity.Callback
+{
+
+	using System;
+	using System.Reflection;
+	using System.Collections.Generic;
+	using UnityEngine;
+	using Joycity;
+
+	internal class JoypleCallbackManager : MonoBehaviour
+	{
+
+		private static readonly string PLUGIN_NAME = "JoyplePluginObject";
+
+		private static JoypleCallbackManager joypleCallbackManager = null;
+		public static JoypleCallbackManager Instance {
+			get {
+				if (joypleCallbackManager == null) {
+					joypleCallbackManager = GameObject.FindObjectOfType(typeof(JoypleCallbackManager)) as JoypleCallbackManager;				
+					if (joypleCallbackManager == null) 
+					{			
+						GameObject container = new GameObject();
+						container.name = PLUGIN_NAME;
+						joypleCallbackManager = container.AddComponent(typeof(JoypleCallbackManager)) as JoypleCallbackManager;
+						DontDestroyOnLoad(joypleCallbackManager);
+					}					
+				}
+				return joypleCallbackManager;
+			}
+		}
+			
+		private IDictionary<string, object> joypleDelegates = new Dictionary<string, object> ();
+		private int nextAsyncId;
+
+		public void Awake ()
+		{
+			UnityEngine.Object.DontDestroyOnLoad (this);
+			this.name = "JoyplePluginObject";
+		}
+
+
+		public string addAction(Action<bool, string> action){
+			if(action == null)
+				return null;
+
+			this.nextAsyncId++;
+			this.joypleDelegates.Add (this.nextAsyncId.ToString (), action);
+			return this.nextAsyncId.ToString ();
+		}
+
+		public void onActionResponse(string callbackId, bool success, string result){
+			if (result == null || callbackId == null)
+				return;
+			
+			object callback;
+			if (this.joypleDelegates.TryGetValue (callbackId, out callback)) {
+				Action<bool, string> joypleAction = callback as Action<bool, string>;
+				joypleAction (success, result);
+				this.joypleDelegates.Remove (callbackId);
+			}
+		}
+
+		public string addJoypleDelegate<T> (JoypleDelegate<T> callback) where T : IResult
+		{
+			if (callback == null)
+				return null;
+
+			this.nextAsyncId++;
+			this.joypleDelegates.Add (this.nextAsyncId.ToString (), callback);
+			return this.nextAsyncId.ToString ();
+		}
+
+		public void onJoypleResponse (IResult result)
+		{
+			if (result == null || result.CallbackId == null)
+				return;
+			
+			object callback;
+			if (this.joypleDelegates.TryGetValue (result.CallbackId, out callback)) {
+				ConveyCallback (callback, result);
+				if(!result.IsKeepCallback)
+					this.joypleDelegates.Remove (result.CallbackId);
+			}
+		}
+
+		private void ConveyCallback (object callback, IResult result)
+		{
+			if (callback == null || result == null)
+				return;
+
+			if (TryConveyCallback<JoyplePermissionResult> (callback, result))
+				return;
+			
+			throw new NotSupportedException ("Unexpected result type: " + callback.GetType ().FullName);
+		}
+
+
+		private bool TryConveyCallback<T> (object callback, IResult result) where T : IResult
+		{
+			JoypleDelegate<T> joypleDelegate = callback as JoypleDelegate<T>;
+			if (joypleDelegate != null) {
+				joypleDelegate ((T)((object)result));
+				return true;
+			}
+			return false;
+		}
+			
+
+		// AOS, IOS Callback 
+		public void onPermissionComplete(string message){
+
+			JoyplePermissionResult PResult = new JoyplePermissionResult (message);
+			onJoypleResponse (PResult);
+		}
+
+	}
+}
+

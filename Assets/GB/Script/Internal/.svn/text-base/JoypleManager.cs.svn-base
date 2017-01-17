@@ -1,0 +1,159 @@
+using System;
+using UnityEngine;
+using System.Collections.Generic;
+
+/**
+ * @brief Manage Joyple SDK
+ * @author nairs77@joycity.com
+ */
+
+namespace Joycity {
+	public class JoypleManager : MonoBehaviour{
+		
+		private static readonly string TAG = "JoypleManager";
+							
+		public delegate void DelegateNativeEvents(string eventName);
+									
+		private static JoypleManager _instance;
+		private static JoyplePluginManager _pluginManager;
+		public DelegateNativeEvents onHandleNativeEvent;		
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		#region Singleton Implementation
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Utilizing singleton pattern (Not thread safe!  That should be ok).
+		// http://msdn.microsoft.com/en-us/library/ff650316.aspx
+		
+		/**
+	 * @brief Get JoypleManager Instance
+	 * @return JoypleManager
+	 */
+		public static JoypleManager Instance
+		{		
+			get
+			{
+				if(_instance == null ) 
+				{				
+					_instance = GameObject.FindObjectOfType(typeof(JoypleManager)) as JoypleManager;				
+					if (!_instance) 
+					{			
+						GameObject container = new GameObject();
+						container.name = TAG;					
+						_instance = container.AddComponent(typeof(JoypleManager)) as JoypleManager;
+						DontDestroyOnLoad(_instance);
+
+						_pluginManager = new JoyplePluginManager();
+					}					
+					JLog.verbose (TAG + " Has been created.");
+					if (_pluginManager == null)
+						_pluginManager = new JoyplePluginManager();
+				}			
+				return _instance;
+			}
+		}
+		
+		#endregion
+		
+		public JoyplePluginManager PluginManager
+		{
+			get {
+				return _pluginManager;
+			}
+		}
+	
+		/**
+		 *	Response Format
+		 *  {
+		 *		result : {
+		 *	 		status : 0, 1
+		 *			eventKey : Event Name
+		 *			data {
+         *
+		 *			}
+		 * 		}  
+		 *  }
+		 */
+		public void HandleNativeEvent(string result) {
+			onHandleNativeEvent(result);			
+		}
+
+		public void Destroy() {
+			_instance = null;
+			_pluginManager = null;
+			JLog.verbose ("Destroy ---");
+		}
+
+		public static void SetActiveMarket(JoypleSettings.Market market, Action<bool, string> callback) {
+			JoypleSettings.SetActiveMarket(market);
+			JoypleCommonRequest.SetActiveMarket(market, callback);
+		}
+        /**
+		* @brief Configuration Joycity SDK
+		* @param clientSecret String
+		* @param market Market
+		* @param gameCode int
+		* @param logLevel LogLevel
+		*/
+        public static void ConfigureSDKWithGlobalInfo(string clientSecretKey, int gameCode, JoypleSettings.Market market, JoypleSettings.LogLevel logLevel) {
+			JoypleManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, market, (int)logLevel);
+		}
+
+		/**
+		 *
+		 */
+		public static void ConfigureSDKWithGlobalInfo(JoypleSettings.Market releaseMarket) {
+			JoypleManager.Instance.PluginManager.ConfigureSDKWithGameInfo(JoypleSettings.AppKey, JoypleSettings.GameCode, JoypleSettings.GetPlatformInfo(), (int)JoypleSettings.LogLevel.DEBUG);
+		}
+		 public static void ConfigureSDKWithGlobalInfo(string clientSecretKey, int gameCode, string platformInfo, JoypleSettings.LogLevel logLevel) {
+		 	JoypleManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, (int)logLevel);
+		 }
+		
+		public static void GetGlobalServerInfo(string branchURL, Action<bool, string> callback) {
+			JoypleCommonRequest.RequestGlobalServerInfo(branchURL, callback);
+		}
+		
+		public static void SetPromotionItems(List<string> skus) {
+			JoypleManager.Instance.PluginManager.SetPromotionItems(skus);
+		}
+
+		public static string GetMCC() {
+			return JoypleManager.Instance.PluginManager.GetMCC();
+		}
+
+		public static string GetCurrentLanguage() {
+			return JoypleManager.Instance.PluginManager.GetCurrentLanguage();
+		}
+
+		public static string GetDeviceId() {
+			return JoypleManager.Instance.PluginManager.GetDeviceId();
+		}
+
+		public static string GetDeviceModel() {
+			return JoypleManager.Instance.PluginManager.GetDeviceModel();
+		}
+
+		public static void SetGameLanguage(LanguageType languageType) {
+			JoypleManager.Instance.PluginManager.SetGameLanguage(languageType);	
+		}
+		
+		public static void SendPushMessage(string userKey, string title, string message) {
+			JoypleManager.Instance.PluginManager.SendPushMessage(userKey, title, message);
+		}
+		public static void ShowToast(string message) {
+			JoypleManager.Instance.PluginManager.ShowToast(message);
+		}
+		
+		public static void ShowAlert() {
+			JoypleManager.Instance.PluginManager.ShowAlert();
+		}
+
+		public static void GetRuntimePermission(string permission, bool isNecessary, Action<bool, string> callback) {
+			JoypleCommonRequest.GetRuntimePermission (permission, isNecessary, callback);
+		}
+
+		public static bool CheckRuntimePermission(string permission) {
+			return JoypleManager.Instance.PluginManager.CheckRuntimePermission (permission);
+		}
+			
+	}
+}

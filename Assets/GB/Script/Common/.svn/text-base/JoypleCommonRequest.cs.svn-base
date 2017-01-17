@@ -1,0 +1,84 @@
+using UnityEngine;
+using System;
+using System.Collections;
+using SimpleJSON;
+
+namespace Joycity {
+
+	public class JoypleCommonRequest : JoypleRequest {
+		
+		public static void RequestGlobalServerInfo(string branchURL, Action<bool, string> callback)
+		{
+			JLog.verbose("Call - RequestGlobalServerInfo");
+
+			GameObject gameObject = new GameObject("RequestGlobalServerInfo" + DateTime.Now.Ticks);
+			JoypleCommonRequest request = gameObject.AddComponent<JoypleCommonRequest>();
+			
+			Action<bool,string> wrapperCallback = (success, result) => {
+				JLog.verbose("Wrapper callback called");
+				
+				JSONNode root = JSON.Parse(result);
+				var response = root[API_RESPONSE_RESULT_KEY];
+							
+				if (success) {
+					// TODO : Change API
+					//JoypleConfig.SetServerList(result);
+					JoypleSettings.SetJoypleServers(result);					
+					callback(success, result);	
+				} else {
+					callback(success, new JoypleException(response[API_RESPONSE_ERROR_KEY].ToString()).getErrorMessage());
+				}
+			};
+			
+			request.RequestGlobalServerInfoWithCallback(branchURL, wrapperCallback);
+		}
+
+		public static void SetActiveMarket(JoypleSettings.Market market, Action<bool, string> callback) {
+			GameObject gameObject = new GameObject("GetRuntimePermission" + DateTime.Now.Ticks);
+			JoypleCommonRequest request = gameObject.AddComponent<JoypleCommonRequest>();
+
+			Action<bool,string> wrapperCallback = (success, result) => {
+
+				callback(success, "");
+			};
+
+			request.SetActiveMarketWithCallback(market, wrapperCallback);			
+		}
+
+		public static void GetRuntimePermission(string permission, bool isNecessary, Action<bool, string> callback)
+		{
+			GameObject gameObject = new GameObject("GetRuntimePermission" + DateTime.Now.Ticks);
+			JoypleCommonRequest request = gameObject.AddComponent<JoypleCommonRequest>();
+
+			Action<bool,string> wrapperCallback = (success, result) => {
+
+				JSONNode root = JSON.Parse(result);
+				var response = root[API_RESPONSE_RESULT_KEY];
+
+				if (success) {
+					callback(success, response[API_RESPONSE_DATA_KEY].ToString());	
+				} else {
+					callback(success, response[API_RESPONSE_DATA_KEY].ToString());
+				}
+			};
+
+			request.GetRuntimePermissionWithCallback(permission, isNecessary, wrapperCallback);
+		}
+
+		private void RequestGlobalServerInfoWithCallback(string branchURL, Action<bool, string> callback) {
+			JoypleRequest callbackObject = createRequestCallbackObject(callback);
+			JoypleManager.Instance.PluginManager.GetGlobalServerInfo(branchURL, callbackObject);
+		}
+
+		private void GetRuntimePermissionWithCallback(string permission, bool isNecessary, Action<bool, string> callback) {
+			JoypleRequest callbackObject = createRequestCallbackObject(callback);
+
+			JoypleManager.Instance.PluginManager.GetRuntimePermission (permission, isNecessary, callbackObject);
+		}
+
+		private void SetActiveMarketWithCallback(JoypleSettings.Market market, Action<bool, string> callback) {
+			JoypleRequest callbackObject = createRequestCallbackObject(callback);
+			JoypleManager.Instance.PluginManager.SetActiveMarket(market, callbackObject);
+		}		
+	}
+}

@@ -1,0 +1,657 @@
+using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Joycity;
+using Joycity.Account;
+using Joycity.Billing;
+using Joycity.PlayGameService;
+using Joycity.China;
+
+using SimpleJSON;
+
+public class JoypleSampleView : MonoBehaviour {
+
+	public enum EmailTestType{
+		NONE,
+		LOGINNJOIN,
+		OTHER
+	}
+
+	private static readonly int BUTTON_HEIGHT = Screen.height / 15;
+	private static readonly int MENU_COUNT = 10;	
+	private static readonly int BUTTON_FONT_SIZE = 40;
+	private static readonly int LABEL_FONT_SIZE = 30;
+	private Vector2 scrollPosition = Vector2.zero;
+
+	//private bool isPushEnable = true;
+
+	private string sdkLog = "";
+	private int sdkLogCount = 1;
+
+	private bool requestGlobalServer = false;
+	private bool isLogin = false;
+
+	private EmailTestType emailTestType = EmailTestType.NONE;
+
+	private string strEmail = "Enter email";
+	private string strEmailPassword = "Enter email password";
+	private string strEmailJoin = "Enter email";
+	private string strEmailJoinPassword_1 = "Enter email password";
+	private string strEmailJoinPassword_2 = "Enter email password(confirm)";
+	private string strEmailFind = "Enter email";
+
+
+	int posY;
+	int scrollContentsWidth;
+	int labalHeight;
+	int scrollContentsHeight;
+	GUIStyle buttonStyle;
+	GUIStyle labelStyle;
+	GUIStyle textStyle;
+
+    void Start() {
+		SetUp();
+    }
+
+	void SetUp() {
+		/**P
+		 * SDK 사용을 위한 JoypleManager 클래스를 초기화 합니다.
+		 * Initialize Joyple SDK
+		 * */		
+
+		// JoypleManager.SetActiveMarket(JoypleSettings.Market.BAIDU, (bool success, string stringValue) => {
+		// 	PrintLog("Active Market =" + JoypleSettings.GetMarketToString());
+		// });	
+		#if UNITY_ANDROID
+		JoypleSettings.SetActiveMarket(JoypleSettings.Market.GOOGLE);
+		JoypleManager.ConfigureSDKWithGlobalInfo (JoypleSettings.AppKey, JoypleSettings.GameCode, JoypleSettings.Market.GOOGLE, JoypleSettings.LogLevel.DEBUG);
+		JoyplePermissionManager.SetPermissionCallback (permissionCallback);
+
+		List<string> promotionItems = new List<string>();
+		promotionItems.Add("joyple_coin_2000");
+		JoypleInAppManager.SetPromotionItems(promotionItems);
+
+		#elif UNITY_IPHONE
+		JoypleSettings.SetActiveMarket(JoypleSettings.Market.APPLE_STORE);
+		JoypleManager.ConfigureSDKWithGlobalInfo (JoypleSettings.AppKey, JoypleSettings.GameCode, JoypleSettings.Market.APPLE_STORE, JoypleSettings.LogLevel.DEBUG);
+		#endif
+
+		JoypleManager.Instance.onHandleNativeEvent = new JoypleManager.DelegateNativeEvents(onHandleNativeEvent);
+
+		JLog.verbose("App Setup !!!");
+	}
+
+
+	void permissionCallback(JoyplePermissionResult result){
+
+		JoyplePermissionResult.JoyplePermission permission = result.Permissions [0];
+		PrintLog ("Permission name = " + permission.PermissionName);
+		if (result.PermissionStatus == JoyplePermissionStatus.USER_DENIED) {
+			if (permission.PermissionName.Equals ("GET_ACCOUNTS") && permission.Status == JoyplePermissionStatus.USER_DENIED) {
+				JoyplePermissionManager.ShowDetailPermissionView (false, permission.PermissionName, permissionCallback);
+			} 
+			else if (permission.PermissionName.Equals ("READ_PHONE_STATE") && permission.Status == JoyplePermissionStatus.USER_DENIED) {
+				JoyplePermissionManager.ShowDetailPermissionView (false, permission.PermissionName, permissionCallback);
+			}
+		} 
+		else if (result.PermissionStatus == JoyplePermissionStatus.PERMISSION_VIEW_CLOSE) {
+			if (permission.PermissionName.Equals ("GET_ACCOUNTS") && permission.Status == JoyplePermissionStatus.USER_DENIED) {
+				JoypleSessionManager.Login(AuthType.GUEST, sessionCallback);				
+			}
+			else if (permission.PermissionName.Equals ("READ_PHONE_STATE") && permission.Status == JoyplePermissionStatus.USER_DENIED) {
+				Application.Quit ();
+			}
+		}
+		else if (result.PermissionStatus == JoyplePermissionStatus.SNACKBAR_DETAIL) {
+			JoyplePermissionManager.ShowDetailPermissionView (true, permission.PermissionName, permissionCallback);
+		}
+	}
+
+	void sessionCallback(SessionState state, JoypleException exception){
+
+		if (state.Equals(SessionState.ACCESS_FAILED)) {
+			PrintLog("session Error code = " + exception.getErrorCode() + "," + "message = " + exception.getErrorMessage());					
+		} 
+		else {
+			if (state.Equals (SessionState.OPEN) || state.Equals (SessionState.TOKEN_REISSUED) || state.Equals( SessionState.JOIN )) {
+				
+				emailTestType = EmailTestType.NONE;
+				isLogin = true;
+				PrintLog ("Session Open!!! - Token = " + JoypleSessionManager.getAccessToken ());
+
+				JoypleSessionManager.GetProfile ((bool success, JoypleException profile_exception) => {
+					PrintLog ("User Key = " + JoypleUser.Instance.LocalUser.userKey.ToString ());
+
+					if (JoypleSettings.GetActiveMarket () == JoypleSettings.Market.UC) {							
+						//JoyplePlatformHelper.SubmitExtendedData("test", "tester", "25", "CHINA-SERVER", "CHINA-ZONE");
+						JoyplePlatformHelper.SubmitExtendedData ("test", "tester", "24");
+					}
+				});
+			} 
+			else if (state.Equals (SessionState.CLOSED)) {
+				PrintLog ("Session Closed!!! - LogOut");
+				isLogin = false;
+			}
+			else {
+				// SessionState Join, REISSUED..
+			}	
+		}
+	}
+	
+	void Update () {
+		
+		if(Application.platform == RuntimePlatform.Android) {
+			if(Input.GetKey (KeyCode.Escape)) {
+				Application.Quit ();
+			}
+		}
+	}	
+	
+	void OnDestroy() {	
+		JoypleManager.Instance.Destroy();
+	}
+	
+	void OnGUI() {
+		
+		posY = 0;
+		scrollContentsWidth = Screen.width;
+		labalHeight = (LABEL_FONT_SIZE * 5 * sdkLogCount);
+		scrollContentsHeight = BUTTON_HEIGHT * MENU_COUNT + labalHeight;
+		scrollPosition = GUI.BeginScrollView(new Rect(0, 0, Screen.width, Screen.height), scrollPosition, new Rect(0, 0, scrollContentsWidth, scrollContentsHeight));
+
+		
+		buttonStyle = new GUIStyle(GUI.skin.button);
+    	buttonStyle.fontSize = BUTTON_FONT_SIZE;
+
+		labelStyle = new GUIStyle(GUI.skin.label);
+    	labelStyle.fontSize = LABEL_FONT_SIZE;
+
+		textStyle = new GUIStyle (GUI.skin.textField);
+		textStyle.fontSize = 50;
+
+		if (!requestGlobalServer) {
+
+			if (GUI.Button (new Rect (0, Screen.height/2, scrollContentsWidth, BUTTON_HEIGHT), "Request Global Server", buttonStyle)) {			
+				JoypleManager.GetGlobalServerInfo ("https://joyple-qa1.joycityplay.com/gbranch/branch/getzone", (bool success, string stringValue) => {
+					//QA : https://joyple-cn-qa.joycityplay.com/gbranch/branch/getzone
+					//PrintLog("stringValue=" + stringValue);
+					JLog.verbose ("result = " + stringValue);
+
+					JLog.verbose ("MCC =" + JoypleManager.GetMCC () + "Device Id = " + JoypleManager.GetDeviceId () + "Language = " + JoypleManager.GetCurrentLanguage ());
+
+					//JoypleSessionManager.SetAllowedEULA(true);
+					bool isAlreadyLogin = JoypleSessionManager.isAlreadyLogin ();
+					PrintLog ("isAlreadyLogin() = " + isAlreadyLogin.ToString ());
+
+					JoypleManager.SetGameLanguage (LanguageType.GAME_LANG_EN);
+					requestGlobalServer = true;
+				});
+			}	
+		} 
+		else {
+
+			if (emailTestType == EmailTestType.LOGINNJOIN) {
+				emailLoginNJoin ();
+			} 
+			else if (emailTestType == EmailTestType.OTHER) {
+				emailOtherFunc ();
+			}
+			else {
+
+				int firstPosX = 0;
+				if (!isLogin) {
+					if(GUI.Button(new Rect(0, posY, scrollContentsWidth, BUTTON_HEIGHT), "Google Login", buttonStyle)) {
+
+						JoypleSessionManager.Login(AuthType.GOOGLE_PLUS, sessionCallback);
+					}
+
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Email(Join) Login", buttonStyle)) {
+						strEmail = "Enter email";
+						strEmailPassword = "Enter email password";
+						strEmailJoin = "Enter email";
+						strEmailJoinPassword_1 = "Enter email password";
+						strEmailJoinPassword_2 = "Enter email password(confirm)";
+						emailTestType = EmailTestType.LOGINNJOIN;
+					}
+
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "New UI Login", buttonStyle)) {
+
+						JoypleSessionManager.LoginByUI(LoginUIType.LOGIN_UI, sessionCallback);		
+					}
+
+					firstPosX = posY += BUTTON_HEIGHT;
+				}
+
+				if(GUI.Button(new Rect(0, firstPosX, scrollContentsWidth, BUTTON_HEIGHT), "EULA", buttonStyle)) {
+					JoypleSessionManager.ShowViewByType(JoypleProfileViewType.JoypleProfileEULA);
+				}
+
+				if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "RequestPermission", buttonStyle)) {
+
+					//			string[] permissions = {"WRITE_EXTERNAL_STORAGE", "READ_PHONE_STATE"};
+					JoyplePermissionManager.RequestPermission ("WRITE_EXTERNAL_STORAGE", permissionCallback);
+
+				}
+
+				if(GUI.Button(new Rect(scrollContentsWidth / 2, posY, scrollContentsWidth / 2, BUTTON_HEIGHT), "ShowPermissionSnack", buttonStyle)) {
+
+					JoyplePermissionManager.ShowPermissionSnack("WRITE_EXTERNAL_STORAGE", permissionCallback);
+
+				}
+
+				if (isLogin) {
+					
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Email Func", buttonStyle)) {
+						strEmail = "Enter email";
+						strEmailPassword = "Enter Current email password";
+						strEmailJoin = "Enter email";
+						strEmailJoinPassword_1 = "Enter New email password";
+						strEmailJoinPassword_2 = "Enter New email password(confirm)";
+						emailTestType = EmailTestType.OTHER;
+					}
+
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Email Link", buttonStyle)) {
+
+						String email = "endow50@naver.com";
+						String password = "joycity83";
+						JoypleSessionManager.LinkServiceWithAuthType (AuthType.EMAIL, email, password, sessionCallback);
+					}
+
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "Logout", buttonStyle)) {
+
+						// 로그아웃 API 호출
+						//Authorization.Instance.Logout();
+						//PrintLog("Logout()");
+						JoypleSessionManager.Logout(sessionCallback);
+					}
+
+					if(GUI.Button(new Rect(scrollContentsWidth / 2, posY, scrollContentsWidth / 2 , BUTTON_HEIGHT), "Withdraw", buttonStyle)) {
+
+						// 게임 탈퇴 API 호출
+						//Authorization.Instance.Withdraw();
+
+						JoypleSessionManager.Withdraw(sessionCallback);
+					}
+
+
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Profile UI", buttonStyle)) {
+
+						// 메인 UI호출
+						//JoypleSessionManager.ShowJoypleMain();
+						JoypleSessionManager.ShowViewByType(JoypleProfileViewType.JoypleProfileUserInfo);
+						PrintLog("Main()");
+					}
+
+					// if(GUI.Button(new Rect(scrollContentsWidth / 2, y, scrollContentsWidth / 2, BUTTON_HEIGHT), "Manage Account", buttonStyle)) {
+					// 	JoypleSessionManager.ShowViewByType(JoypleProfileViewType.JoypleProfileManageAccount);
+					// }		
+
+					// Billing
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "Start Billing Service", buttonStyle)) {
+
+						LocalUser localUser = JoypleUser.Instance.LocalUser;
+
+						if (localUser == null) {
+							return;
+						}
+
+						string userKey = localUser.userKey.ToString();
+
+						JLog.verbose ("user Key = " + userKey);
+
+						JoypleInAppManager.StartSetup(userKey, (bool success, JoypleException exception) => {
+							if (success) {
+								JLog.verbose ("Success Start Billing Service");
+							} else {
+								JLog.verbose ("error = " + exception.getErrorMessage());
+							}
+						});
+					}
+
+					if(GUI.Button(new Rect(scrollContentsWidth / 2, posY, scrollContentsWidth / 2, BUTTON_HEIGHT), "Query Inventory", buttonStyle)) {
+						List<string> skus = new List<string>();
+
+						#if UNITY_ANDROID
+						skus.Add("joyple_coin_1000");
+						skus.Add("joyple_coin_2000");
+						#elif UNITY_IPHONE
+						//skus.Add("Sample01");
+						skus.Add("JOYCITY_product_id_7695245");
+						skus.Add("JOYCITY_product_id_3234233");
+						#endif
+
+						//  JoypleInAppManager.QueryInventory(skus, (List<string> validateIdentifiers, JoypleException exception) => {
+						//  	if (exception == null) {
+						//  		JLog.verbose("Success Query Inventory");
+
+						//  		foreach(string id in validateIdentifiers)
+						//  			JLog.verbose("validate id =" + id);
+
+						//  	} else {
+						//  		JLog.verbose ("error = " + exception.getErrorMessage());
+						//  	}				
+						//  });
+
+						JoypleInAppManager.QueryInventory(skus, (JoypleInventory inv, JoypleException exception) => { 
+							if (exception == null) {
+								JLog.verbose("Success Query Inventory"); 
+
+								if (inv == null) {
+									JLog.verbose("inventory is empty !!!");
+									return;
+								}
+
+								List<JoypleInAppItem> itemList = inv.getInventory();
+
+								foreach(JoypleInAppItem item in itemList) {
+									//JLog.verbose("validate id =" + item.productId);
+									JLog.verbose("item = " + item.ToString());
+								}
+							} else {
+								JLog.verbose("error = " + exception.getErrorMessage());
+							}
+						});			
+					}
+
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "Buy Item(inapp)", buttonStyle)) {
+						string sku = null;
+						#if !UNITY_EDITOR && UNITY_ANDROID
+						sku = "joyple_coin_2000";
+						#elif UNITY_IPHONE
+						//skus.Add("Sample01");
+						sku = "JOYCITY_product_id_7695245";
+						#endif
+
+						JoypleInAppManager.BuyItem(sku, 1, "30 Ruby", "{\"developer_payload\" : \"hello test\"}", false, (string paymentKey, JoypleException exception) => {
+							if (exception == null) {
+								JLog.verbose("paymentKey = " + paymentKey);
+								PrintLog("BuyItem paymentKey::" + paymentKey);
+							} else {
+								JLog.verbose ("error = " + exception.getErrorMessage());	
+								PrintLog("BuyItem exception::" + exception.getErrorCode() + " MSG:::" + exception.getErrorMessage());
+							}
+						});
+					}
+
+					if(GUI.Button(new Rect(scrollContentsWidth/2, posY, scrollContentsWidth / 2, BUTTON_HEIGHT), "Buy Item(subs)", buttonStyle)) {
+
+						string sku = null;
+						#if !UNITY_EDITOR && UNITY_ANDROID
+						sku = "joyple_sub_test";
+						#elif UNITY_IPHONE
+						//skus.Add("Sample01");
+						sku = "JOYCITY_product_id_3234233";
+						#endif
+
+						JoypleInAppManager.BuyItem(sku, 1, "30 Ruby", "{\"developer_payload\" : \"hello test\"}", true, (string paymentKey, JoypleException exception) => {
+							if (exception == null) {
+								JLog.verbose("paymentKey = " + paymentKey);
+								PrintLog("BuyItem paymentKey::" + paymentKey);
+							} else {
+								JLog.verbose ("error = " + exception.getErrorMessage());	
+								PrintLog("BuyItem exception::" + exception.getErrorCode() + " MSG:::" + exception.getErrorMessage());
+							}
+						});
+					}
+
+					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Restore Item", buttonStyle)) {
+						JoypleInAppManager.RestoreItems((List<string> paymentKeys, JoypleException exception) => {
+							if (paymentKeys != null && paymentKeys.Count > 0) {
+								foreach (string key in paymentKeys)
+									JLog.verbose("restore payment key = " + key);
+							} else {
+								JLog.verbose("NOT RESTORE_ITEM");
+							}
+						});
+					}
+					/*
+		if(GUI.Button(new Rect(0, y += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "Send Push to Me", buttonStyle)) {
+			// Only iPhone Test			
+			JoyplePushManager.SendMessageToUser(JoypleUser.Instance.LocalUser.userKey.ToString(), "Title : Test", "Send Message to Me", (string result, JoypleException exception) => {
+				if (exception == null) {
+					JLog.verbose("Success - Send me Push Message");
+				} else {
+					JLog.verbose("Failed - Failed Push Message");
+				}
+			});
+		}
+
+		if(GUI.Button(new Rect(scrollContentsWidth/2, y, scrollContentsWidth / 2, BUTTON_HEIGHT), "Get Current Language", buttonStyle)) {
+			//JoypleManager.ShowToast(JoypleManager.GetCurrentLanguage());
+			JLog.verbose("Language = " + JoypleManager.GetCurrentLanguage());
+			JLog.verbose("Device = " + JoypleManager.GetDeviceId());
+			JLog.verbose("device name = " + JoypleManager.GetDeviceModel());
+		}
+
+		string title = "Push " + (isPushEnable ? "On" : "Off");
+		if(GUI.Button(new Rect(0, y += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), title, buttonStyle)) {
+			
+			JoyplePushManager.PushOnOff(!isPushEnable, (string result, JoypleException exception) => {
+				if (exception == null) {
+					JLog.verbose("Success Push Enable");
+					isPushEnable = !isPushEnable;
+				} else {
+					JLog.verbose("Failed Push Enable");
+				}
+			});
+		}		
+*/			
+				}
+			}
+
+		}
+			
+		GUI.Label(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, labalHeight), sdkLog, labelStyle);		
+		GUI.EndScrollView();
+	}
+
+
+	void emailLoginNJoin(){
+
+		GUIStyle boxStyle = new GUIStyle(GUI.skin.box);
+		boxStyle.fontSize = 50;
+
+		posY = 50;
+		int groupPosX = 50;
+		GUI.BeginGroup (new Rect(groupPosX , posY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 4));
+
+		int boxY = 0;
+		GUI.Box(new Rect(0 , boxY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 4), "Email Login", boxStyle);
+
+		strEmail = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT / 2, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmail, textStyle);
+		strEmailPassword = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailPassword, textStyle);
+		if(GUI.Button(new Rect(groupPosX , boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), "Login", buttonStyle)) {
+
+			if (strEmail.Contains ("email") || strEmailPassword.Contains ("email"))
+				return;
+			
+			JoypleSessionManager.Login(AuthType.EMAIL, strEmail, strEmailPassword, sessionCallback);
+		}
+
+		GUI.EndGroup ();
+
+		posY += BUTTON_HEIGHT * 4 + 50;
+		boxY = 0;
+
+		GUI.BeginGroup (new Rect(groupPosX , posY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 5));
+		GUI.Box(new Rect(0 , boxY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 5), "Email Join", boxStyle);
+		strEmailJoin = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT / 2, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailJoin, textStyle);
+		strEmailJoinPassword_1 = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailJoinPassword_1, textStyle);
+		strEmailJoinPassword_2 = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailJoinPassword_2, textStyle);
+		if(GUI.Button(new Rect(groupPosX , boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), "Join", buttonStyle)) {
+
+			if (strEmailJoin.Contains ("email") || strEmailJoinPassword_1.Contains ("email") || strEmailJoinPassword_2.Contains ("email"))
+				return;
+
+			if (!strEmailJoinPassword_1.Equals (strEmailJoinPassword_2)) {
+				PrintLog ("password not equal");
+				return;
+			}
+
+			JoypleSessionManager.Login (AuthType.JOIN, strEmailJoin, strEmailJoinPassword_2, sessionCallback);
+		}
+
+		GUI.EndGroup ();
+
+		posY += BUTTON_HEIGHT * 5 + 50;
+
+		GUI.BeginGroup (new Rect(groupPosX , posY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 3));
+
+		boxY = 0;
+		GUI.Box(new Rect(0 , boxY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 3), "Email Password Find", boxStyle);
+
+		strEmailFind = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT / 2, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailFind, textStyle);
+
+		if(GUI.Button(new Rect(groupPosX , boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), "Find", buttonStyle)) {
+
+			if (strEmailFind.Contains ("email"))
+				return;
+
+			JoypleSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_FIND_PASSWD, strEmailFind, null, (bool isSuccess, JoypleException exception) => {
+
+				if(isSuccess){
+					PrintLog ("EMAIL_FIND_PASSWD is " + isSuccess);
+				}
+				else{
+					if(exception != null)
+						PrintLog ("EMAIL_FIND_PASSWD Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
+				}
+			});
+		}
+
+		GUI.EndGroup ();
+
+		posY += BUTTON_HEIGHT * 3 + 50;
+
+		if(GUI.Button(new Rect(50, posY, scrollContentsWidth - 100, BUTTON_HEIGHT), "Cancel", buttonStyle)) {
+			emailTestType = EmailTestType.NONE;
+		}
+
+	}
+
+	void emailOtherFunc(){
+
+		GUIStyle boxStyle = new GUIStyle(GUI.skin.box);
+		boxStyle.fontSize = 50;
+
+		posY = 50;
+		int groupPosX = 50;
+		GUI.BeginGroup (new Rect(groupPosX , posY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 2));
+
+		int boxY = 0;
+		GUI.Box(new Rect(0 , boxY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 2), "Send Cert Email", boxStyle);
+
+		if(GUI.Button(new Rect(groupPosX , boxY += BUTTON_HEIGHT / 2, scrollContentsWidth - 200, BUTTON_HEIGHT), "Send", buttonStyle)) {
+			
+			JoypleSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_CERT_SEND, null, null, (bool isSuccess, JoypleException exception) => {
+				if(isSuccess){
+					PrintLog ("EMAIL_CERT_SEND is " + isSuccess);
+				}
+				else{
+					if(exception != null)
+						PrintLog ("EMAIL_CERT_SEND Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
+				}
+			});
+
+		}
+
+		GUI.EndGroup ();
+
+		posY += BUTTON_HEIGHT * 2 + 50;
+
+		GUI.BeginGroup (new Rect(groupPosX , posY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 3));
+
+		boxY = 0;
+		GUI.Box(new Rect(0 , boxY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 3), "Email Change", boxStyle);
+
+		strEmail = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT / 2, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmail, textStyle);
+
+		if(GUI.Button(new Rect(groupPosX , boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), "Change", buttonStyle)) {
+
+			if (strEmail.Contains ("email"))
+				return;
+
+			JoypleSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_CHANGE, strEmail, null, (bool isSuccess, JoypleException exception) => {
+				if(isSuccess){
+					PrintLog ("EMAIL_CHANGE is " + isSuccess);
+				}
+				else{
+					if(exception != null)
+						PrintLog ("EMAIL_CHANGE Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
+				}
+			});
+		}
+			
+		GUI.EndGroup ();
+
+		posY += BUTTON_HEIGHT * 3 + 50;
+
+		boxY = 0;
+		GUI.BeginGroup (new Rect(groupPosX , posY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 5));
+		GUI.Box(new Rect(0 , boxY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 5), "Email Password Change", boxStyle);
+		strEmailPassword = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT / 2, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailPassword, textStyle);
+		strEmailJoinPassword_1 = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailJoinPassword_1, textStyle);
+		strEmailJoinPassword_2 = GUI.TextField (new Rect (groupPosX, boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), strEmailJoinPassword_2, textStyle);
+		if(GUI.Button(new Rect(groupPosX , boxY += BUTTON_HEIGHT, scrollContentsWidth - 200, BUTTON_HEIGHT), "Password Change", buttonStyle)) {
+
+			if (strEmailPassword.Contains ("email") || strEmailJoinPassword_1.Contains ("email") || strEmailJoinPassword_2.Contains ("email"))
+				return;
+
+			if (!strEmailJoinPassword_1.Equals (strEmailJoinPassword_2)) {
+				PrintLog ("password not equal");
+				return;
+			}
+
+			JoypleSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_CHECK_PASSWORD, null, strEmailPassword, (bool isSuccess, JoypleException exception) => {
+
+				if(isSuccess){
+					PrintLog ("EMAIL_CHECK_PASSWORD is " + isSuccess);
+
+					JoypleSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_CHANGE_PASSWORD, null, strEmailJoinPassword_2, (bool isSuccess2, JoypleException exception2) => {
+						if(isSuccess2){
+							PrintLog ("EMAIL_CHANGE_PASSWORD is " + isSuccess);
+						}
+						else{
+							if(exception2 != null)
+								PrintLog ("EMAIL_CHANGE_PASSWORD Error code = " + exception2.getErrorCode () + "," + "message = " + exception2.getErrorMessage ());
+						}
+					});
+				}
+				else{
+					if(exception != null)
+						PrintLog ("EMAIL_CHECK_PASSWORD Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
+				}
+			});
+		}
+
+		GUI.EndGroup ();
+
+		posY += BUTTON_HEIGHT * 5 + 50;
+
+		if(GUI.Button(new Rect(50, posY, scrollContentsWidth - 100, BUTTON_HEIGHT), "Cancel", buttonStyle)) {
+			emailTestType = EmailTestType.NONE;
+		}
+
+	}
+		
+	void onHandleNativeEvent(string result) {
+		PrintLog("onHandleNativeEvent result = " + result);
+		JSONNode root = JSONNode.Parse(result);
+		var response = root["result"];
+
+		string eventKey = response["eventKey"];
+		PrintLog("onHandleNativeEvent event name = " + eventKey);
+		if (eventKey.Equals("onMarketAccountStateChange")) {
+			// TO-DO : JSON PARSING
+			PrintLog("onHandleNativeEvent [event name] = " + eventKey);
+		} 
+	}
+	
+	void PrintLog(string text) {
+		
+		sdkLog = text + "\n" + sdkLog;
+		sdkLogCount++;
+	}
+
+}

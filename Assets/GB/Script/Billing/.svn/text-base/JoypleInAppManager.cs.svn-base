@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Joycity.Billing {
+	
+	public class JoypleInAppManager {
+		
+		public static void StartSetup(string userKey, Action<bool, JoypleException> funcCallback) {
+			JoypleInAppRequest.RequestStartSetup(userKey, funcCallback);
+		}
+	
+		public static void QueryInventory(List<string> skus, Action<List<string>, JoypleException> funcCallback) {
+			if (JoypleSettings.GetMarketType() == JoypleSettings.MarketType.AGENCY) {
+				//JoypleManager.ShowToast("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				JLog.verbose("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				funcCallback(null, null);
+
+				return;
+			}
+			
+			JoypleInAppRequest.RequestQueryInventory(skus, funcCallback);
+			
+		}
+	
+		public static void QueryInventory(List<string>skus, Action<JoypleInventory, JoypleException> funcCallback) {
+			if (JoypleSettings.GetMarketType() == JoypleSettings.MarketType.AGENCY) {
+				//JoypleManager.ShowToast("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				JLog.verbose("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				funcCallback(null, null);
+
+				return;
+			}
+				
+			JoypleInAppRequest.RequestQueryInventory(skus, funcCallback);			
+		}
+	
+        [Obsolete("this method is deprecated!!!", true)]
+		public static void BuyItem(string sku, int price, Action<string, JoypleException> funcCallback) {
+			JoypleInAppRequest.RequestBuyItem(sku, price, "inapp", "", funcCallback);
+		}
+		
+        /**
+         * @brief Buy item 
+         * @param sku   The sku of the item to purchase.
+         * @param price the price of the item to purchase. (required if N-Stroe, others 0)
+         * @param itemInfo  indicates if it's a product type or a product name or product information.
+         *                  required if MyCard, must set item name (product name) 
+         */
+		public static void BuyItem(string sku, int price, string itemInfo, Action<string, JoypleException> funcCallback) {
+			JoypleInAppRequest.RequestBuyItem(sku, price, itemInfo, "", funcCallback);
+		}
+                      
+        public static void SendPresent(string sku, int price, string itemName, string toUserKey, Action<string, JoypleException> funcCallback) {
+            JoypleInAppRequest.RequestBuyItem(sku, price, itemName, toUserKey, funcCallback);
+        }
+	
+		public static void RestoreItems(Action<List<string>, JoypleException> funcCallback) {
+			JoypleInAppRequest.RequestRestoreItems(funcCallback);
+		}
+		
+		public static void SetPromotionItems(List<string> skus) {
+			if (JoypleSettings.GetMarketType() == JoypleSettings.MarketType.AGENCY) {
+				//JoypleManager.ShowToast("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				JLog.verbose("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				return;
+			}
+
+			JoypleManager.Instance.PluginManager.SetPromotionItems(skus);
+		}
+                
+		public static void GetPromotionItem(string userKey, Action<string, JoypleException> funCallback) {
+			if (JoypleSettings.GetMarketType() == JoypleSettings.MarketType.AGENCY) {
+				//JoypleManager.ShowToast("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				JLog.verbose("Not Supported API : Current Market - " + JoypleSettings.GetMarketToString());
+				funCallback(null, null);
+
+				return;
+			}
+
+			JoypleInAppRequest.RequestPromotionItem(userKey, funCallback);
+		}
+        
+	}
+}

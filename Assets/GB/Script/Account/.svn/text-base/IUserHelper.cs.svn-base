@@ -1,0 +1,11 @@
+using UnityEngine;
+using System.Collections;
+
+public interface IUserHelper{
+
+	void RequestFriends(JoypleRequest callbackObject);
+	void AddFriend(int userKey, JoypleRequest callbackObject);
+	void UpdateFriendStatus(int userKey, JoypleUser.FriendStatus status, JoypleRequest callbackObject);
+	void RequestSearchUsers(string nickname, JoypleRequest callbackObject);
+}
+

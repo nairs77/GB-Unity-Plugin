@@ -1,0 +1,37 @@
+#if UNITY_IPHONE
+using UnityEngine;
+using System.Collections;
+using System.Runtime.InteropServices;
+
+public class JoypleUseriOSHelper : IUserHelper {
+
+	[DllImport ("__Internal")]
+	public static extern void ReqeustFriends(string callbackObjectName);
+	
+	[DllImport ("__Internal")]
+	public static extern void RequestAddFriend(int userKey, string callbackObjectName);
+	
+	[DllImport ("__Internal")]
+	public static extern void RequestUpdateFriendStatus(int userKey, int status, string callbackObjectName);
+	
+	[DllImport ("__Internal")]
+	public static extern void RequestSearchUsers(string nickName, string callbackObjectName);
+	
+	public void RequestFriends(JoypleRequest callbackObject) {
+		ReqeustFriends(callbackObject.GetCallbackGameObjectName());
+	}
+	
+	public void AddFriend(int userKey, JoypleRequest callbackObject) {
+		RequestAddFriend(userKey, callbackObject.GetCallbackGameObjectName());
+	}
+	
+	public void UpdateFriendStatus(int userKey, JoypleUser.FriendStatus status, JoypleRequest callbackObject) {
+		RequestUpdateFriendStatus(userKey, (int)status, callbackObject.GetCallbackGameObjectName());
+	}
+	
+	public void RequestSearchUsers(string nickName, JoypleRequest callbackObject) {
+		RequestSearchUsers(nickName, callbackObject.GetCallbackGameObjectName());
+	}
+}
+
+#endif

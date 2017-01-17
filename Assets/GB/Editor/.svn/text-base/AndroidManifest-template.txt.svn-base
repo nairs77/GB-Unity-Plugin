@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="__APP_BUNDLE_ID__"
+    android:installLocation="preferExternal"
+    android:theme="@android:style/Theme.NoTitleBar"
+    android:versionCode="__APP_VERSION_CODE__"
+    android:versionName="__APP_VERSION_NAME__" >
+
+    <!-- Joyple permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- Google In App Permission -->
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <!-- GCM-Permission -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="__APP_BUNDLE_ID__.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="__APP_BUNDLE_ID__.permission.C2D_MESSAGE" />    
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+ 
+    <application
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name" >
+           
+        <activity
+            android:name="com.joycity.platform.unity.JoypleUnityActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="__APP_SCREEN_ORIENTATION__" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <data android:host="test2" android:scheme="god" />                
+            </intent-filter>
+
+            <intent-filter>
+                <data android:scheme="com.joycity.app.__APP_GAME_CODE__" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="unityplayer.ForwardNativeEventsToDalvik"
+                android:value="true" />            
+        </activity>
+
+        <activity android:name="com.joycity.platform.account.ui.JoypleMainActivity"
+            	  android:configChanges="orientation|keyboard|keyboardHidden"/>
+        
+        <activity android:name="com.joycity.platform.account.ui.JoypleLoginActivity"
+            	  android:configChanges="orientation|keyboard|keyboardHidden"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+        
+        <activity android:name="com.joycity.platform.account.ui.JoycityMainNoFriendsActivity"
+                  android:configChanges="orientation|keyboard|keyboardHidden" />
+
+        <!-- Facebook Activity -->          
+        <activity android:name="com.facebook.LoginActivity"
+            	  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+                  
+        <!-- # Twitter Activity        
+        <activity android:name="com.joycity.platform.account.core.AuthClientTwitter$TwitLogin"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" />
+        -->
+
+        <!-- # Facebook-Setting 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/joyple_facebook_application_id" />
+        -->	
+        
+        <!-- # GooglePlayService-Setting
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/app_id" />
+        -->
+        
+        <!--  GCM-Receiver -->
+        <receiver 
+            android:name="com.joycity.platform.unity.PushBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.joycity.platform.unity" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.joycity.platform.unity.PushIntentService" />        
+    </application>
+    <uses-feature android:glEsVersion="0x00020000" />
+    <uses-sdk android:minSdkVersion="12" android:targetSdkVersion="23" />
+</manifest>

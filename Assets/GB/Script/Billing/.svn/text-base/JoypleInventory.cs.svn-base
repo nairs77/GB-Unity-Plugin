@@ -1,0 +1,76 @@
+using UnityEngine;
+using System.Collections.Generic;
+using SimpleJSON;
+using Joycity;
+
+public sealed class JoypleInAppItem : IJoypleObject {
+
+	public string price { get; private set;}
+	
+	public string currency_symbol { get; private set;}
+	
+	public string currency { get; private set;}
+
+	public string description { get; private set;}
+
+	public string title { get; private set;}
+
+	public string productId { get; private set;}
+
+	public JoypleInAppItem(JSONNode root) {
+		this.parseJSON(root);
+	}
+
+	public void parseJSON(JSONNode root) {
+		price = root["price"];
+		currency = root["currency"];
+		currency_symbol = root["currency_symbol"];
+		description = root["description"];
+		title = root["title"];
+		productId = root["product_id"];
+	}
+	
+	public override string ToString() {
+		System.Text.StringBuilder sb = new System.Text.StringBuilder();
+		sb.Append("\n Title =").Append(title);
+		sb.Append("\n product id =").Append(productId);
+		sb.Append("\n price =").Append(price);
+		sb.Append("\n currency =").Append(currency);
+		sb.Append("\n currency_symbol =").Append(currency_symbol);
+		sb.Append("\n description =").Append(description);
+		return sb.ToString();
+	}		
+}
+
+
+public sealed class JoypleInventory {
+	private List<JoypleInAppItem> MyInventory = new List<JoypleInAppItem>();
+
+	public JoypleInventory(JSONNode root) {
+		int count = root["count"].AsInt;
+	
+		List<JoypleInAppItem> inventory = new List<JoypleInAppItem>();
+		
+		for (int i = 0; i < count; i++) {
+			string key = "item" + i.ToString();
+			inventory.Add(new JoypleInAppItem(root[key]));
+		}
+		
+		this.MyInventory = inventory;
+	}
+	
+	public List<JoypleInAppItem> getInventory() {
+		return this.MyInventory;
+	}
+	
+	public override string ToString() {
+		System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+		foreach(JoypleInAppItem item in MyInventory) {
+			sb.Append("\n item").Append(item.ToString());
+		}
+		
+		return sb.ToString();
+	}
+}
+

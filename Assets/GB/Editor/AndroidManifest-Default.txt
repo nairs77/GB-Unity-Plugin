@@ -1,0 +1,298 @@
+<# Template-Start
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="__APP_BUNDLE_ID__"
+    android:installLocation="preferExternal"
+    android:theme="@android:style/Theme.NoTitleBar"
+    android:versionCode="__APP_VERSION_CODE__"
+    android:versionName="__APP_VERSION_NAME__" >
+/>
+
+<# Default-Permission
+    <!-- GB permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+/>
+
+<# Google-Billing
+    <uses-permission android:name="com.android.vending.BILLING" />
+/>
+
+<# GCM-Permission
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="__APP_BUNDLE_ID__.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="__APP_BUNDLE_ID__.permission.C2D_MESSAGE" />
+/>    
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+<# Default-Application 
+    <application
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name" >
+/>
+
+<# MyCard-Application
+    <application
+        android:name="tw.com.mycard.sdk.libs.PSDKApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name" >
+/>
+
+<# Main-Activity            
+        <activity
+            android:name="com.GB.platform.unity.GBUnityActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <# Push-Intent
+            <intent-filter>
+                <data android:scheme="com.GB.app.8887" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:host="test2" android:scheme="god" />
+            </intent-filter>
+            />            
+            <meta-data
+                android:name="unityplayer.ForwardNativeEventsToDalvik"
+                android:value="true" />            
+        </activity>
+
+        <!--  GB SDK activity & Meta-data -->
+        <# Default Activity
+        <activity android:name="com.GB.platform.account.ui.GBMainActivity"
+            	  android:configChanges="orientation|keyboard|keyboardHidden"/>
+        
+        <activity android:name="com.GB.platform.account.ui.GBLoginActivity"
+            	  android:configChanges="orientation|keyboard|keyboardHidden"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+        
+        <activity android:name="com.GB.platform.account.ui.GBMainNoFriendsActivity"
+                  android:configChanges="orientation|keyboard|keyboardHidden" />
+        />
+        <# Facebook Activity          
+        <activity android:name="com.facebook.LoginActivity"
+            	  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+        />
+        <# Twitter Activity        
+        <activity android:name="com.GB.platform.account.core.AuthClientTwitter$TwitLogin"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" />
+        />
+        <# MyCard Activity
+        <activity
+            android:name="soft_world.mycard.paymentapp.ui.SplashActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="soft_world.mycard.paymentapp.ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="soft_world.mycard.paymentapp.ui.TrainActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- zxing -->
+        <activity
+            android:name="com.google.zxing.CaptureActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="tw.com.mycard.paymentsdk.PSDKActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="soft_world.mycard.paymentapp.ui.billing.BillingWebViewActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <!-- 異康 -->
+        <activity
+            android:name="soft_world.mycard.paymentapp.Ecom.ATMMenuActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.xmobilepay.xpaymentlibs.XCardTypeForm"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.xmobilepay.xpaymentlibs.XPayCardPassWordForm"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.xmobilepay.xpaymentlibs.XSmallPayCardPassWordForm"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.xmobilepay.xpaymentlibs.PaymentResultForm"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.xmobilepay.xpaymentlibs.PaymentErrResultForm"
+            android:screenOrientation="portrait" >
+        </activity>
+        <!-- 遠傳電信 -->
+        <activity
+            android:name="com.fet.iap.activity.FetLoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+
+        <!-- 中華電信 -->
+        <activity android:name="com.cht.iap.api.ChtRegMainActivity" />
+        <activity android:name="com.cht.iap.api.ChtPhoneNumPayConfirmActivity" />
+        <activity android:name="com.cht.iap.api.ChtRegEInvoiceInfo" />
+        <activity android:name="com.cht.iap.api.ChtRegVerifyOTP" />
+        <activity android:name="com.cht.iap.api.ChtRegHNDataTabActivity" />
+        <activity android:name="com.cht.iap.api.ChtRegHNAccountActivity" />
+        <activity android:name="com.cht.iap.api.ChtRegMobileAuth" />
+        <activity android:name="com.cht.iap.api.ChtRegMobileHNData" />
+        <activity android:name="com.cht.iap.api.ChtTransactionAuth" />
+        <activity android:name="com.cht.iap.api.ChtRegVerifyMessage" />
+        <!-- 中國信託 -->
+        <activity
+            android:name="com.softmobile.ui.PayPageActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <!-- 首信易 -->
+        <activity
+            android:name="com.payeasenet.token.lib.ui.TokenPayTypeCheckUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.CardTypeCheckUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.TokenCreateUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.payeasenet.token.lib.ui.TokenCreateResultUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.TokenPayUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEPayRelUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.TokenIntroductionUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.payeasenet.token.lib.ui.TokenUnBindedUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.payeasenet.token.lib.ui.MoreAboutUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEUpopInfoUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEUpopPayUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEIvrPayUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEQuickPayUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEUpmpPayUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEVisaPayUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEVisaInfoUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEVisaBillInfoUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEDebitBillInfoUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEQuickInfoUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.payeasenet.token.lib.ui.PEUpmpInfoUI"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        />
+
+        <# Facebook Setting 
+        <!-- Facebook Application ID -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/GB_facebook_application_id" />
+        />	
+        
+        <# Google Play Service
+        <!-- Google Play service -->
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/app_id" />
+        />
+        
+        <# GCM-Receiver
+        <receiver 
+            android:name="com.GB.platform.unity.PushBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.GB.platform.unity" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.GB.platform.unity.PushIntentService" />
+        />        
+    <# Application-End
+    </application>
+    />
+    
+    <# GLES-Version
+    <uses-feature android:glEsVersion="0x00020000" />
+    />
+    <# Android-Target
+    <uses-sdk android:minSdkVersion="12" android:targetSdkVersion="23" />
+    />
+    <# Template-End
+</manifest>
+    />

@@ -1,0 +1,12 @@
+﻿using System;
+
+namespace Joycity
+{
+	public enum SnackbarDuration
+	{
+		LENGTH_SHORT,
+		LENGTH_LONG, 
+		LENGTH_INDEFINITE
+	}
+}
+

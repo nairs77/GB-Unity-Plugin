@@ -1,0 +1,53 @@
+﻿using UnityEngine;
+using System.Collections;
+using SimpleJSON;
+ using Joycity;
+
+public sealed class JoycityEventParam {
+	
+	private readonly JoycityEvent joycityEvent;
+	private readonly JSONClass json;
+	
+	public class Builder {
+		
+		public JoycityEvent joycityEvent;
+		public JSONClass json = new JSONClass();	
+		
+		public Builder(JoycityEvent joycityEvent) 
+		{
+			this.joycityEvent = joycityEvent;			
+		}
+		
+		public Builder Add(string key, System.Object paramValue) 
+		{			
+			if(paramValue is string)
+				json[key] = (string) paramValue;
+			else if(paramValue is int) {					
+				int param = (int) paramValue;
+				json[key] = System.Convert.ToString(param);				
+			}
+			return this;
+		}
+		
+		public JoycityEventParam Build() {
+			return new JoycityEventParam(this);
+		}
+	}
+	
+	private JoycityEventParam(Builder builder) 
+	{		
+		joycityEvent = builder.joycityEvent;
+		json = builder.json;
+	}
+	
+	public override string ToString() 
+	{	
+		json["event"] = joycityEvent.ToString();					
+		return json.ToString();				
+	}
+	
+	public JoycityEvent currentEvent()
+	{
+		return joycityEvent;
+	}
+}

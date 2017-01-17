@@ -1,0 +1,104 @@
+using UnityEngine;
+using System;
+using System.Collections;
+using Joycity;
+using Joycity.Account;
+
+public class JoypleSessionManager {
+
+	public static bool isOpened() {
+		return JoypleManager.Instance.PluginManager.IsOpened();
+	}
+
+	public static bool hasAccount() {
+		return JoypleManager.Instance.PluginManager.HasAccount();
+	}
+
+	public static bool isAllowedEULA() {
+		return JoypleManager.Instance.PluginManager.IsAllowedEULA ();
+	}
+
+	public static string getAccessToken() {
+		return JoypleManager.Instance.PluginManager.GetAccessToken();
+	}
+
+	public static string getRefreshToken() {
+		return JoypleManager.Instance.PluginManager.GetRefreshToken();
+	}
+
+	public static void Login(AuthType authType, Action<SessionState, JoypleException> callback) {
+		JoypleSessionRequest.RequestLogin(authType, callback);
+	}
+
+	public static void Login(AuthType authType, string snsAccessToken, Action<SessionState, JoypleException> callback) {
+		JoypleSessionRequest.RequestLogin(authType, snsAccessToken, callback);
+	}
+
+	public static void LoginByUI(Action<SessionState, JoypleException> callback) {
+		JoypleSessionRequest.RequestLoginByUI (callback);
+	}
+
+	public static void LoginByUI(LoginUIType loginUIType, Action<SessionState, JoypleException> callback){
+		JoypleSessionRequest.RequestLoginByUI (loginUIType, callback);
+	}
+
+	public static void Logout(Action<SessionState, JoypleException> callback) {
+		JoypleSessionRequest.RequestLogout(callback);
+	}
+
+	public static void Withdraw(Action<SessionState, JoypleException> callback) {
+		JoypleSessionRequest.RequestWithdraw(callback);
+	}
+
+	public static void GetProfile(Action<bool, JoypleException> callback) {
+		JoypleSessionRequest.RequestProfile(callback);
+	}
+
+	public static void LinkServiceWithAuthType(AuthType authType, Action<SessionState, JoypleException> callback) {
+		JoypleSessionRequest.RequestLinkService(authType, callback);
+	}
+
+	public static void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, Action<SessionState, JoypleException> callback) {
+		JoypleSessionRequest.RequestLinkService(authType, snsAccessToken, callback);
+	}
+	
+	public static void ShowJoypleMain() {
+		JoypleManager.Instance.PluginManager.ShowJoypleMain();
+	}
+
+	public static void ShowClickWrap(Action<bool, JoypleException> callback) {
+		JoypleSessionRequest.RequestClickWrap(callback);
+	}
+
+	public static void ShowEULA() {
+		JoypleManager.Instance.PluginManager.ShowEULA();
+	}
+
+	public static void SetAllowedEULA(bool isAllowedEULA) {
+		JoypleManager.Instance.PluginManager.SetAllowedEULA (isAllowedEULA);
+	}
+
+	public static void ShowViewByType(JoypleProfileViewType type) {
+		JoypleManager.Instance.PluginManager.ShowViewByType (type);
+	}
+	
+	public static bool isAlreadyLogin() {
+		return JoypleManager.Instance.PluginManager.IsAlreadyLogin();
+	}
+	
+	public static void HideJoypleStart() {
+		JoypleManager.Instance.PluginManager.HideJoypleStart();
+	}
+
+	public static void RequestMergeAccount(string userkey, Action<bool, JoypleException> callback) {
+		JoypleSessionRequest.RequestMergeAccount(userkey, callback);
+	}
+
+	public static void RequestVerifyAccount(AuthType authType, Action<bool, string> callback) {
+		JoypleSessionRequest.RequestVerifyAccount(authType, callback);
+	}
+
+	public static void CheckExistAccount(AuthType authType, string email, string userId, Action<bool, JoypleException> callback){
+		JoypleSessionRequest.ReauestCheckExistAccount (authType, email, userId, callback);
+	}
+}

@@ -1,0 +1,97 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using Joycity;
+using Joycity.Account;
+using Joycity.Billing;
+using Joycity.PlayGameService;
+
+public interface IJoypleNativePlugin {
+
+	void SetActiveMarket(JoypleSettings.Market markeet, JoypleRequest callbackObject);
+	/* Initialize SDK */
+	void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, JoypleSettings.Market markeet, int logLevel);
+	void GetGlobalServerInfo(string branchURL, JoypleRequest callbackObject);
+
+	/* Session */
+	void Login(AuthType authType, JoypleRequest callbackObject);
+	void Login(AuthType authType, string snsAccessToken, JoypleRequest callbackObject);
+	void LinkServiceWithAuthType(AuthType authType, JoypleRequest callbackObject);
+	void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, JoypleRequest callbackObject);
+	void Logout(JoypleRequest callbackObject);
+	void Withdraw(JoypleRequest callbackObject);
+
+	bool IsOpened();
+	bool HasAccount();
+	//string getAccessToken();
+
+	/* Profile */
+	void RequestProfile(JoypleRequest callbackObject);
+
+	/* Friends */
+	void RequestFriends(JoypleRequest callbackObject);
+	void AddFriend(int userKey, JoypleRequest callbackObject);
+	void UpdateFriendsStatus(int userKey, JoypleUser.FriendStatus status, JoypleRequest callbackObject);
+	void RequestSearchInFriends(string searchText, JoypleRequest callbackObject);
+	//void RequestInvitedUserCount(JoypleRequest callbackObject);
+
+	/* Billing */
+	void StartSetup(string userKey, JoypleRequest callbackObject);
+	void QueryInventory(List<string> skus, JoypleRequest callbackObject);
+	void QueryInventoryItemInfo(List<string> skus, JoypleRequest callbackObject);
+    
+	void BuyItem(string sku, int price, JoypleRequest callbackObject);
+    
+	void BuyItem(string sku, int price, string itemInfo, JoypleRequest callbackObject);    
+    
+    void BuyItem(string sku, int price, string itemInfo, string toUserKey, JoypleRequest callbackObject);
+    
+	void RestoreItems(JoypleRequest callbackObject);
+	
+	void GetPromotionItem(string userKey, JoypleRequest callbackObject);
+	
+	void SetPromotionItems(List<string> skus);
+	/* app */
+	void ShowJoypleMain();
+
+	/* Push */
+	void SendPushMessage(string userKey, string title, string message);
+	
+	/* Utility */
+	string GetMCC();
+	string GetCurrentLanguage();
+	string GetDeviceId();
+
+	void ShowToast(string message);
+	void ShowAlert();
+	
+	/* Play Game */
+	/* Android : Google Play Game Service */
+	/* iOS : Game Center */
+	
+	void SignIn(JoypleRequest callbackObject);
+	void SignOut(JoypleRequest callbackObject);
+	bool IsAuthenticated();
+	void ShowLeaderboardUI(string ldId, JoypleRequest callbackObject);
+	void ShowAchievementsUI(JoypleRequest callbackObject);
+	/*
+	void UnlockAchievement(string achId, double step, JoypleRequest callbackObject);
+	void IncrementAchievement(string achId, int step, JoypleRequest callbackObject);
+	*/
+	void ReportProgress(string achId, double step, JoypleRequest callbackObject);
+	
+	void SubmitScore(long score, string leaderBoardId, JoypleRequest callbackObject);
+	void FetchQuestById(string eventId, JoypleRequest callbackObject);
+
+	/* Event */
+	void IncrementEvent(string eventId, uint stepsToIncrement);
+	
+	/* Quest */
+	void ShowAllQuestsUI(JoypleRequest callbackObject);
+	void ClaimMilestone(IQuestMilestone milestone, JoypleRequest callbackObject);
+
+	/* Analytics */
+	// void LogEvent (EventType eventType, string eventName, double valueToSum, int paramNum, string[] paramKey, string[] paramValue);
+	// void LogPurchase (EventType eventType, double purchaseAmount, string currency, int paramNum, string[] paramKey, string[] paramValue);
+}
+

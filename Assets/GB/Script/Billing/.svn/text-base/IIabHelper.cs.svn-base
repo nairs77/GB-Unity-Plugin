@@ -1,0 +1,21 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using Joycity;
+
+namespace Joycity.Billing {
+
+	public interface IIabHelper {
+
+		void StartSetup(string userKey, JoypleRequest callbackObject);
+		void QueryInventory(List<string> skus, JoypleRequest callbackObject);
+		void QueryInventoryItemInfo(List<string> skus, JoypleRequest callbackObject);
+		void BuyItem(string sku, int price, JoypleRequest callbackObject);		
+		void BuyItem(string sku, int price, string itemInfo, JoypleRequest callbackObject);
+        
+        void BuyItem(string sku, int price, string itemInfo, string toUserkey, JoypleRequest callbackObject);
+		void RestoreItems(JoypleRequest callbackObject);
+		void GetPromotionItem(string userKey, JoypleRequest callbackObject);
+		void SetPromotionItems(List<string> skus);		
+	}
+}

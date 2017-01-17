@@ -1,0 +1,9 @@
+using System;
+public class JoypleStrings {
+
+    /**
+     *      Error String
+     */
+    public static string NOT_SUPPORTED_API = "";
+
+}

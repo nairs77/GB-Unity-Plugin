@@ -1,0 +1,47 @@
+#if UNITY_ANDROID
+using UnityEngine;
+using System.Collections;
+
+namespace Joycity.Account {
+	
+	public class JoypleUserAndroidHelper : JoypleAndroidHelper, IUserHelper {
+
+		private static readonly string NATIVE_FRIEND_CLASS_PACKAGE = "com.joycity.platform.unity.FriendsPlugin";
+		
+		private static AndroidJavaClass _androidUserHelper;
+		private static AndroidJavaClass AndroidUserHelper {
+			get {
+				if (_androidUserHelper == null) {
+					_androidUserHelper = new AndroidJavaClass(NATIVE_FRIEND_CLASS_PACKAGE);
+				}
+				return _androidUserHelper;
+			}
+		}
+		
+		public void RequestFriends(JoypleRequest callbackObject) {			
+			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {
+				AndroidUserHelper.CallStatic ("RequestFriends", callbackObject.GetCallbackGameObjectName ());
+			}));	
+		}
+		
+		public void AddFriend(int userKey, JoypleRequest callbackObject) {
+			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {
+				AndroidUserHelper.CallStatic ("ReqeustAddFriend", userKey, callbackObject.GetCallbackGameObjectName ());
+			}));
+		}
+		
+		public void UpdateFriendStatus(int userKey, JoypleUser.FriendStatus status, JoypleRequest callbackObject) {
+			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {
+				AndroidUserHelper.CallStatic ("RequestUpdateFriendStatus", userKey, (int)status, callbackObject.GetCallbackGameObjectName ());
+			}));
+		}
+		
+		public void RequestSearchUsers(string nickname, JoypleRequest callbackObject) {
+			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
+				AndroidUserHelper.CallStatic ("RequestSearchUsers", nickname, callbackObject.GetCallbackGameObjectName());
+			}));
+		}
+		
+	}
+}
+#endif

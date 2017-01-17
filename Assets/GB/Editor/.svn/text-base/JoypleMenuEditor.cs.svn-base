@@ -1,0 +1,30 @@
+namespace Joycity.Unity.Editor {
+    using UnityEngine;
+    using UnityEditor;
+    
+    public class JoypleMenuEditor {
+        [MenuItem ("Joyple/Documents/Start Guide...", false, 200)]
+        public static void ShowDocumentsStartGuide() {
+            Application.OpenURL("127.0.0.1");
+        }
+        
+        [MenuItem ("Joyple/Documents/API Guide...", false, 201)]
+        public static void ShowDocumentsAPIGuide() {
+            
+        }
+
+        [MenuItem ("Joyple/Download", false, 300)]
+        public static void goDownloadSite() {
+            
+        }   
+             
+        [MenuItem ("Joyple/About", false, 400)]
+        public static void About() {
+            // string msg = GPGSStrings.AboutText + PluginVersion.VersionString + " (" +
+            //              string.Format("0x{0:X8}", GooglePlayGames.PluginVersion.VersionInt) + ")";
+            // EditorUtility.DisplayDialog(GPGSStrings.AboutTitle, msg,
+            //     GPGSStrings.Ok);
+            JoypleUtils.Alert(JoypleConstantStrings.Version.Title, JoypleSettingsImpl.SDK_VERSION);            
+        }
+    }
+}

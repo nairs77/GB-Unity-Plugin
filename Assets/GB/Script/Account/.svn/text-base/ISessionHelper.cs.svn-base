@@ -1,0 +1,35 @@
+using UnityEngine;
+using System;
+using System.Collections;
+
+//public delegate void SessionHandler(bool success, string eventObject);
+
+public interface ISessionHelper {
+
+	bool IsOpened();
+	bool HasToken();
+	bool IsAllowedEULA();
+	string GetAccessToken();
+	string GetRefreshToken();
+	void Login(AuthType authType, JoypleRequest callbackObject);
+	void Login(AuthType authType, string snsAccessToken, JoypleRequest callbackObject);
+	void LoginByUI(JoypleRequest callbackObject);
+	void LoginByUI(LoginUIType loginUIType, JoypleRequest callbackObject);
+	void LinkServiceWithAuthType(AuthType authType, JoypleRequest callbackObject);
+	void LinkServiceWithAuthType(AuthType authType, string snsAccessToken,  JoypleRequest callbackObject);
+	void Logout(JoypleRequest callbackObject);
+	void Withdraw(JoypleRequest callbackObject);
+	void RequestProfile(JoypleRequest callbackObject);
+	void ShowJoypleMain();
+	void ShowClickWrap(JoypleRequest callbackObject);
+	void ShowEULA();
+	void ShowViewByType(JoypleProfileViewType viewType);
+	void SetAllowedEULA(bool isAllowed);
+	bool IsAlreadyLogin();
+	void SetGameLanguage(LanguageType languageType);
+	void HideJoypleStart();
+	void RequestMergeAccount(string userkey, JoypleRequest callbackObject);
+	void RequestVerifyAccount(AuthType authType, JoypleRequest callbackObject);
+	void CheckExistAccount(AuthType authType, string email, string userId, JoypleRequest callbackObject);
+}
+

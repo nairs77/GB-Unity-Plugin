@@ -1,0 +1,25 @@
+using UnityEngine;
+using System.Collections;
+
+namespace Joycity {
+
+	public interface ICommonHelper {
+		void SetActiveMarket(JoypleSettings.Market market, JoypleRequest callbackObject);
+		void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, JoypleSettings.Market market, int logLevel);
+		void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformInfo, int logLevel);
+		void RequestGlobalServerInfo(string branchURL, JoypleRequest callbackObject);
+		void ShowToast(string message);
+		void ShowAlert();
+		string GetMCC();
+		string GetCurrentLanguage();
+		string GetDeviceId();
+		string GetDeviceModel();
+		void SendPushMessage(string userKey, string title, string message);
+		void Call(JoycityEventParam param);
+		void GetRuntimePermission (string permission, bool isNecessary, JoypleRequest callbackObject);
+		bool CheckRuntimePermission (string permission);
+	}
+
+}
+
+
