@@ -1,3 +1,9 @@
 # Project Generated folder #
 Library/
 ProjectSettings/
+Temp/
+
+# Project Generated files
+*.csproj
+.vscode/
+*.sln
