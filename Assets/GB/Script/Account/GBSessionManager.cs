@@ -69,7 +69,7 @@ public class GBSessionManager {
 	public static void ShowClickWrap(Action<bool, GBException> callback) {
 		GBSessionRequest.RequestClickWrap(callback);
 	}
-*/
+
 	public static void ShowEULA() {
 		GBManager.Instance.PluginManager.ShowEULA();
 	}
@@ -78,9 +78,9 @@ public class GBSessionManager {
 		GBManager.Instance.PluginManager.SetAllowedEULA (isAllowedEULA);
 	}
 
-	// public static void ShowViewByType(GBProfileViewType type) {
-	// 	GBManager.Instance.PluginManager.ShowViewByType (type);
-	// }
+	public static void ShowViewByType(GBProfileViewType type) {
+		GBManager.Instance.PluginManager.ShowViewByType (type);
+	}
 	
 	public static bool isAlreadyLogin() {
 		return GBManager.Instance.PluginManager.IsAlreadyLogin();
@@ -89,7 +89,7 @@ public class GBSessionManager {
 	public static void HideGBStart() {
 		GBManager.Instance.PluginManager.HideGBStart();
 	}
-/*
+
 	public static void RequestMergeAccount(string userkey, Action<bool, GBException> callback) {
 		GBSessionRequest.RequestMergeAccount(userkey, callback);
 	}

@@ -231,7 +231,7 @@ public class GBPluginManager : IGBNativePlugin
 	public void ShowClickWrap(GBRequest callbackObject) {
 		SessionHelper.ShowClickWrap(callbackObject);
 	}
-*/
+
 	public void HideGBStart() {
 		SessionHelper.HideGBStart ();
 	}
@@ -263,7 +263,7 @@ public class GBPluginManager : IGBNativePlugin
 	public void RequestVerifyAccount(AuthType authType, GBRequest callbackObject) {
 		SessionHelper.RequestVerifyAccount(authType, callbackObject);
 	}
-
+*/
 	/* Utility */
 	public string GetMCC() {
 		return CommonHelper.GetMCC();

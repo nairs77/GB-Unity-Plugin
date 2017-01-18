@@ -117,16 +117,16 @@ public class GBSampleView : MonoBehaviour {
 				
 				emailTestType = EmailTestType.NONE;
 				isLogin = true;
-				PrintLog ("Session Open!!! - Token = " + GBSessionManager.getAccessToken ());
+				// PrintLog ("Session Open!!! - Token = " + GBSessionManager.getAccessToken ());
 
-				GBSessionManager.GetProfile ((bool success, GBException profile_exception) => {
-					PrintLog ("User Key = " + GBUser.Instance.LocalUser.userKey.ToString ());
+				// GBSessionManager.GetProfile ((bool success, GBException profile_exception) => {
+				// 	PrintLog ("User Key = " + GBUser.Instance.LocalUser.userKey.ToString ());
 
-					if (GBSettings.GetActiveMarket () == GBSettings.Market.UC) {							
-						//GBPlatformHelper.SubmitExtendedData("test", "tester", "25", "CHINA-SERVER", "CHINA-ZONE");
-						GBPlatformHelper.SubmitExtendedData ("test", "tester", "24");
-					}
-				});
+				// 	if (GBSettings.GetActiveMarket () == GBSettings.Market.UC) {							
+				// 		//GBPlatformHelper.SubmitExtendedData("test", "tester", "25", "CHINA-SERVER", "CHINA-ZONE");
+				// 		GBPlatformHelper.SubmitExtendedData ("test", "tester", "24");
+				// 	}
+				// });
 			} 
 			else if (state.Equals (SessionState.CLOSED)) {
 				PrintLog ("Session Closed!!! - LogOut");
@@ -172,20 +172,20 @@ public class GBSampleView : MonoBehaviour {
 		if (!requestGlobalServer) {
 
 			if (GUI.Button (new Rect (0, Screen.height/2, scrollContentsWidth, BUTTON_HEIGHT), "Request Global Server", buttonStyle)) {			
-				GBManager.GetGlobalServerInfo ("https://GB-qa1.GBplay.com/gbranch/branch/getzone", (bool success, string stringValue) => {
-					//QA : https://GB-cn-qa.GBplay.com/gbranch/branch/getzone
-					//PrintLog("stringValue=" + stringValue);
-					JLog.verbose ("result = " + stringValue);
+				// GBManager.GetGlobalServerInfo ("https://GB-qa1.GBplay.com/gbranch/branch/getzone", (bool success, string stringValue) => {
+				// 	//QA : https://GB-cn-qa.GBplay.com/gbranch/branch/getzone
+				// 	//PrintLog("stringValue=" + stringValue);
+				// 	JLog.verbose ("result = " + stringValue);
 
-					JLog.verbose ("MCC =" + GBManager.GetMCC () + "Device Id = " + GBManager.GetDeviceId () + "Language = " + GBManager.GetCurrentLanguage ());
+				// 	JLog.verbose ("MCC =" + GBManager.GetMCC () + "Device Id = " + GBManager.GetDeviceId () + "Language = " + GBManager.GetCurrentLanguage ());
 
-					//GBSessionManager.SetAllowedEULA(true);
-					bool isAlreadyLogin = GBSessionManager.isAlreadyLogin ();
-					PrintLog ("isAlreadyLogin() = " + isAlreadyLogin.ToString ());
+				// 	GBSessionManager.SetAllowedEULA(true);
+				// 	bool isAlreadyLogin = GBSessionManager.isAlreadyLogin ();
+				// 	PrintLog ("isAlreadyLogin() = " + isAlreadyLogin.ToString ());
 
-					GBManager.SetGameLanguage (LanguageType.GAME_LANG_EN);
-					requestGlobalServer = true;
-				});
+				// 	GBManager.SetGameLanguage (LanguageType.GAME_LANG_EN);
+				// 	requestGlobalServer = true;
+				// });
 			}	
 		} 
 		else {
@@ -216,15 +216,15 @@ public class GBSampleView : MonoBehaviour {
 
 					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "New UI Login", buttonStyle)) {
 
-						GBSessionManager.LoginByUI(LoginUIType.LOGIN_UI, sessionCallback);		
+						// GBSessionManager.LoginByUI(LoginUIType.LOGIN_UI, sessionCallback);		
 					}
 
 					firstPosX = posY += BUTTON_HEIGHT;
 				}
 
-				if(GUI.Button(new Rect(0, firstPosX, scrollContentsWidth, BUTTON_HEIGHT), "EULA", buttonStyle)) {
-					GBSessionManager.ShowViewByType(GBProfileViewType.GBProfileEULA);
-				}
+				// if(GUI.Button(new Rect(0, firstPosX, scrollContentsWidth, BUTTON_HEIGHT), "EULA", buttonStyle)) {
+				// 	GBSessionManager.ShowViewByType(GBProfileViewType.GBProfileEULA);
+				// }
 
 				if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "RequestPermission", buttonStyle)) {
 
@@ -250,12 +250,12 @@ public class GBSampleView : MonoBehaviour {
 						emailTestType = EmailTestType.OTHER;
 					}
 
-					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Email Link", buttonStyle)) {
+					// if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Email Link", buttonStyle)) {
 
-						String email = "endow50@naver.com";
-						String password = "GB83";
-						GBSessionManager.LinkServiceWithAuthType (AuthType.EMAIL, email, password, sessionCallback);
-					}
+					// 	String email = "endow50@naver.com";
+					// 	String password = "GB83";
+					// 	GBSessionManager.LinkServiceWithAuthType (AuthType.EMAIL, email, password, sessionCallback);
+					// }
 
 					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "Logout", buttonStyle)) {
 
@@ -273,7 +273,7 @@ public class GBSampleView : MonoBehaviour {
 						GBSessionManager.Unregister(sessionCallback);
 					}
 
-
+/*
 					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Profile UI", buttonStyle)) {
 
 						// 메인 UI호출
@@ -282,10 +282,10 @@ public class GBSampleView : MonoBehaviour {
 						PrintLog("Main()");
 					}
 
-					// if(GUI.Button(new Rect(scrollContentsWidth / 2, y, scrollContentsWidth / 2, BUTTON_HEIGHT), "Manage Account", buttonStyle)) {
-					// 	GBSessionManager.ShowViewByType(GBProfileViewType.GBProfileManageAccount);
-					// }		
-
+					if(GUI.Button(new Rect(scrollContentsWidth / 2, y, scrollContentsWidth / 2, BUTTON_HEIGHT), "Manage Account", buttonStyle)) {
+						GBSessionManager.ShowViewByType(GBProfileViewType.GBProfileManageAccount);
+					}		
+*/
 					// Billing
 					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth / 2, BUTTON_HEIGHT), "Start Billing Service", buttonStyle)) {
 
@@ -361,7 +361,7 @@ public class GBSampleView : MonoBehaviour {
 						//skus.Add("Sample01");
 						sku = "GB_product_id_7695245";
 						#endif
-
+/*
 						GBInAppManager.BuyItem(sku, 1, "30 Ruby", "{\"developer_payload\" : \"hello test\"}", false, (string paymentKey, GBException exception) => {
 							if (exception == null) {
 								JLog.verbose("paymentKey = " + paymentKey);
@@ -371,6 +371,7 @@ public class GBSampleView : MonoBehaviour {
 								PrintLog("BuyItem exception::" + exception.getErrorCode() + " MSG:::" + exception.getErrorMessage());
 							}
 						});
+*/						
 					}
 
 					if(GUI.Button(new Rect(scrollContentsWidth/2, posY, scrollContentsWidth / 2, BUTTON_HEIGHT), "Buy Item(subs)", buttonStyle)) {
@@ -382,7 +383,7 @@ public class GBSampleView : MonoBehaviour {
 						//skus.Add("Sample01");
 						sku = "GB_product_id_3234233";
 						#endif
-
+/*
 						GBInAppManager.BuyItem(sku, 1, "30 Ruby", "{\"developer_payload\" : \"hello test\"}", true, (string paymentKey, GBException exception) => {
 							if (exception == null) {
 								JLog.verbose("paymentKey = " + paymentKey);
@@ -392,6 +393,7 @@ public class GBSampleView : MonoBehaviour {
 								PrintLog("BuyItem exception::" + exception.getErrorCode() + " MSG:::" + exception.getErrorMessage());
 							}
 						});
+*/						
 					}
 
 					if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Restore Item", buttonStyle)) {
@@ -464,8 +466,9 @@ public class GBSampleView : MonoBehaviour {
 
 			if (strEmail.Contains ("email") || strEmailPassword.Contains ("email"))
 				return;
-			
+/*			
 			GBSessionManager.Login(AuthType.EMAIL, strEmail, strEmailPassword, sessionCallback);
+*/			
 		}
 
 		GUI.EndGroup ();
@@ -487,8 +490,9 @@ public class GBSampleView : MonoBehaviour {
 				PrintLog ("password not equal");
 				return;
 			}
-
+/*
 			GBSessionManager.Login (AuthType.JOIN, strEmailJoin, strEmailJoinPassword_2, sessionCallback);
+*/			
 		}
 
 		GUI.EndGroup ();
@@ -506,7 +510,7 @@ public class GBSampleView : MonoBehaviour {
 
 			if (strEmailFind.Contains ("email"))
 				return;
-
+/*
 			GBSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_FIND_PASSWD, strEmailFind, null, (bool isSuccess, GBException exception) => {
 
 				if(isSuccess){
@@ -517,6 +521,7 @@ public class GBSampleView : MonoBehaviour {
 						PrintLog ("EMAIL_FIND_PASSWD Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
 				}
 			});
+*/			
 		}
 
 		GUI.EndGroup ();
@@ -542,7 +547,7 @@ public class GBSampleView : MonoBehaviour {
 		GUI.Box(new Rect(0 , boxY, scrollContentsWidth - 100 , BUTTON_HEIGHT * 2), "Send Cert Email", boxStyle);
 
 		if(GUI.Button(new Rect(groupPosX , boxY += BUTTON_HEIGHT / 2, scrollContentsWidth - 200, BUTTON_HEIGHT), "Send", buttonStyle)) {
-			
+/*			
 			GBSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_CERT_SEND, null, null, (bool isSuccess, GBException exception) => {
 				if(isSuccess){
 					PrintLog ("EMAIL_CERT_SEND is " + isSuccess);
@@ -552,7 +557,7 @@ public class GBSampleView : MonoBehaviour {
 						PrintLog ("EMAIL_CERT_SEND Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
 				}
 			});
-
+*/
 		}
 
 		GUI.EndGroup ();
@@ -570,7 +575,7 @@ public class GBSampleView : MonoBehaviour {
 
 			if (strEmail.Contains ("email"))
 				return;
-
+/*
 			GBSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_CHANGE, strEmail, null, (bool isSuccess, GBException exception) => {
 				if(isSuccess){
 					PrintLog ("EMAIL_CHANGE is " + isSuccess);
@@ -580,6 +585,7 @@ public class GBSampleView : MonoBehaviour {
 						PrintLog ("EMAIL_CHANGE Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
 				}
 			});
+*/			
 		}
 			
 		GUI.EndGroup ();
@@ -601,7 +607,7 @@ public class GBSampleView : MonoBehaviour {
 				PrintLog ("password not equal");
 				return;
 			}
-
+/*
 			GBSessionManager.ManagementEmailAccount (EmailOperationType.EMAIL_CHECK_PASSWORD, null, strEmailPassword, (bool isSuccess, GBException exception) => {
 
 				if(isSuccess){
@@ -622,6 +628,7 @@ public class GBSampleView : MonoBehaviour {
 						PrintLog ("EMAIL_CHECK_PASSWORD Error code = " + exception.getErrorCode () + "," + "message = " + exception.getErrorMessage ());
 				}
 			});
+*/			
 		}
 
 		GUI.EndGroup ();

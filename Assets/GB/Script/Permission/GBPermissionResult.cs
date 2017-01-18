@@ -19,14 +19,14 @@ namespace GB
 
 			if (this.Data != null) {
 				if(this.Data["permisison_status"] != null)
-					PermissionStatus = (JoyplePermissionStatus)Enum.Parse(typeof(JoyplePermissionStatus), this.Data ["permisison_status"]);
+					PermissionStatus = (GBPermissionStatus)Enum.Parse(typeof(GBPermissionStatus), this.Data ["permisison_status"]);
 
 				if (this.Data ["permissions"] != null) {
 					JSONClass jsonPermissions = this.Data["permissions"].AsObject;
 					Permissions = new GBPermission[jsonPermissions.Count];
 					int i = 0;
 					foreach (string key in jsonPermissions.Keys)
-						Permissions [i++] = new JoyplePermission (key, jsonPermissions [key]);	
+						Permissions [i++] = new GBPermission (key, jsonPermissions [key]);	
 				}
 			}
 

@@ -180,7 +180,7 @@ namespace GB.Account
 			
 			accountRequest.RequestProfileWithCallback(profileCallback);
 		}
-*/
+
 		public static void RequestClickWrap(Action<bool, GBException> callback) {
 			GameObject gameObject = new GameObject("ClickWrapCallbackTemp" + DateTime.Now.Ticks);
 			GBSessionRequest accountRequest = gameObject.AddComponent<GBSessionRequest>();
@@ -197,7 +197,7 @@ namespace GB.Account
 			
 			accountRequest.RequestClickWrapWithCallback(clickWrapperCallback);
 		}
-/*
+
 		public static void RequestMergeAccount(string userkey, Action<bool, GBException> callback) {
 			GameObject gameObject = new GameObject ("RequestMergeAccountTemp" + DateTime.Now.Ticks);
 			GBSessionRequest accountRequest = gameObject.AddComponent<GBSessionRequest> ();

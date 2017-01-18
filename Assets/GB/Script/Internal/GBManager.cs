@@ -131,11 +131,11 @@ namespace GB {
 		public static string GetDeviceModel() {
 			return GBManager.Instance.PluginManager.GetDeviceModel();
 		}
-
+/*
 		public static void SetGameLanguage(LanguageType languageType) {
 			GBManager.Instance.PluginManager.SetGameLanguage(languageType);	
 		}
-		
+*/		
 		public static void SendPushMessage(string userKey, string title, string message) {
 			GBManager.Instance.PluginManager.SendPushMessage(userKey, title, message);
 		}
