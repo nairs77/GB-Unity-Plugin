@@ -2,8 +2,10 @@
 Library/
 ProjectSettings/
 Temp/
+obj/
 
 # Project Generated files
 *.csproj
 .vscode/
 *.sln
+*.apk
