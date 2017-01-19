@@ -25,7 +25,7 @@ namespace GB
 					container.name = TAG;					
 					_instance = container.AddComponent(typeof(GBNetworkManager)) as GBNetworkManager;			
 
-					JLog.verbose (TAG + " Has been created.");
+					GBLog.verbose (TAG + " Has been created.");
 				}	
 						
 				return _instance;
@@ -53,24 +53,24 @@ namespace GB
 			
 			while (!www.isDone) {
 				if (sentTime + 100 <= Time.time) {
-					JLog.verbose("Time Out :" + url);
+					GBLog.verbose("Time Out :" + url);
 					isTimeOut = true;
 					break;
 				}
 				
-				JLog.verbose("Waiting... ");
+				GBLog.verbose("Waiting... ");
 				
 				yield return null;
 			}
 			
 			if (isTimeOut) {
-				JLog.verbose("Time out break!!!");
+				GBLog.verbose("Time out break!!!");
 				yield break;
 			}
 			
 			serverResponse = www.text;
 			
-			JLog.verbose("server = " + serverResponse);
+			GBLog.verbose("server = " + serverResponse);
 			
 			JSONNode root = JSON.Parse(serverResponse);
 			int status = root["status"].AsInt;
@@ -78,17 +78,17 @@ namespace GB
 						
 			if (www.error == null) {
 				// Success
-				//JLog.verbose("result =" + www.text);
+				//GBLog.verbose("result =" + www.text);
 				if (status == 1) {
 					string responseData = root["result"];//.ToString();
 					
-					JLog.verbose("Response = " + responseData.ToString());
+					GBLog.verbose("Response = " + responseData.ToString());
 					
 					if (responseData.Equals("null")) {				
-						JLog.verbose("Just Status ... Success");
+						GBLog.verbose("Just Status ... Success");
 						callback(null, null);
 					} else {
-						JLog.verbose("have result data");
+						GBLog.verbose("have result data");
 						callback(responseData, null);
 					}
 				} else {
@@ -98,7 +98,7 @@ namespace GB
 				
 			} else {
 				// Failed
-				JLog.verbose("DoPostMessage failed!!! - " + www.error.ToString());
+				GBLog.verbose("DoPostMessage failed!!! - " + www.error.ToString());
 			}			
 		} 
 	}	 

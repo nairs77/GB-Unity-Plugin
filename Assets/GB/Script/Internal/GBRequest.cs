@@ -65,7 +65,7 @@ public class GBRequest : MonoBehaviour {
 	**/
 	public void asyncCallSucceeded(string paramString)
 	{
-		JLog.verbose (paramString);
+		GBLog.verbose (paramString);
 		if(functionCallback != null) {
 			functionCallback(true, paramString);
 		} 
@@ -129,7 +129,7 @@ public class GBRequest : MonoBehaviour {
 		if (error_code == -501 || error_code == -3202)
 			alive_object = true;		
 #endif
-		JLog.verbose("error code = " + error_code);
+		GBLog.verbose("error code = " + error_code);
 				
 		return alive_object;
 	}

@@ -73,7 +73,7 @@ public class GBConfig
 		get {
 			if (_instance == null ) {	
 				_instance = new GBConfig();
-				JLog.verbose (TAG + " Has been created.");
+				GBLog.verbose (TAG + " Has been created.");
 			}	
 					
 			return _instance;

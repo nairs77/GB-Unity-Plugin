@@ -17,7 +17,7 @@ public class GBInAppRequest : GBRequest {
 		GBInAppRequest inAppRequest = gameObject.AddComponent<GBInAppRequest>();
 		
 		Action<bool,string> wrapperCallback = (success, result) => {
-			JLog.verbose(TAG + "Callback Start Billing Service");
+			GBLog.verbose(TAG + "Callback Start Billing Service");
 
 			if (success) {							
 				callback(success, null);
@@ -37,7 +37,7 @@ public class GBInAppRequest : GBRequest {
 		GBInAppRequest inAppRequest = gameObject.AddComponent<GBInAppRequest>();
 		
 		Action<bool, string> wrapperCallback = (success, result) => {
-			JLog.verbose(TAG + "Callback Query Inventory ");
+			GBLog.verbose(TAG + "Callback Query Inventory ");
 
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
@@ -61,7 +61,7 @@ public class GBInAppRequest : GBRequest {
 		GBInAppRequest inAppRequest = gameObject.AddComponent<GBInAppRequest>();
 		
 		Action<bool, string> wrapperCallback = (success, result) => {
-			JLog.verbose(TAG + "Callback Query Item Info ");
+			GBLog.verbose(TAG + "Callback Query Item Info ");
 			
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
@@ -80,7 +80,7 @@ public class GBInAppRequest : GBRequest {
 	public static void RequestBuyItem(string sku, int price, Action<string, GBException> callback) {
 		GameObject oldBuyItemObject = GameObject.Find("RequestBuyItem");
 		if (oldBuyItemObject) {
-			JLog.verbose(TAG + "have old object");
+			GBLog.verbose(TAG + "have old object");
 			GameObject.Destroy(oldBuyItemObject);
 		}
 		
@@ -93,11 +93,11 @@ public class GBInAppRequest : GBRequest {
 			var response = root[API_RESPONSE_RESULT_KEY];
 			var data = response[API_RESPONSE_DATA_KEY];
 			
-			JLog.verbose("result = " + result);
+			GBLog.verbose("result = " + result);
 			
 			if (success) {
 				string paymentKey = data["payment_key"];
-				JLog.verbose(@"payment key = " + paymentKey);				
+				GBLog.verbose(@"payment key = " + paymentKey);				
 				callback(paymentKey, null);
 			} else {
 				callback(null, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
@@ -110,7 +110,7 @@ public class GBInAppRequest : GBRequest {
 	public static void RequestBuyItem(string sku, int price, string itemInfo, Action<string, GBException> callback) {
 		GameObject oldBuyItemObject = GameObject.Find("RequestBuyItem");
 		if (oldBuyItemObject) {
-			JLog.verbose(TAG + "have old object");
+			GBLog.verbose(TAG + "have old object");
 			GameObject.Destroy(oldBuyItemObject);
 		}
 		
@@ -123,11 +123,11 @@ public class GBInAppRequest : GBRequest {
 			var response = root[API_RESPONSE_RESULT_KEY];
 			var data = response[API_RESPONSE_DATA_KEY];
 			
-			JLog.verbose("result = " + result);
+			GBLog.verbose("result = " + result);
 			
 			if (success) {
 				string paymentKey = data["payment_key"];
-				//JLog.verbose(@"payment key = " + paymentKey);				
+				//GBLog.verbose(@"payment key = " + paymentKey);				
 				callback(paymentKey, null);
 			} else {
 				callback(null, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
@@ -147,11 +147,11 @@ public class GBInAppRequest : GBRequest {
 			var response = root[API_RESPONSE_RESULT_KEY];
 			var data = response[API_RESPONSE_DATA_KEY];
 			
-			JLog.verbose("result = " + result);
+			GBLog.verbose("result = " + result);
 			
 			if (success) {
 				string paymentKey = data["payment_key"];
-				//JLog.verbose(@"payment key = " + paymentKey);				
+				//GBLog.verbose(@"payment key = " + paymentKey);				
 				callback(paymentKey, null);
 			} else {
 				callback(null, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
@@ -167,7 +167,7 @@ public class GBInAppRequest : GBRequest {
 		
 		Action<bool,string> wrapperCallback = (success, result) => {
 
-			JLog.verbose(TAG + "Callback Restore Items...!!!");
+			GBLog.verbose(TAG + "Callback Restore Items...!!!");
 
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
@@ -192,16 +192,16 @@ public class GBInAppRequest : GBRequest {
 		
 		Action<bool,string> wrapperCallback = (success, result) => {
 
-			JLog.verbose(TAG + "Callback Restore Items...!!!");
+			GBLog.verbose(TAG + "Callback Restore Items...!!!");
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
 			var data = response[API_RESPONSE_DATA_KEY];
 			
-			JLog.verbose("result = " + result);
+			GBLog.verbose("result = " + result);
 			
 			if (success) {
 				string paymentKey = data["payment_key"];
-				JLog.verbose(@"payment key = " + paymentKey);				
+				GBLog.verbose(@"payment key = " + paymentKey);				
 				callback(paymentKey, null);
 			} else {
 				callback(null, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));

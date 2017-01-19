@@ -90,17 +90,12 @@ public class GBPluginManager : IGBNativePlugin
 	}
 
 	/* Initialize SDK */
-	public void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, GBSettings.Market market, int logLevel) {
-        // GBConfig.SetClientSecretKey(clientSecretKey);        
-		// GBConfig.SetGameCode(gameCode);
-		// GBConfig.SetLogLevel(logLevel);
-		// GBConfig.SetStore(market);		
-		CommonHelper.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, market, logLevel);
+	public void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, GBSettings.Market market, GBSettings.LogLevel logLevel) {
+		CommonHelper.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, market, (int)logLevel);
 	}
 
-	// TODO
-	public void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformInfo, int logLevel) {
-		CommonHelper.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, logLevel);
+	public void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformInfo, GBSettings.LogLevel logLevel) {
+		CommonHelper.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, (int)logLevel);
 	}
 
 	public void GetGlobalServerInfo(string branchURL, GBRequest callbackObject) {

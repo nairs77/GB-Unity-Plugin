@@ -1,10 +1,8 @@
 ﻿
 namespace GB
 {
-
 	using System;
 	using GB.Callback;
-
 
 	public class GBPermissionManager
 	{

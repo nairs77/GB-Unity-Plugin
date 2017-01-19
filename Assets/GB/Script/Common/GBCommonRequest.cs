@@ -9,13 +9,13 @@ namespace GB {
 		
 		public static void RequestGlobalServerInfo(string branchURL, Action<bool, string> callback)
 		{
-			JLog.verbose("Call - RequestGlobalServerInfo");
+			GBLog.verbose("Call - RequestGlobalServerInfo");
 
 			GameObject gameObject = new GameObject("RequestGlobalServerInfo" + DateTime.Now.Ticks);
 			GBCommonRequest request = gameObject.AddComponent<GBCommonRequest>();
 			
 			Action<bool,string> wrapperCallback = (success, result) => {
-				JLog.verbose("Wrapper callback called");
+				GBLog.verbose("Wrapper callback called");
 				
 				JSONNode root = JSON.Parse(result);
 				var response = root[API_RESPONSE_RESULT_KEY];

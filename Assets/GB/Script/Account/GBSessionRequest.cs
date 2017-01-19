@@ -32,7 +32,7 @@ namespace GB.Account
 			
 			SessionState state = (SessionState)System.Enum.Parse(typeof(SessionState), response[API_SESSION_EVENT_KEY]);
 
-			JLog.verbose(TAG + "Session Request callback!!! - " + state.ToString());
+			GBLog.verbose(TAG + "Session Request callback!!! - " + state.ToString());
 			if (state.Equals(SessionState.ACCESS_FAILED)) {
 				sessionStateCallback(state, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
 			} else {
@@ -54,7 +54,7 @@ namespace GB.Account
 				
 				SessionState state = (SessionState)System.Enum.Parse(typeof(SessionState), response[API_SESSION_EVENT_KEY]);
 
-				JLog.verbose(TAG + "Request Login callback!!! - " + state.ToString());
+				GBLog.verbose(TAG + "Request Login callback!!! - " + state.ToString());
 				if (state.Equals(SessionState.ACCESS_FAILED)) {
 					callback(state, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
 				} else {
@@ -165,7 +165,7 @@ namespace GB.Account
 				JSONNode root = JSON.Parse(result);
 				var response = root[API_RESPONSE_RESULT_KEY];
 								
-				JLog.verbose(TAG + "Request Profile callback!!! - " + response.ToString());
+				GBLog.verbose(TAG + "Request Profile callback!!! - " + response.ToString());
 
 				if (success) {
 					var profile_result = response[API_RESPONSE_DATA_KEY];
@@ -187,9 +187,9 @@ namespace GB.Account
 			
 			Action<bool,string> clickWrapperCallback = (success, jsonResult) => {
 				
-				JLog.verbose(TAG + "Request Click Wrap callback!!!");
+				GBLog.verbose(TAG + "Request Click Wrap callback!!!");
 				
-				JLog.verbose(TAG + "result = " + jsonResult);
+				GBLog.verbose(TAG + "result = " + jsonResult);
 
 				// Always true
 				callback(true, null);
@@ -207,8 +207,8 @@ namespace GB.Account
 				JSONNode root = JSON.Parse(result);
 				var response = root[API_RESPONSE_RESULT_KEY];
 
-				JLog.verbose (TAG + "Request Merge Account callback!!!");
-				JLog.verbose(TAG + "Request Merge Account callback!!! - " + response.ToString());
+				GBLog.verbose (TAG + "Request Merge Account callback!!!");
+				GBLog.verbose(TAG + "Request Merge Account callback!!! - " + response.ToString());
 
 				if (success) {
 					callback(true, null);

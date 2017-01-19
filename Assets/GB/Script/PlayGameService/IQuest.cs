@@ -141,7 +141,7 @@ namespace GB.PlayGameService
 		
 		public void parseJSON(JSONNode root)
 		{
-            JLog.verbose("root = " + root.ToString());
+            GBLog.verbose("root = " + root.ToString());
             
 			Id = root["id"];
 			Name = root["name"];

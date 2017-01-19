@@ -16,7 +16,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
-public static class JLog {
+public static class GBLog {
 	
 	[System.Diagnostics.Conditional("LOG_FLAG_ERROR")]
 	public static void error(object message, params object[] paramList) {
@@ -51,7 +51,7 @@ public static class JLog {
 	
 	static string GetMessage(object errorMsg, params object[] paramList) {
 		StringBuilder sb = new StringBuilder();
-		sb.Append("[JLog] ");
+		sb.Append("[GBLog] ");
 		sb.Append(CallStackInfo());
 				
 		if (errorMsg is string) {

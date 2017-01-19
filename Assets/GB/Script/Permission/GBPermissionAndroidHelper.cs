@@ -1,14 +1,14 @@
 ﻿#if UNITY_ANDROID
 
-namespace Joycity
+namespace GB
 {
 	using System;
 	using System.Collections.Generic;
 	using UnityEngine;
-	using Joycity.Callback;
+	using GB.Callback;
 	using SimpleJSON;
 
-	internal class JoyplePermissionAndroidHelper : JoypleAndroidHelper, IPermissionHelper
+	internal class GBPermissionAndroidHelper : GBAndroidHelper, IPermissionHelper
 	{
 
 		private static readonly string NATIVE_CLASS_PACKAGE = "com.joycity.platform.unity.PermissionPlugin";
@@ -26,9 +26,9 @@ namespace Joycity
 
 		public void SetPermissionCallback (JoypleDelegate<GBPermissionResult> callback){
 			
-			String callbackId = JoypleCallbackManager.Instance.addJoypleDelegate (callback);
+			String callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
 
-			JoypleMethodArguments methodArg = new JoypleMethodArguments ();
+			GBMethodArguments methodArg = new GBMethodArguments ();
 			methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);
 
 			AndroidPermissionHelper.CallStatic("SetPermissionCallback", methodArg.ToJsonString());
@@ -52,7 +52,7 @@ namespace Joycity
 
 		public bool IsPermissionGranted (string[] permissions){
 
-			JoypleMethodArguments methodArg = new JoypleMethodArguments ();
+			GBMethodArguments methodArg = new GBMethodArguments ();
 			methodArg.AddList ("permissions", permissions);
 
 			return AndroidPermissionHelper.CallStatic<bool> ("IsPermissionGranted", methodArg.ToJsonString());
@@ -69,9 +69,9 @@ namespace Joycity
 
 		public void RequestPermission (string[] permissions, JoypleDelegate<GBPermissionResult> callback){
 
-			string callbackId = JoypleCallbackManager.Instance.addJoypleDelegate (callback);
+			string callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
 
-			JoypleMethodArguments methodArg = new JoypleMethodArguments ();
+			GBMethodArguments methodArg = new GBMethodArguments ();
 			methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);
 			methodArg.AddList ("permissions", permissions);
 
@@ -85,9 +85,9 @@ namespace Joycity
 
 		public void ShowDetailPermissionView(bool isSnack, string[] permissions, JoypleDelegate<GBPermissionResult> callback){
 			
-			string callbackId = JoypleCallbackManager.Instance.addJoypleDelegate (callback);
+			string callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
 
-			JoypleMethodArguments methodArg = new JoypleMethodArguments ();
+			GBMethodArguments methodArg = new GBMethodArguments ();
 			methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);
 			methodArg.AddList ("permissions", permissions);
 			methodArg.AddPrimative ("isSnack", isSnack);
@@ -114,9 +114,9 @@ namespace Joycity
 
 			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
 				
-				string callbackId = JoypleCallbackManager.Instance.addJoypleDelegate (callback);
+				string callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
 
-				JoypleMethodArguments methodArg = new JoypleMethodArguments ();
+				GBMethodArguments methodArg = new GBMethodArguments ();
 				methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);
 				methodArg.AddString ("permission", permission);
 				methodArg.AddNullablePrimitive<SnackbarDuration> ("duration", duration);

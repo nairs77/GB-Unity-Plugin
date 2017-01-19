@@ -11,7 +11,7 @@ namespace GB.PlayGameService {
 
 		static Action<bool,string> gameWrapperCallback = (success, result) => {
 					
-			JLog.verbose(TAG + "Game Status callback!!! - ");
+			GBLog.verbose(TAG + "Game Status callback!!! - ");
 			
 			gameStatusCallback(success, null);
 		};
@@ -73,7 +73,7 @@ namespace GB.PlayGameService {
 						
 			Action<bool,string> questWrapperCallback = (success, result) => {
 					
-				JLog.verbose(TAG + "Show All Quests UI callback!!! - ");
+				GBLog.verbose(TAG + "Show All Quests UI callback!!! - ");
 				
 				JSONNode root = JSON.Parse(result);
 				var response = root[API_RESPONSE_RESULT_KEY];
@@ -99,7 +99,7 @@ namespace GB.PlayGameService {
 			GBGameClientRequest request = gameObject.AddComponent<GBGameClientRequest>();			
 			
 			Action<bool,string> fetchWrapperCallback = (success, result) => {
-				JLog.verbose(TAG + "Callback Fetch Quest (By Id)");
+				GBLog.verbose(TAG + "Callback Fetch Quest (By Id)");
 	
 				JSONNode root = JSON.Parse(result);
 				var response = root[API_RESPONSE_RESULT_KEY];
@@ -122,7 +122,7 @@ namespace GB.PlayGameService {
 			GBGameClientRequest request = gameObject.AddComponent<GBGameClientRequest>();			
 			
 			Action<bool,string> milestoneWrapperCallback = (success, result) => {
-				JLog.verbose(TAG + "Callback RequestClaimMilestone!!!");
+				GBLog.verbose(TAG + "Callback RequestClaimMilestone!!!");
 	
 				JSONNode root = JSON.Parse(result);
 				var response = root[API_RESPONSE_RESULT_KEY];

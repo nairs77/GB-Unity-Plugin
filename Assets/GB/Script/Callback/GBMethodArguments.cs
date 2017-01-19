@@ -8,7 +8,7 @@ namespace GB
 	using SimpleJSON;
 	using System.Text;
 
-	public class JoypleMethodArguments
+	public class GBMethodArguments
 	{
 		
 		// Fields
@@ -16,11 +16,11 @@ namespace GB
 
 
 		// Constructors
-		public JoypleMethodArguments () : this (new Dictionary<string, object> ()) { }
+		public GBMethodArguments () : this (new Dictionary<string, object> ()) { }
 
-		public JoypleMethodArguments (JoypleMethodArguments methodArgs) : this (methodArgs.arguments) { }
+		public GBMethodArguments (GBMethodArguments methodArgs) : this (methodArgs.arguments) { }
 
-		private JoypleMethodArguments (IDictionary<string, object> arguments){
+		private GBMethodArguments (IDictionary<string, object> arguments){
 			this.arguments = arguments;
 		}
 			

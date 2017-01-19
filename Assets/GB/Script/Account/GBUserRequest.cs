@@ -14,7 +14,7 @@ public class GBUserRequest : GBRequest {
 		GBUserRequest userRequest = gameObject.AddComponent<GBUserRequest>();
 		
 		Action<bool,string> wrapperCallback = (success, result) => {
-			JLog.verbose(TAG + "Callback Get Friends");
+			GBLog.verbose(TAG + "Callback Get Friends");
 
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
@@ -37,7 +37,7 @@ public class GBUserRequest : GBRequest {
 		GBUserRequest userRequest = gameObject.AddComponent<GBUserRequest>();
 		
 		Action<bool,string> wrapperCallback = (success, result) => {
-			JLog.verbose(TAG + "Callback Add Friend");
+			GBLog.verbose(TAG + "Callback Add Friend");
 
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
@@ -59,7 +59,7 @@ public class GBUserRequest : GBRequest {
 		GBUserRequest userRequest = gameObject.AddComponent<GBUserRequest>();
 		
 		Action<bool,string> wrapperCallback = (success, result) => {
-			JLog.verbose(TAG + "Callback Update Friend Status");
+			GBLog.verbose(TAG + "Callback Update Friend Status");
 			
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];

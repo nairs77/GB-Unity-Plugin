@@ -44,7 +44,7 @@ namespace GB {
 
 						_pluginManager = new GBPluginManager();
 					}					
-					JLog.verbose (TAG + " Has been created.");
+					GBLog.verbose (TAG + " Has been created.");
 					if (_pluginManager == null)
 						_pluginManager = new GBPluginManager();
 				}			
@@ -80,13 +80,22 @@ namespace GB {
 		public void Destroy() {
 			_instance = null;
 			_pluginManager = null;
-			JLog.verbose ("Destroy ---");
+			GBLog.verbose ("Destroy ---");
 		}
-
+/*
 		public static void SetActiveMarket(GBSettings.Market market, Action<bool, string> callback) {
 			GBSettings.SetActiveMarket(market);
 			GBCommonRequest.SetActiveMarket(market, callback);
 		}
+*/
+        public static void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, GBSettings.LogLevel logLevel) {
+#if !UNITY_EDITOR && UNITY_IPHONE			
+			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, GBSettings.Market.APPLE_STORE, logLevel);
+#elif !UNITY_EDITOR && UNITY_ANDROID
+			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, GBSettings.Market.GOOGLE, logLevel);
+#endif
+		}
+
         /**
 		* @brief Configuration GB SDK
 		* @param clientSecret String
@@ -94,24 +103,24 @@ namespace GB {
 		* @param gameCode int
 		* @param logLevel LogLevel
 		*/
-        public static void ConfigureSDKWithGlobalInfo(string clientSecretKey, int gameCode, GBSettings.Market market, GBSettings.LogLevel logLevel) {
-			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, market, (int)logLevel);
+        public static void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, GBSettings.Market market, GBSettings.LogLevel logLevel) {
+			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, market, logLevel);
 		}
 
 		/**
 		 *
 		 */
-		public static void ConfigureSDKWithGlobalInfo(GBSettings.Market releaseMarket) {
-			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(GBSettings.AppKey, GBSettings.GameCode, GBSettings.GetPlatformInfo(), (int)GBSettings.LogLevel.DEBUG);
+		public static void ConfigureSDKWithGameInfo(GBSettings.Market releaseMarket) {
+			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(GBSettings.AppKey, GBSettings.GameCode, GBSettings.GetPlatformInfo(), GBSettings.LogLevel.DEBUG);
 		}
-		 public static void ConfigureSDKWithGlobalInfo(string clientSecretKey, int gameCode, string platformInfo, GBSettings.LogLevel logLevel) {
-		 	GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, (int)logLevel);
+		 public static void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformInfo, GBSettings.LogLevel logLevel) {
+		 	GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, logLevel);
 		 }
-		
+/*		
 		public static void GetGlobalServerInfo(string branchURL, Action<bool, string> callback) {
 			GBCommonRequest.RequestGlobalServerInfo(branchURL, callback);
 		}
-		
+*/		
 		public static void SetPromotionItems(List<string> skus) {
 			GBManager.Instance.PluginManager.SetPromotionItems(skus);
 		}
@@ -135,14 +144,14 @@ namespace GB {
 		public static void SetGameLanguage(LanguageType languageType) {
 			GBManager.Instance.PluginManager.SetGameLanguage(languageType);	
 		}
-*/		
+		
 		public static void SendPushMessage(string userKey, string title, string message) {
 			GBManager.Instance.PluginManager.SendPushMessage(userKey, title, message);
 		}
 		public static void ShowToast(string message) {
 			GBManager.Instance.PluginManager.ShowToast(message);
 		}
-		
+*/		
 		public static void ShowAlert() {
 			GBManager.Instance.PluginManager.ShowAlert();
 		}

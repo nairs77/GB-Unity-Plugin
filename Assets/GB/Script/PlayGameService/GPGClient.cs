@@ -1,9 +1,9 @@
 #if UNITY_ANDROID
 using UnityEngine;
 using System;
-using Joycity;
+using GB;
 
-namespace Joycity.PlayGameService {
+namespace GB.PlayGameService {
 	public class GPGClient : GBAndroidHelper, IPlayGameClient {
 		
 		private static readonly string NATIVE_GPG_CLASS_PACKAGE = "com.joycity.platform.unity.GPGPlugin";

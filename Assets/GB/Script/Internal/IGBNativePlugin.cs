@@ -9,7 +9,7 @@ using GB.PlayGameService;
 public interface IGBNativePlugin {
 
 	/* Initialize SDK */
-	void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, GBSettings.Market markeet, int logLevel);
+	void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, GBSettings.Market markeet, GBSettings.LogLevel logLevel);
 
 	/* Session */
 	void Login(AuthType authType, GBRequest callbackObject);

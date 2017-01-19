@@ -12,7 +12,7 @@ namespace GB.Billing {
 		public static void QueryInventory(List<string> skus, Action<List<string>, GBException> funcCallback) {
 			if (GBSettings.GetMarketType() == GBSettings.MarketType.AGENCY) {
 				//GBManager.ShowToast("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
-				JLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
+				GBLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
 				funcCallback(null, null);
 
 				return;
@@ -25,7 +25,7 @@ namespace GB.Billing {
 		public static void QueryInventory(List<string>skus, Action<GBInventory, GBException> funcCallback) {
 			if (GBSettings.GetMarketType() == GBSettings.MarketType.AGENCY) {
 				//GBManager.ShowToast("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
-				JLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
+				GBLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
 				funcCallback(null, null);
 
 				return;
@@ -61,7 +61,7 @@ namespace GB.Billing {
 		public static void SetPromotionItems(List<string> skus) {
 			if (GBSettings.GetMarketType() == GBSettings.MarketType.AGENCY) {
 				//GBManager.ShowToast("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
-				JLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
+				GBLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
 				return;
 			}
 
@@ -71,7 +71,7 @@ namespace GB.Billing {
 		public static void GetPromotionItem(string userKey, Action<string, GBException> funCallback) {
 			if (GBSettings.GetMarketType() == GBSettings.MarketType.AGENCY) {
 				//GBManager.ShowToast("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
-				JLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
+				GBLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
 				funCallback(null, null);
 
 				return;

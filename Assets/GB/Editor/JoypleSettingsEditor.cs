@@ -8,7 +8,6 @@
     [CustomEditor(typeof(GBSettingsImpl))]
     public class GBSettingsEditor : Editor 
     {
-        
         public enum Market {
             GOOGLE = 1,
             APPLE_STORE = 2,
