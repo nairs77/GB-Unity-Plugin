@@ -110,12 +110,12 @@ namespace GB {
 		/**
 		 *
 		 */
-		public static void ConfigureSDKWithGameInfo(GBSettings.Market releaseMarket) {
-			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(GBSettings.AppKey, GBSettings.GameCode, GBSettings.GetPlatformInfo(), GBSettings.LogLevel.DEBUG);
-		}
-		 public static void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformInfo, GBSettings.LogLevel logLevel) {
-		 	GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, logLevel);
-		 }
+		// public static void ConfigureSDKWithGameInfo(GBSettings.Market releaseMarket) {
+		// 	GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(GBSettings.AppKey, GBSettings.GameCode, GBSettings.GetPlatformInfo(), GBSettings.LogLevel.DEBUG);
+		// }
+		//  public static void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformInfo, GBSettings.LogLevel logLevel) {
+		//  	GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, logLevel);
+		//  }
 /*		
 		public static void GetGlobalServerInfo(string branchURL, Action<bool, string> callback) {
 			GBCommonRequest.RequestGlobalServerInfo(branchURL, callback);
