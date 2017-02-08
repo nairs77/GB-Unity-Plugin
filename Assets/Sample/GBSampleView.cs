@@ -6,7 +6,7 @@ using GB;
 using GB.Account;
 using GB.Billing;
 using GB.PlayGameService;
-
+using GoogleMobileAds.Api;
 using SimpleJSON;
 
 public class GBSampleView : MonoBehaviour {
@@ -21,6 +21,13 @@ public class GBSampleView : MonoBehaviour {
 	private static readonly int MENU_COUNT = 10;	
 	private static readonly int BUTTON_FONT_SIZE = 40;
 	private static readonly int LABEL_FONT_SIZE = 30;
+
+	private static readonly int MARGIN = 20;
+
+	private static readonly int BW_BUTTON_MARGIN = 40;
+
+	private static readonly int BUTTON_WIDTH = Screen.width / 2 - (2*MARGIN) - BW_BUTTON_MARGIN;
+
 	private Vector2 scrollPosition = Vector2.zero;
 
 	//private bool isPushEnable = true;
@@ -38,38 +45,56 @@ public class GBSampleView : MonoBehaviour {
 	GUIStyle labelStyle;
 	GUIStyle textStyle;
 
+	InterstitialAd mInterstitial;
     void Start() {
 		SetUp();
     }
 
 	void SetUp() {
-		/**P
-		 * SDK 사용을 위한 GBManager 클래스를 초기화 합니다.
-		 * Initialize GB SDK
-		 * */		
+		// GBManager.ConfigureSDKWithGameInfo("", 10, GBSettings.LogLevel.DEBUG);
+		// GBManager.Instance.onHandleNativeEvent = new GBManager.DelegateNativeEvents(onHandleNativeEvent);
+/*
+		// Google AdMob
+		RewardBasedVideoAd rewardBasedVideo = RewardBasedVideoAd.Instance;
 
-		// GBManager.SetActiveMarket(GBSettings.Market.BAIDU, (bool success, string stringValue) => {
-		// 	PrintLog("Active Market =" + GBSettings.GetMarketToString());
-		// });	
-/*		
-		#if UNITY_ANDROID
-		GBSettings.SetActiveMarket(GBSettings.Market.GOOGLE);
-		GBManager.ConfigureSDKWithGameInfo (GBSettings.AppKey, GBSettings.GameCode, GBSettings.Market.GOOGLE, GBSettings.LogLevel.DEBUG);
-		GBPermissionManager.SetPermissionCallback (permissionCallback);
+		rewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
+    // has failed to load.
+		rewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+		// is opened.
+		rewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
+		// has started playing.
+		rewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
+		// has rewarded the user.
+		rewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
+		// is closed.
+		rewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
+		// is leaving the application.
+		rewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
 
-		List<string> promotionItems = new List<string>();
-		promotionItems.Add("GB_coin_2000");
-		GBInAppManager.SetPromotionItems(promotionItems);
-
-		#elif UNITY_IPHONE
-		GBSettings.SetActiveMarket(GBSettings.Market.APPLE_STORE);
-		GBManager.ConfigureSDKWithGameInfo (GBSettings.AppKey, GBSettings.GameCode, GBSettings.Market.APPLE_STORE, GBSettings.LogLevel.DEBUG);
-		#endif
-*/
-		GBManager.ConfigureSDKWithGameInfo("", 10, GBSettings.LogLevel.DEBUG);
-		GBManager.Instance.onHandleNativeEvent = new GBManager.DelegateNativeEvents(onHandleNativeEvent);
-
+		AdRequest request = new AdRequest.Builder().Build();
+		rewardBasedVideo.LoadAd(request, "ca-app-pub-5698820917568735/3329803608");		
 		GBLog.verbose("App Setup !!!");
+*/
+		mInterstitial = new InterstitialAd("ca-app-pub-5698820917568735/3329803608");
+
+		mInterstitial.OnAdLoaded += HandleRewardBasedVideoLoaded;
+    // has failed to load.
+		mInterstitial.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+		// is opened.
+		mInterstitial.OnAdOpening += HandleRewardBasedVideoOpened;
+		// has started playing.
+		// mInterstitial.OnAd .OnAdStarted += HandleRewardBasedVideoStarted;
+		// // has rewarded the user.
+		// mInterstitial.OnAdRewarded += HandleRewardBasedVideoRewarded;
+		// is closed.
+		mInterstitial.OnAdClosed += HandleRewardBasedVideoClosed;
+		// is leaving the application.
+		mInterstitial.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
+		AdRequest request = new AdRequest.Builder()
+			.AddTestDevice("C85608B21885A69E8EA9FB9AD8683CEC")  // My test device.
+			.Build();
+		// Load the interstitial with the request.
+		mInterstitial.LoadAd(request);							
 	}
 
 
@@ -171,9 +196,12 @@ public class GBSampleView : MonoBehaviour {
 		skus.Add("GB_product_id_3234233");
 		#endif
 
-		if(GUI.Button(new Rect(0, posY, scrollContentsWidth, BUTTON_HEIGHT), "Login With Type", buttonStyle)) {
+		if(GUI.Button(new Rect(MARGIN, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "LoginWithAuthType", buttonStyle)) {
 
 			GBSessionManager.Login(AuthType.GOOGLE, sessionCallback);
+		}
+
+		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
 		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory", buttonStyle)) {
@@ -230,6 +258,15 @@ public class GBSampleView : MonoBehaviour {
 				}
 			});
 		}		
+
+		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Show Ad (Reward Video)", buttonStyle)) {
+			RewardBasedVideoAd rewardBasedVideo = RewardBasedVideoAd.Instance;
+			
+			if (mInterstitial.IsLoaded()) {
+				Debug.Log("IsLoaded()");
+				mInterstitial.Show();
+			}
+		}				
 					
 		GUI.Label(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, labalHeight), sdkLog, labelStyle);		
 		GUI.EndScrollView();
@@ -254,4 +291,48 @@ public class GBSampleView : MonoBehaviour {
 		sdkLogCount++;
 	}
 
+	#region RewardBasedVideo callback handlers
+
+	public void HandleRewardBasedVideoRewarded(object sender, Reward args)
+	{
+		string type = args.Type;
+		double amount = args.Amount;
+		print("User rewarded with: " + amount.ToString() + " " + type);
+	}	
+
+	public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
+	{
+		print("OnLoaded!!!!");
+	}
+
+	public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+	{
+
+	}
+
+	public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
+	{
+
+	}
+
+	public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
+	{
+
+	}
+
+	public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
+	{
+    	// Create an empty ad request.
+		AdRequest request = new AdRequest.Builder()
+			.AddTestDevice("C85608B21885A69E8EA9FB9AD8683CEC")  // My test device.
+			.Build();
+		// Load the interstitial with the request.
+		mInterstitial.LoadAd(request);					
+	}
+
+	public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
+	{
+
+	}
+	#endregion
 }
