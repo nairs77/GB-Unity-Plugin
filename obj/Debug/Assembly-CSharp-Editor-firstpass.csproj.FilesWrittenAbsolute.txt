@@ -32,3 +32,4 @@
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEditor.iOS.Extensions.Common.dll.mdb
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll.mdb
+/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEngine.Advertisements.Editor.dll

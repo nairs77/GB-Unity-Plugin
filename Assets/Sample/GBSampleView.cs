@@ -46,6 +46,7 @@ public class GBSampleView : MonoBehaviour {
 	GUIStyle textStyle;
 
 	InterstitialAd mInterstitial;
+	RewardBasedVideoAd mRewardBasedVideo;
     void Start() {
 		SetUp();
     }
@@ -53,28 +54,23 @@ public class GBSampleView : MonoBehaviour {
 	void SetUp() {
 		// GBManager.ConfigureSDKWithGameInfo("", 10, GBSettings.LogLevel.DEBUG);
 		// GBManager.Instance.onHandleNativeEvent = new GBManager.DelegateNativeEvents(onHandleNativeEvent);
-/*
 		// Google AdMob
-		RewardBasedVideoAd rewardBasedVideo = RewardBasedVideoAd.Instance;
+		mRewardBasedVideo = RewardBasedVideoAd.Instance;
 
-		rewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
+		mRewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
     // has failed to load.
-		rewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+		mRewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
 		// is opened.
-		rewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
+		mRewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
 		// has started playing.
-		rewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
+		mRewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
 		// has rewarded the user.
-		rewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
+		mRewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
 		// is closed.
-		rewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
+		mRewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
 		// is leaving the application.
-		rewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
-
-		AdRequest request = new AdRequest.Builder().Build();
-		rewardBasedVideo.LoadAd(request, "ca-app-pub-5698820917568735/3329803608");		
-		GBLog.verbose("App Setup !!!");
-*/
+		mRewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;		
+/*
 		mInterstitial = new InterstitialAd("ca-app-pub-5698820917568735/3329803608");
 
 		mInterstitial.OnAdLoaded += HandleRewardBasedVideoLoaded;
@@ -94,7 +90,8 @@ public class GBSampleView : MonoBehaviour {
 			.AddTestDevice("C85608B21885A69E8EA9FB9AD8683CEC")  // My test device.
 			.Build();
 		// Load the interstitial with the request.
-		mInterstitial.LoadAd(request);							
+		mInterstitial.LoadAd(request);		
+*/							
 	}
 
 
@@ -260,12 +257,17 @@ public class GBSampleView : MonoBehaviour {
 		}		
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Show Ad (Reward Video)", buttonStyle)) {
-			RewardBasedVideoAd rewardBasedVideo = RewardBasedVideoAd.Instance;
+
+
+		AdRequest request = new AdRequest.Builder().Build();
+		mRewardBasedVideo.LoadAd(request, "ca-app-pub-5698820917568735/9991786004");		
+		GBLog.verbose("App Setup !!!");
+
 			
-			if (mInterstitial.IsLoaded()) {
-				Debug.Log("IsLoaded()");
-				mInterstitial.Show();
-			}
+			// if (mInterstitial.IsLoaded()) {
+			// 	Debug.Log("IsLoaded()");
+			// 	mInterstitial.Show();
+			// }
 		}				
 					
 		GUI.Label(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, labalHeight), sdkLog, labelStyle);		
@@ -303,11 +305,15 @@ public class GBSampleView : MonoBehaviour {
 	public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
 	{
 		print("OnLoaded!!!!");
+
+		mRewardBasedVideo.Show();		
 	}
 
 	public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
 	{
+		print("OnFailedToLoad");
 
+		print("Video Failed to load: " + args.Message);
 	}
 
 	public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
@@ -323,11 +329,11 @@ public class GBSampleView : MonoBehaviour {
 	public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
 	{
     	// Create an empty ad request.
-		AdRequest request = new AdRequest.Builder()
-			.AddTestDevice("C85608B21885A69E8EA9FB9AD8683CEC")  // My test device.
-			.Build();
-		// Load the interstitial with the request.
-		mInterstitial.LoadAd(request);					
+		// AdRequest request = new AdRequest.Builder()
+		// 	.AddTestDevice("C85608B21885A69E8EA9FB9AD8683CEC")  // My test device.
+		// 	.Build();
+		// // Load the interstitial with the request.
+		// mInterstitial.LoadAd(request);					
 	}
 
 	public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)

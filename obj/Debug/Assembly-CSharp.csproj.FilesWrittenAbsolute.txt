@@ -16,3 +16,4 @@
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEngine.Advertisements.Editor.dll
