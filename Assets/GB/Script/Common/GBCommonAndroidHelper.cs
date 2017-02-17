@@ -35,11 +35,14 @@ namespace GB {
 		}
 
 		public void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformInfo, int logLevel) {
-			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {			
+			// UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {			
+			// 	using (AndroidJavaClass jc = new AndroidJavaClass(ANDROID_PLUGIN_CLASS_PACKAGE) ) {
+			// 		jc.CallStatic(GB_SET_CONFIGURE, clientSecretKey, gameCode, platformInfo, logLevel);
+			// 	}
+			// }));	
 				using (AndroidJavaClass jc = new AndroidJavaClass(ANDROID_PLUGIN_CLASS_PACKAGE) ) {
 					jc.CallStatic(GB_SET_CONFIGURE, clientSecretKey, gameCode, platformInfo, logLevel);
-				}
-			}));	
+				}			
 		}		
 		
 		public void RequestGlobalServerInfo(string branchURL, GBRequest funcCall) {

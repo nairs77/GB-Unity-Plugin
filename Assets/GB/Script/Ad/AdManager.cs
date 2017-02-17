@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-#if USE_AD
 using GoogleMobileAds.Api;
-#endif
 using System;
 
 public class AdManager : MonoBehaviour
