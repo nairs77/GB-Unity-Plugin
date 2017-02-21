@@ -26,7 +26,7 @@
         };
 
         public enum Market {
-            APPLE_STORE = 0,
+            APPLE = 0,
             GOOGLE = 1,
             ONESTORE = 3,
             LG_UPLUS = 4,
@@ -158,7 +158,7 @@
             activeMarket = market;
 
             if (market == GBSettings.Market.GOOGLE ||
-                market == GBSettings.Market.APPLE_STORE) {
+                market == GBSettings.Market.APPLE) {
                 platformType = 0;
                 marketType = MarketType.STORE;
             } else if (market == GBSettings.Market.ONESTORE) {

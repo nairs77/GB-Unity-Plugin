@@ -33,3 +33,7 @@
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll.mdb
 /Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/UnityEngine.Advertisements.Editor.dll
+/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/Google.VersionHandler_v1.2.9.0.dll
+/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/Google.IOSResolver.dll
+/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/Google.JarResolver.dll
+/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Temp/bin/Debug/Google.VersionHandler.dll

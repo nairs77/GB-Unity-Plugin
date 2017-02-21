@@ -10,13 +10,7 @@
     {
         public enum Market {
             GOOGLE = 1,
-            APPLE_STORE = 2,
-            CHINA360 = 11,
-            BAIDU = 12,
-            XIAOMI = 13,
-            UC = 14,
-            WANDOUJIA = 15,
-            MYCARD = 21
+            APPLE = 2,
         };
 
         private static GBSettingsImpl instance;
@@ -181,11 +175,10 @@
 
             if (this.showAndroidSettings) {
                 if (selectedMarket == Market.GOOGLE ||
-                selectedMarket == Market.APPLE_STORE ||
-                selectedMarket == Market.MYCARD) {
+                selectedMarket == Market.APPLE) {
                     _isGlobalSetttings = true;
 
-                    if (selectedMarket == Market.APPLE_STORE)
+                    if (selectedMarket == Market.APPLE)
                         _isAvailable = false;
                     else
                         _isAvailable = true;

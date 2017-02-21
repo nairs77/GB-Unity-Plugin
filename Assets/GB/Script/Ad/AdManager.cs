@@ -4,22 +4,22 @@ using System.Collections.Generic;
 using GoogleMobileAds.Api;
 using System;
 
-public class AdManager : MonoBehaviour
+public class GBAdManager : MonoBehaviour
 {
-    private static AdManager _instance = null;
+    private static GBAdManager _instance = null;
 
-    public static AdManager Instance
+    public static GBAdManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<AdManager>();
+                _instance = FindObjectOfType<GBAdManager>();
                 if (_instance == null)
                 {
                     GameObject obj = new GameObject();
-                    obj.name = "AdManager";
-                    _instance = obj.AddComponent<AdManager>();
+                    obj.name = "GBAdManager";
+                    _instance = obj.AddComponent<GBAdManager>();
                     DontDestroyOnLoad(obj);
                 }
             }
@@ -28,9 +28,8 @@ public class AdManager : MonoBehaviour
     }
 
     private Dictionary<int, string> adUnitIds = new Dictionary<int, string>();
-#if USE_AD
     private RewardBasedVideoAd rewardbasedVideo = RewardBasedVideoAd.Instance; 
-#endif
+
     public enum ADTYPE
     {
         JOY,
@@ -57,16 +56,16 @@ public class AdManager : MonoBehaviour
 
     IEnumerator ShowIndicate()
     {
-        PopupManager.ShowWaitLockPacket();
+        //PopupManager.ShowWaitLockPacket();
 
         yield return new WaitForSeconds(2.0f * 60.0f);      // 3분간 응답이 없으면 자동 꺼줌.        
 
-        PopupManager.HideWaitLockPacket();
+        //PopupManager.HideWaitLockPacket();
     }
     
     void HideIndicate()
     {
-        PopupManager.HideWaitLockPacket();
+        //PopupManager.HideWaitLockPacket();
         if(indicate != null)
         {
             StopCoroutine(indicate);
@@ -78,7 +77,7 @@ public class AdManager : MonoBehaviour
     {
         if(isInit == false)
         {
-            GodLib.MLog.Log("Setting Ad"); 
+            //GBLog.verbose("Setting Ad"); 
 #if UNITY_EDITOR
             adUnitIds.Add((int)ADTYPE.JOY, "unused");
             adUnitIds.Add((int)ADTYPE.SKILLCARD, "unused");
@@ -112,24 +111,21 @@ public class AdManager : MonoBehaviour
             adUnitIds.Add((int)ADTYPE.TARGET, "ca-app-pub-6040866524746900/7234271673");        // 타켓 광고는 데일리와 같은 키 사용.
 #endif
 
-#if USE_AD
-
             // Ad event fired when the rewarded video ad
             // has been received.
             rewardbasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
             // has failed to load.
-            rewardbasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+            //rewardbasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
             // is opened.
             rewardbasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
             // has started playing.
             rewardbasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
             // has rewarded the user.
-            rewardbasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
+            //rewardbasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
             // is closed.
             rewardbasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
             // is leaving the application.
             rewardbasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
-#endif
             isInit = true;
         }
     }
@@ -137,7 +133,7 @@ public class AdManager : MonoBehaviour
     private void RequestAd(string adUnitId)
     {
 #if USE_AD
-        GodLib.MLog.Log("[AdManager::RequestAd] adUnitId : " + adUnitId);
+        GBLog.verbose("[AdManager::RequestAd] adUnitId : " + adUnitId);
         AdRequest request = new AdRequest.Builder().Build();
         rewardbasedVideo.LoadAd(request, adUnitId);        
 #endif
@@ -147,7 +143,7 @@ public class AdManager : MonoBehaviour
     {        
         if (isInit == true)
         {
-            GodLib.MLog.Log("[AdManager::LoadAd] Call!!!");
+            GBLog.verbose("[AdManager::LoadAd] Call!!!");
             _adType = type;            
             OnRewardComplete = callback;
 #if USE_AD
@@ -160,7 +156,7 @@ public class AdManager : MonoBehaviour
     {        
         if (type == ADTYPE.Max)
         {
-            GodLib.MLog.Log("ShowAd Unkonwn type : " + type );
+            GBLog.verbose("ShowAd Unkonwn type : " + type );
             return;
         }           
 
@@ -178,7 +174,7 @@ public class AdManager : MonoBehaviour
         }
         else
         {
-            GodLib.MLog.Log("Not Load...So Load Ad!");            
+            GBLog.verbose("Not Load...So Load Ad!");            
             LoadAd(_adType, OnReward_Ad_complete);                         
         }
 #else
@@ -204,14 +200,14 @@ public class AdManager : MonoBehaviour
         }
         else
         {
-            PopupManager.ShowToast(StringManager.Instance().GetString("Advertising_Change_Toast"));            
+            //PopupManager.ShowToast(StringManager.Instance().GetString("Advertising_Change_Toast"));            
         }
         _adType = ADTYPE.Max;
     }
 
     void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
     {
-        GodLib.MLog.Log("[HandleRewardBasedVideoLoaded]");
+        GBLog.verbose("[HandleRewardBasedVideoLoaded]");
 
         HideIndicate(); 
 
@@ -228,23 +224,23 @@ public class AdManager : MonoBehaviour
         HideIndicate();
         PopupManager.ShowToast(StringManager.Instance().GetString("Advertising_fail"));
      
-        GodLib.MLog.Log("[HandleRewardBasedVideoFailedToLoad] : " + args.Message);
+        GBLog.verbose("[HandleRewardBasedVideoFailedToLoad] : " + args.Message);
     }
 #endif
     void HandleRewardBasedVideoOpened(object sender, EventArgs args)
     {
         isRewarded = false;     
 
-        NetworkProcess.Instance().Send_CG_DELAYED_PINGPONG();        
+        //NetworkProcess.Instance().Send_CG_DELAYED_PINGPONG();        
 
-        GodLib.MLog.Log("[HandleRewardBasedVideoOpened]");       
+        GBLog.verbose("[HandleRewardBasedVideoOpened]");       
     }
 
     void HandleRewardBasedVideoStarted(object sender, EventArgs args)
     {
         isRewarded = false;
 
-        GodLib.MLog.Log("[HandleRewardBasedVideoStarted]");
+        GBLog.verbose("[HandleRewardBasedVideoStarted]");
     }
 
 #if USE_AD
@@ -252,14 +248,14 @@ public class AdManager : MonoBehaviour
     {
         isRewarded = true;
 
-        GodLib.MLog.Log("[HandleRewardBasedVideoRewarded] : Reward Type : " + args.Type + " Amount : " + args.Amount);        
+        GBLog.verbose("[HandleRewardBasedVideoRewarded] : Reward Type : " + args.Type + " Amount : " + args.Amount);        
     }
 #endif
     void HandleRewardBasedVideoClosed(object sender, EventArgs args)
     {
-        GodLib.MLog.Log("[HandleRewardBasedVideoClosed]");
+        GBLog.verbose("[HandleRewardBasedVideoClosed]");
         
-        NetworkProcess.Instance().Send_CG_DELAYED_PINGPONG();        
+        //NetworkProcess.Instance().Send_CG_DELAYED_PINGPONG();        
 
         if(isRewarded == true)
         {
@@ -283,37 +279,37 @@ public class AdManager : MonoBehaviour
 
         isRewarded = false;
         _adType = ADTYPE.Max;
-        NetworkProcess.Instance().Send_CG_DELAYED_PINGPONG();
+        //NetworkProcess.Instance().Send_CG_DELAYED_PINGPONG();
 
         HideIndicate();
 
-        GodLib.MLog.Log("[HandleRewardBasedVideoLeftApplication]");
+        GBLog.verbose("[HandleRewardBasedVideoLeftApplication]");
     }
 
     public void OnReward_Ad_complete(ADTYPE type)
     {
-        GodLib.MLog.Log("[AdManager::OnShow_ad_complete] type : " + type);
+        GBLog.verbose("[AdManager::OnShow_ad_complete] type : " + type);
         switch(type)
         {
             case ADTYPE.CHARACTER:
-                NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_CHARACTER);    
+                //NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_CHARACTER);    
                 break;
             case ADTYPE.DAILY:
-                NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_DAILY);    
+                //NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_DAILY);    
                 break;
             case ADTYPE.GOODS:
-                NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_GOODS);    
+                //NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_GOODS);    
                 break;
             case ADTYPE.JOY:
-                NetworkProcess.Instance().Send_CG_FREE_CHARGE();
+                //NetworkProcess.Instance().Send_CG_FREE_CHARGE();
                 break;
             case ADTYPE.SKILLCARD:
-                NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_SKILLCARD);    
+                //NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_SKILLCARD);    
                 break;                
             case ADTYPE.TARGET:
-                NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_TARGET);
-                GameGlobal.Instance().Show_Ad_Time = TimeManager.GetCurrntUTCTime().ToString();
-                GameGlobal.Instance().Limit_Show_Target_AD_Count += 1;
+                //NetworkProcess.Instance().Send_CG_USE_ADVERTISING(ADVERTISING_TYPE.ADVERTISING_TYPE_TARGET);
+                //GameGlobal.Instance().Show_Ad_Time = TimeManager.GetCurrntUTCTime().ToString();
+                //GameGlobal.Instance().Limit_Show_Target_AD_Count += 1;
                 break;
         }       
     }    

@@ -11,12 +11,6 @@ using SimpleJSON;
 
 public class GBSampleView : MonoBehaviour {
 
-	public enum EmailTestType{
-		NONE,
-		LOGINNJOIN,
-		OTHER
-	}
-
 	private static readonly int BUTTON_HEIGHT = Screen.height / 15;
 	private static readonly int MENU_COUNT = 10;	
 	private static readonly int BUTTON_FONT_SIZE = 40;
@@ -45,31 +39,30 @@ public class GBSampleView : MonoBehaviour {
 	GUIStyle labelStyle;
 	GUIStyle textStyle;
 
-	InterstitialAd mInterstitial;
-	RewardBasedVideoAd mRewardBasedVideo;
     void Start() {
 		SetUp();
     }
 
 	void SetUp() {
+		GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
 		// GBManager.ConfigureSDKWithGameInfo("", 10, GBSettings.LogLevel.DEBUG);
 		// GBManager.Instance.onHandleNativeEvent = new GBManager.DelegateNativeEvents(onHandleNativeEvent);
 		// Google AdMob
-		mRewardBasedVideo = RewardBasedVideoAd.Instance;
+	// 	mRewardBasedVideo = RewardBasedVideoAd.Instance;
 
-		mRewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
-    // has failed to load.
-		mRewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
-		// is opened.
-		mRewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
-		// has started playing.
-		mRewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
-		// has rewarded the user.
-		mRewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
-		// is closed.
-		mRewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
-		// is leaving the application.
-		mRewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;		
+	// 	mRewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
+    // // has failed to load.
+	// 	mRewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+	// 	// is opened.
+	// 	mRewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
+	// 	// has started playing.
+	// 	mRewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
+	// 	// has rewarded the user.
+	// 	mRewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
+	// 	// is closed.
+	// 	mRewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
+	// 	// is leaving the application.
+	// 	mRewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;		
 /*
 		mInterstitial = new InterstitialAd("ca-app-pub-5698820917568735/3329803608");
 
