@@ -47,7 +47,7 @@
         private Market selectedMarket = Market.GOOGLE;
         private bool _isGlobalSetttings = false;        
       
-        [MenuItem("GB/GB Settings", false, 100)]
+        [MenuItem("GeBros/GB Settings", false, 100)]
         public static void Edit() 
         {
             Selection.activeObject = GBSettingsImpl.Instance;

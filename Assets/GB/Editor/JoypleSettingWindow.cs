@@ -14,7 +14,7 @@ namespace GB.Unity.Editor
         private string mGameCode;
         private string mConfigData = string.Empty;        
         
-        [MenuItem("GB/SDK Configuration", false, 1)]
+        [MenuItem("GeBros/SDK Configuration", false, 1)]
         public static void OnSDKConfig() {
             EditorWindow window = EditorWindow.GetWindow(typeof(GBAndroidSettingWindow), true, GBConstantStrings.Setup.Title);
             window.minSize = new Vector2(500, 400);
@@ -25,7 +25,7 @@ namespace GB.Unity.Editor
             // GUI.skin.label.wordWrap = true;
             GUILayout.BeginVertical();
             // GUIStyle link = new GUIStyle(GUI.skin.label);
-            GUILayout.Space(15);
+            GUILayout.Space(10);
 
             if (string.IsNullOrEmpty(mConfigData))
                 mConfigData = GBUtils.ReadTemplateFile("Assets/GB/Editor/AndroidSetup.txt");

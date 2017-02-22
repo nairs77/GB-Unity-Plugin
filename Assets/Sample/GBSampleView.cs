@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using GB;
 using GB.Account;
 using GB.Billing;
-using GB.PlayGameService;
+//using GB.PlayGameService;
 using GoogleMobileAds.Api;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 using SimpleJSON;
 
 public class GBSampleView : MonoBehaviour {
@@ -43,11 +45,33 @@ public class GBSampleView : MonoBehaviour {
 		SetUp();
     }
 
+	/// <summary>
+	/// Initialize GBSDK 
+	/// </summary>
 	void SetUp() {
-		GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
-		// GBManager.ConfigureSDKWithGameInfo("", 10, GBSettings.LogLevel.DEBUG);
-		// GBManager.Instance.onHandleNativeEvent = new GBManager.DelegateNativeEvents(onHandleNativeEvent);
-		// Google AdMob
+/*
+		GBPlatformConfiguration config = new GBPlatformConfiguration.Builder()
+		.enableAdmob(UnitId)
+		.enablePlayGameService()
+		.Build();
+
+		GBPlatform.InitializeWithConfig(config);
+*/		
+		//GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
+
+		// AdMob Initialize
+		GBAdManager.Instance.Init("ca-app-pub-5698820917568735/9991786004");
+		GBAdManager.Instance.LoadAd(null);
+		// Google Play Games Initialize
+		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+        .Build();
+
+		PlayGamesPlatform.InitializeInstance(config);
+		// recommended for debugging:
+		PlayGamesPlatform.DebugLogEnabled = true;
+		// Activate the Google Play Games platform
+		PlayGamesPlatform.Activate();		
+
 	// 	mRewardBasedVideo = RewardBasedVideoAd.Instance;
 
 	// 	mRewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
@@ -252,9 +276,7 @@ public class GBSampleView : MonoBehaviour {
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Show Ad (Reward Video)", buttonStyle)) {
 
 
-		AdRequest request = new AdRequest.Builder().Build();
-		mRewardBasedVideo.LoadAd(request, "ca-app-pub-5698820917568735/9991786004");		
-		GBLog.verbose("App Setup !!!");
+			GBAdManager.Instance.ShowAd();			
 
 			
 			// if (mInterstitial.IsLoaded()) {
@@ -299,7 +321,7 @@ public class GBSampleView : MonoBehaviour {
 	{
 		print("OnLoaded!!!!");
 
-		mRewardBasedVideo.Show();		
+		//mRewardBasedVideo.Show();		
 	}
 
 	public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
