@@ -46,7 +46,7 @@ namespace GB {
 
 		public void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, string platformType, int logLevel) {
 			ConfigureSDKWithGameInfo(clientSecretKey, gameCode, 0, (int)logLevel);
-		}		
+		}		 
 		
 
 		/**
@@ -85,9 +85,7 @@ namespace GB {
 		public void SendPushMessage(string userKey, string title, string message) {
 			RequestPushMessage(userKey, title, message);
 		}
-		public void Call(GBEventParam param) {		
-			
-		}
+
 		public void GetRuntimePermission (string permission, bool isNecessary, GBRequest funcCall) {
 			/* Dummy */
 		}

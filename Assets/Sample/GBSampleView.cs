@@ -57,7 +57,7 @@ public class GBSampleView : MonoBehaviour {
 
 		GBPlatform.InitializeWithConfig(config);
 */		
-		//GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
+		GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
 
 		// AdMob Initialize
 		GBAdManager.Instance.Init("ca-app-pub-5698820917568735/9991786004");
@@ -111,7 +111,7 @@ public class GBSampleView : MonoBehaviour {
 */							
 	}
 
-
+/*
 	void permissionCallback(GBPermissionResult result){
 
 		GBPermissionResult.GBPermission permission = result.Permissions [0];
@@ -136,27 +136,20 @@ public class GBSampleView : MonoBehaviour {
 			GBPermissionManager.ShowDetailPermissionView (true, permission.PermissionName, permissionCallback);
 		}
 	}
-
+*/
 	void sessionCallback(SessionState state, GBException exception){
 
 		if (state.Equals(SessionState.ACCESS_FAILED)) {
 			PrintLog("session Error code = " + exception.getErrorCode() + "," + "message = " + exception.getErrorMessage());					
-		} 
-		else {
-			if (state.Equals (SessionState.OPEN) || state.Equals (SessionState.TOKEN_REISSUED) || state.Equals( SessionState.JOIN )) {
-				
-				//emailTestType = EmailTestType.NONE;
+		} else {
+			if (state.Equals (SessionState.OPEN)) {				
 				isLogin = true;
-				// PrintLog ("Session Open!!! - Token = " + GBSessionManager.getAccessToken ());
 
-				// GBSessionManager.GetProfile ((bool success, GBException profile_exception) => {
-				// 	PrintLog ("User Key = " + GBUser.Instance.LocalUser.userKey.ToString ());
+				// Sign In Play Game Service
+				Social.localUser.Authenticate((bool success) => {
+					
+				});
 
-				// 	if (GBSettings.GetActiveMarket () == GBSettings.Market.UC) {							
-				// 		//GBPlatformHelper.SubmitExtendedData("test", "tester", "25", "CHINA-SERVER", "CHINA-ZONE");
-				// 		GBPlatformHelper.SubmitExtendedData ("test", "tester", "24");
-				// 	}
-				// });
 			} 
 			else if (state.Equals (SessionState.CLOSED)) {
 				PrintLog ("Session Closed!!! - LogOut");

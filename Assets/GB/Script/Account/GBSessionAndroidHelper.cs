@@ -6,7 +6,7 @@ using GB;
 namespace GB.Account {
 
 	public class GBSessionAndroidHelper : GBAndroidHelper, ISessionHelper {
-		private static readonly string NATIVE_SESSION_CLASS_PACKAGE = "com.GB.platform.unity.AuthorizationPlugin";
+		private static readonly string NATIVE_SESSION_CLASS_PACKAGE = "com.gebros.platform.unity.AuthorizationPlugin";
 
 		private static readonly string GET_HAS_TOKEN = "hasToken";
 		private static readonly string GET_IS_OPENED = "isOpened";
@@ -59,11 +59,12 @@ namespace GB.Account {
 
 		  UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
 			//if (authType.Equals(AuthType.NONE)) {
-			if (authType == AuthType.NONE) {				
-		  		AndroidSessionHelper.CallStatic("Login", callbackObject.GetCallbackGameObjectName());
-		  	} else {
-		  		AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());
-		  	}				
+		  		AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());				
+			// if (authType == AuthType.NONE) {				
+		  	// 	AndroidSessionHelper.CallStatic("Login", callbackObject.GetCallbackGameObjectName());
+		  	// } else {
+		  	// 	AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());
+		  	// }				
 		  }));
 
 		}
@@ -72,11 +73,13 @@ namespace GB.Account {
 			
 			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
 			//if (authType.Equals(AuthType.NONE)) {
-			if (authType == AuthType.NONE) {
-				AndroidSessionHelper.CallStatic("Login", callbackObject.GetCallbackGameObjectName());
-			} else {
-				AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, snsAccessToken, callbackObject.GetCallbackGameObjectName());
-			}				
+			
+			AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, snsAccessToken, callbackObject.GetCallbackGameObjectName());				
+			// if (authType == AuthType.NONE) {
+			// 	AndroidSessionHelper.CallStatic("Login", callbackObject.GetCallbackGameObjectName());
+			// } else {
+			// 	AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, snsAccessToken, callbackObject.GetCallbackGameObjectName());
+			// }				
 		}));
 			
 		}

@@ -24,9 +24,9 @@ namespace GB
 		}
 
 
-		public void SetPermissionCallback (JoypleDelegate<GBPermissionResult> callback){
+		public void SetPermissionCallback (GBDelegate<GBPermissionResult> callback){
 			
-			String callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
+			String callbackId = GBCallbackManager.Instance.addGBDelegate (callback);
 
 			GBMethodArguments methodArg = new GBMethodArguments ();
 			methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);
@@ -62,14 +62,14 @@ namespace GB
 			return AndroidPermissionHelper.CallStatic<bool> ("ShouldShowRequestPermissionRationale", permission);
 		}
 
-		public void RequestPermission (string permission, JoypleDelegate<GBPermissionResult> callback){
+		public void RequestPermission (string permission, GBDelegate<GBPermissionResult> callback){
 
 			RequestPermission (new string[]{ permission }, callback);
 		}
 
-		public void RequestPermission (string[] permissions, JoypleDelegate<GBPermissionResult> callback){
+		public void RequestPermission (string[] permissions, GBDelegate<GBPermissionResult> callback){
 
-			string callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
+			string callbackId = GBCallbackManager.Instance.addGBDelegate (callback);
 
 			GBMethodArguments methodArg = new GBMethodArguments ();
 			methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);
@@ -78,14 +78,14 @@ namespace GB
 			AndroidPermissionHelper.CallStatic ("RequestPermission", methodArg.ToJsonString ());
 		}
 			
-		public void ShowDetailPermissionView(bool isSnack, string permission, JoypleDelegate<GBPermissionResult> callback){
+		public void ShowDetailPermissionView(bool isSnack, string permission, GBDelegate<GBPermissionResult> callback){
 
 			ShowDetailPermissionView(isSnack, new string[]{ permission }, callback);
 		}
 
-		public void ShowDetailPermissionView(bool isSnack, string[] permissions, JoypleDelegate<GBPermissionResult> callback){
+		public void ShowDetailPermissionView(bool isSnack, string[] permissions, GBDelegate<GBPermissionResult> callback){
 			
-			string callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
+			string callbackId = GBCallbackManager.Instance.addGBDelegate (callback);
 
 			GBMethodArguments methodArg = new GBMethodArguments ();
 			methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);
@@ -95,26 +95,26 @@ namespace GB
 			AndroidPermissionHelper.CallStatic ("ShowDetailPermissionView", methodArg.ToJsonString ());	
 		}
 
-		public void ShowPermissionSnack (string permission, JoypleDelegate<GBPermissionResult> callback){
+		public void ShowPermissionSnack (string permission, GBDelegate<GBPermissionResult> callback){
 
 			ShowPermissionSnack (permission, null, null, callback);
 		}
 
-		public void ShowPermissionSnack (string permission, long lDuration, JoypleDelegate<GBPermissionResult> callback){
+		public void ShowPermissionSnack (string permission, long lDuration, GBDelegate<GBPermissionResult> callback){
 
 			ShowPermissionSnack (permission, lDuration, null, callback);
 		}
 
-		public void ShowPermissionSnack (string permission, SnackbarDuration duration, JoypleDelegate<GBPermissionResult> callback){
+		public void ShowPermissionSnack (string permission, SnackbarDuration duration, GBDelegate<GBPermissionResult> callback){
 
 			ShowPermissionSnack (permission, null, duration, callback);
 		}
 
-		private void ShowPermissionSnack(string permission, long? lDuration, SnackbarDuration? duration, JoypleDelegate<GBPermissionResult> callback){
+		private void ShowPermissionSnack(string permission, long? lDuration, SnackbarDuration? duration, GBDelegate<GBPermissionResult> callback){
 
 			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
 				
-				string callbackId = GBCallbackManager.Instance.addJoypleDelegate (callback);
+				string callbackId = GBCallbackManager.Instance.addGBDelegate (callback);
 
 				GBMethodArguments methodArg = new GBMethodArguments ();
 				methodArg.AddString (BaseResult.API_RESPONSE_CALLBACKID_KEY, callbackId);

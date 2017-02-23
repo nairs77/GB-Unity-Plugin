@@ -7,7 +7,7 @@ namespace GB
 	internal interface IPermissionHelper
 	{
 		
-		void SetPermissionCallback (JoypleDelegate<GBPermissionResult> callback);
+		void SetPermissionCallback (GBDelegate<GBPermissionResult> callback);
 
 		void SetAutoOpenPermissionView (bool enabled);
 
@@ -19,19 +19,19 @@ namespace GB
 
 		bool ShouldShowRequestPermissionRationale (string permission);
 
-		void RequestPermission (string permission, JoypleDelegate<GBPermissionResult> callback);
+		void RequestPermission (string permission, GBDelegate<GBPermissionResult> callback);
 
-		void RequestPermission (string[] permissions, JoypleDelegate<GBPermissionResult> callback);
+		void RequestPermission (string[] permissions, GBDelegate<GBPermissionResult> callback);
 
-		void ShowDetailPermissionView(bool isSnack, string permission, JoypleDelegate<GBPermissionResult> callback);
+		void ShowDetailPermissionView(bool isSnack, string permission, GBDelegate<GBPermissionResult> callback);
 
-		void ShowDetailPermissionView(bool isSnack, string[] permissions, JoypleDelegate<GBPermissionResult> callback);
+		void ShowDetailPermissionView(bool isSnack, string[] permissions, GBDelegate<GBPermissionResult> callback);
 
-		void ShowPermissionSnack (string permission, JoypleDelegate<GBPermissionResult> callback);
+		void ShowPermissionSnack (string permission, GBDelegate<GBPermissionResult> callback);
 
-		void ShowPermissionSnack (string permission, long lDuration, JoypleDelegate<GBPermissionResult> callback);
+		void ShowPermissionSnack (string permission, long lDuration, GBDelegate<GBPermissionResult> callback);
 
-		void ShowPermissionSnack (string permission, SnackbarDuration duration, JoypleDelegate<GBPermissionResult> callback);
+		void ShowPermissionSnack (string permission, SnackbarDuration duration, GBDelegate<GBPermissionResult> callback);
 
 	}
 }

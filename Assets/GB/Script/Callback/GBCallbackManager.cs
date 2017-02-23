@@ -1,7 +1,6 @@
 ﻿
 namespace GB.Callback
 {
-
 	using System;
 	using System.Reflection;
 	using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace GB.Callback
 			}
 		}
 			
-		private IDictionary<string, object> joypleDelegates = new Dictionary<string, object> ();
+		private IDictionary<string, object> GBDelegates = new Dictionary<string, object> ();
 		private int nextAsyncId;
 
 		public void Awake ()
@@ -45,7 +44,7 @@ namespace GB.Callback
 				return null;
 
 			this.nextAsyncId++;
-			this.joypleDelegates.Add (this.nextAsyncId.ToString (), action);
+			this.GBDelegates.Add (this.nextAsyncId.ToString (), action);
 			return this.nextAsyncId.ToString ();
 		}
 
@@ -54,20 +53,20 @@ namespace GB.Callback
 				return;
 			
 			object callback;
-			if (this.joypleDelegates.TryGetValue (callbackId, out callback)) {
+			if (this.GBDelegates.TryGetValue (callbackId, out callback)) {
 				Action<bool, string> joypleAction = callback as Action<bool, string>;
 				joypleAction (success, result);
-				this.joypleDelegates.Remove (callbackId);
+				this.GBDelegates.Remove (callbackId);
 			}
 		}
 
-		public string addJoypleDelegate<T> (JoypleDelegate<T> callback) where T : IResult
+		public string addGBDelegate<T> (GBDelegate<T> callback) where T : IResult
 		{
 			if (callback == null)
 				return null;
 
 			this.nextAsyncId++;
-			this.joypleDelegates.Add (this.nextAsyncId.ToString (), callback);
+			this.GBDelegates.Add (this.nextAsyncId.ToString (), callback);
 			return this.nextAsyncId.ToString ();
 		}
 
@@ -77,10 +76,10 @@ namespace GB.Callback
 				return;
 			
 			object callback;
-			if (this.joypleDelegates.TryGetValue (result.CallbackId, out callback)) {
+			if (this.GBDelegates.TryGetValue (result.CallbackId, out callback)) {
 				ConveyCallback (callback, result);
 				if(!result.IsKeepCallback)
-					this.joypleDelegates.Remove (result.CallbackId);
+					this.GBDelegates.Remove (result.CallbackId);
 			}
 		}
 
@@ -98,9 +97,9 @@ namespace GB.Callback
 
 		private bool TryConveyCallback<T> (object callback, IResult result) where T : IResult
 		{
-			JoypleDelegate<T> joypleDelegate = callback as JoypleDelegate<T>;
-			if (joypleDelegate != null) {
-				joypleDelegate ((T)((object)result));
+			GBDelegate<T> GBDelegate = callback as GBDelegate<T>;
+			if (GBDelegate != null) {
+				GBDelegate ((T)((object)result));
 				return true;
 			}
 			return false;

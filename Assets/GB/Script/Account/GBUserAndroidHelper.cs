@@ -6,7 +6,7 @@ namespace GB.Account {
 	
 	public class GBUserAndroidHelper : GBAndroidHelper, IUserHelper {
 
-		private static readonly string NATIVE_FRIEND_CLASS_PACKAGE = "com.GB.platform.unity.FriendsPlugin";
+		private static readonly string NATIVE_FRIEND_CLASS_PACKAGE = "com.gebros.platform.unity.FriendsPlugin";
 		
 		private static AndroidJavaClass _androidUserHelper;
 		private static AndroidJavaClass AndroidUserHelper {

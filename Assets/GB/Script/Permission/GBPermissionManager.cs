@@ -21,7 +21,7 @@ namespace GB
 		}
 
 
-		public static void SetPermissionCallback (JoypleDelegate<GBPermissionResult> callback){
+		public static void SetPermissionCallback (GBDelegate<GBPermissionResult> callback){
 			
 			if(PermissionHelper != null)
 				PermissionHelper.SetPermissionCallback(callback);
@@ -65,43 +65,43 @@ namespace GB
 			return true;
 		}
 
-		public static void RequestPermission (string permission, JoypleDelegate<GBPermissionResult> callback){
+		public static void RequestPermission (string permission, GBDelegate<GBPermissionResult> callback){
 
 			if(PermissionHelper != null)
 				PermissionHelper.RequestPermission(permission, callback);
 		}
 
-		public static void RequestPermission (string[] permissions, JoypleDelegate<GBPermissionResult> callback){
+		public static void RequestPermission (string[] permissions, GBDelegate<GBPermissionResult> callback){
 
 			if(PermissionHelper != null)
 				PermissionHelper.RequestPermission(permissions, callback);
 		}
 
-		public static void ShowDetailPermissionView(bool isSnack, string permission, JoypleDelegate<GBPermissionResult> callback){
+		public static void ShowDetailPermissionView(bool isSnack, string permission, GBDelegate<GBPermissionResult> callback){
 			
 			if (PermissionHelper != null)
 				PermissionHelper.ShowDetailPermissionView (isSnack, permission, callback);
 		}
 
-		public static void ShowDetailPermissionView(bool isSnack, string[] permission, JoypleDelegate<GBPermissionResult> callback){
+		public static void ShowDetailPermissionView(bool isSnack, string[] permission, GBDelegate<GBPermissionResult> callback){
 			
 			if (PermissionHelper != null)
 				PermissionHelper.ShowDetailPermissionView (isSnack, permission, callback);
 		}
 
-		public static void ShowPermissionSnack (string permission, JoypleDelegate<GBPermissionResult> callback){
+		public static void ShowPermissionSnack (string permission, GBDelegate<GBPermissionResult> callback){
 
 			if(PermissionHelper != null)
 				PermissionHelper.ShowPermissionSnack(permission, callback);
 		}
 
-		public static void ShowPermissionSnack (string permission, long lDuration, JoypleDelegate<GBPermissionResult> callback){
+		public static void ShowPermissionSnack (string permission, long lDuration, GBDelegate<GBPermissionResult> callback){
 
 			if(PermissionHelper != null)
 				PermissionHelper.ShowPermissionSnack(permission, lDuration, callback);
 		}
 
-		public static void ShowPermissionSnack (string permission, SnackbarDuration duration, JoypleDelegate<GBPermissionResult> callback){
+		public static void ShowPermissionSnack (string permission, SnackbarDuration duration, GBDelegate<GBPermissionResult> callback){
 
 			if(PermissionHelper != null)
 				PermissionHelper.ShowPermissionSnack(permission, duration, callback);

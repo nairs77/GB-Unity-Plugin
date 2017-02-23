@@ -7,7 +7,7 @@ namespace GB.Billing {
 
 	public class GBInAppAndroidHelper : GBAndroidHelper, IIabHelper {
 		
-		private static readonly string ANDROID_BILLING_PLUGIN_CLASS_PACKAGE = "com.GB.platform.unity.BillingPlugin";
+		private static readonly string ANDROID_BILLING_PLUGIN_CLASS_PACKAGE = "com.gebros.platform.unity.BillingPlugin";
 		private static readonly string IN_APP_START_BILLING = "StartSetup";
 		private static readonly string IN_APP_QUERY_INVENTORY = "QueryInventory";
 		private static readonly string IN_APP_QUERY_INVENTORY_ITEM_INFO = "QueryInventoryItemInfo";

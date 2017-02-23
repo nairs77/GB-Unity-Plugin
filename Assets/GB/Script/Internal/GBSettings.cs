@@ -16,8 +16,8 @@
         
         public enum LogLevel 
         {
-            DEBUG = 1, 
-            RELEASE = 2
+            DEBUG = 0, 
+            RELEASE = 1
         };
 
         public enum MarketType {
@@ -26,8 +26,8 @@
         };
 
         public enum Market {
-            APPLE = 0,
             GOOGLE = 1,
+            APPLE = 2,
             ONESTORE = 3,
             LG_UPLUS = 4,
             CHINA360 = 11,

@@ -6,22 +6,11 @@
 public struct AuthType 
 {
 	public int TypeValue { get; set; }
-	#if UNITY_ANDROID
-	public static readonly int NONE = 0;
-	public static readonly int GUEST = 1;
-	public static readonly int FACEBOOK = 2;
-	public static readonly int GOOGLE = 3;
-	#else 
+
 	public static readonly int GUEST = 0;
-	public static readonly int EMAIL = 1;
-	public static readonly int NEST = 2;
-	public static readonly int JOIN = 3;
-	public static readonly int FACEBOOK = 4;
-	public static readonly int TWITTER = 5;
-	public static readonly int GOOGLE_PLUS = 6;
-	public static readonly int NAVER = 7;
-	public static readonly int NONE = 8;
-	#endif
+	public static readonly int GOOGLE = 1;	
+	public static readonly int FACEBOOK = 2;
+	public static readonly int KAKAO = 3;
 		
 	// Equals, HashCode 				
 	public override bool Equals(object obj) {
@@ -60,58 +49,3 @@ public struct AuthType
 		};
 	}
 }
-/*
-#if UNITY_ANDROID
-public enum AuthType {
-	NONE,
-	GUEST,
-	NEST, 
-	GB,
-	FACEBOOK,
-	GOOGLE_PLUS,
-	TWITTER,
-	NAVER,
-	GOOGLE_PLAY,
-	REFRESH_TOKEN,
-	JOIN,
-}
-
-public enum LoginUIType {
-	NONE,
-	LOGIN_UI,
-	OTHER_LOGIN_UI,
-}
-/*
-#elif UNITY_IPHONE
-public enum AuthType {
-	GUEST,
-	EMAIL,
-	NEST,
-	JOIN,
-	FACEBOOK,
-	TWITTER,
-	GOOGLE_PLUS,
-	NAVER,
-	NONE,
-}
-*/
-public enum LoginUIType {
-	NONE,
-	LOGIN_UI,
-	OTHER_LOGIN_UI,
-}
-/*
-#else
-public enum AuthType {
-	GUEST,
-	EMAIL,
-	NEST,
-	JOIN,
-	FACEBOOK,
-	TWITTER,
-	GOOGLE_PLUS,
-	NAVER,
-	NONE,    
-}
-#endif
-*/

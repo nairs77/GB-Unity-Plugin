@@ -15,7 +15,6 @@ namespace GB {
 		string GetDeviceId();
 		string GetDeviceModel();
 		void SendPushMessage(string userKey, string title, string message);
-		void Call(GBEventParam param);
 		void GetRuntimePermission (string permission, bool isNecessary, GBRequest callbackObject);
 		bool CheckRuntimePermission (string permission);
 	}
