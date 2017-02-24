@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 /**
  * @brief Manage GB SDK
- * @author nairs77@GB.com
+ * @author gebros.nairs77@gmail.com
  */
 
 namespace GB {
@@ -60,19 +60,7 @@ namespace GB {
 				return _pluginManager;
 			}
 		}
-	
-		/**
-		 *	Response Format
-		 *  {
-		 *		result : {
-		 *	 		status : 0, 1
-		 *			eventKey : Event Name
-		 *			data {
-         *
-		 *			}
-		 * 		}  
-		 *  }
-		 */
+
 		public void HandleNativeEvent(string result) {
 			onHandleNativeEvent(result);			
 		}
@@ -90,7 +78,7 @@ namespace GB {
 */
         public static void ConfigureSDKWithGameInfo(string clientSecretKey, int gameCode, GBSettings.LogLevel logLevel) {
 #if !UNITY_EDITOR && UNITY_IPHONE			
-			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, GBSettings.Market.APPLE_STORE, logLevel);
+			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, GBSettings.Market.APPLE, logLevel);
 #elif !UNITY_EDITOR && UNITY_ANDROID
 			GBManager.Instance.PluginManager.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, GBSettings.Market.GOOGLE, logLevel);
 #endif
