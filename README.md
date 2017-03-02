@@ -15,6 +15,10 @@ following features of the GeBros API:<br/>
 * In App Purchase 
 * The Google Play Games API
 * Google AdMob
+    * Google
+    * UnityAds
+    * Vungle
+    * AppLovin
 
 System requirements:
 
@@ -288,7 +292,7 @@ and no Google Play Developer Console configuration is needed.
 For detailed information on nearby connection usage,
 please refer to [nearby connections](NEARBY.md).
 
-## Configuration & Initialization Play Game Services
+## Configuration & Initialization GeBros API
 
 In order to save game progress, handle multiplayer invitations and
 turn notifications, or require access to a player's Google+ social graph,
