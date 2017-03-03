@@ -8,7 +8,7 @@ using GB;
 public class GBUser
 {
 	// Profile
-	public LocalUser LocalUser { get; set; }
+	public GBSession LocalUser { get; set; }
 	public List<Device> Devices = new List<Device>();
 	public List<Game> Games = new List<Game>();
 	public List<Service> Services = new List<Service>();

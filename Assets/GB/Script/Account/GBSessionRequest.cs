@@ -74,12 +74,12 @@ namespace GB.Account
 		// 	accountRequest.RequestLoginWithCallback(authType, snsAccessToken, wrapperCallback);
 		// }
 
-		public static void RequestLinkService(AuthType authType, Action<SessionState, GBException> callback) {
+		public static void RequestConnectChannel(AuthType authType, Action<SessionState, GBException> callback) {
 			GameObject gameObject = new GameObject("RequestLinkAccount" + DateTime.Now.Ticks);
 			GBSessionRequest accountRequest = gameObject.AddComponent<GBSessionRequest>();		
 			sessionStateCallback = callback;
 			
-			accountRequest.RequestLinkServiceWithCallback(authType, wrapperCallback);
+			accountRequest.RequestConnectChannelWithCallback(authType, wrapperCallback);
 		}
 
 		// public static void RequestLinkService(AuthType authType, string snsAccessToken, Action<SessionState, GBException> callback) {
@@ -281,9 +281,9 @@ namespace GB.Account
 		// 	GBManager.Instance.PluginManager.Login(authType, snsAccessToken, callbackObject);
 		// }
 
-		private void RequestLinkServiceWithCallback(AuthType authType, Action<bool, string> callback) {
+		private void RequestConnectChannelWithCallback(AuthType authType, Action<bool, string> callback) {
 			GBRequest callbackObject = createRequestCallbackObject(callback);
-			GBManager.Instance.PluginManager.LinkServiceWithAuthType(authType, callbackObject);
+			GBManager.Instance.PluginManager.ConnectChannel(authType, callbackObject);
 		}
 
 		// private void RequestLinkServiceWithCallback(AuthType authType, string snsAccessToken, Action<bool, string> callback) {

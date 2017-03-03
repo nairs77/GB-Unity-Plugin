@@ -136,7 +136,6 @@ public class GBInAppRequest : GBRequest {
 		
 		inAppRequest.RequestBuyItemWithCallback(sku, price, itemInfo, "", wrapperCallback);
 	}	
-    
     public static void RequestBuyItem(string sku, int price, string itemInfo, string toUserkey, Action<string, GBException> callback) {
 		GameObject gameObject = new GameObject("RequestBuyItem");
 		GBInAppRequest inAppRequest = gameObject.AddComponent<GBInAppRequest>();						

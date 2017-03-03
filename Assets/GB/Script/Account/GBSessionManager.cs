@@ -15,7 +15,7 @@ public class GBSessionManager {
 	}
 
 	public static bool isAllowedEULA() {
-		return GBManager.Instance.PluginManager.IsAllowedEULA ();
+		return GBManager.Instance.PluginManager.IsAllowedEULA();
 	}
 /*
 	public static string getAccessToken() {
@@ -42,6 +42,10 @@ public class GBSessionManager {
 		GBSessionRequest.RequestLoginByUI (loginUIType, callback);
 	}
 */
+
+	public static void ConnectChannel(AuthType authType, Action<SessionState, GBException> callback) {
+		GBSessionRequest.RequestConnectChannel(authType, callback);
+	}
 	public static void Logout(Action<SessionState, GBException> callback) {
 		GBSessionRequest.RequestLogout(callback);
 	}
@@ -53,11 +57,6 @@ public class GBSessionManager {
 	public static void GetProfile(Action<bool, GBException> callback) {
 		GBSessionRequest.RequestProfile(callback);
 	}
-*/
-	public static void LinkServiceWithAuthType(AuthType authType, Action<SessionState, GBException> callback) {
-		GBSessionRequest.RequestLinkService(authType, callback);
-	}
-/*
 	public static void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, Action<SessionState, GBException> callback) {
 		GBSessionRequest.RequestLinkService(authType, snsAccessToken, callback);
 	}

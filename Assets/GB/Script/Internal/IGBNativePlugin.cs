@@ -14,7 +14,7 @@ public interface IGBNativePlugin {
 	/* Session */
 	void Login(AuthType authType, GBRequest callbackObject);
 //	void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject);
-	void LinkServiceWithAuthType(AuthType authType, GBRequest callbackObject);
+	void ConnectChannel(AuthType authType, GBRequest callbackObject);
 //	void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, GBRequest callbackObject);
 	void Logout(GBRequest callbackObject);
 	void Unregister(GBRequest callbackObject);

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GB.Billing {
-	
+namespace GB.Billing {	
 	public class GBInAppManager {
-		
-		public static void StartSetup(string userKey, Action<bool, GBException> funcCallback) {
-			GBInAppRequest.RequestStartSetup(userKey, funcCallback);
-		}
-	
+
+		// public static void StartSetup(string userKey, Action<bool, GBException> funcCallback) {
+		// 	GBInAppRequest.RequestStartSetup(userKey, funcCallback);
+		// }
 		public static void QueryInventory(List<string> skus, Action<List<string>, GBException> funcCallback) {
 			if (GBSettings.GetMarketType() == GBSettings.MarketType.AGENCY) {
 				//GBManager.ShowToast("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
@@ -17,9 +15,7 @@ namespace GB.Billing {
 
 				return;
 			}
-			
 			GBInAppRequest.RequestQueryInventory(skus, funcCallback);
-			
 		}
 	
 		public static void QueryInventory(List<string>skus, Action<GBInventory, GBException> funcCallback) {
@@ -33,10 +29,17 @@ namespace GB.Billing {
 				
 			GBInAppRequest.RequestQueryInventory(skus, funcCallback);			
 		}
-	
-        [Obsolete("this method is deprecated!!!", true)]
+
+        /**
+         * @brief Buy item 
+         * @param sku   The sku of the item to purchase.
+         * @param price the price of the item to purchase. (required if N-Stroe, others 0)
+         * @param itemInfo  indicates if it's a product type or a product name or product information.
+         *                  required if MyCard, must set item name (product name) 
+         */
+
 		public static void BuyItem(string sku, int price, Action<string, GBException> funcCallback) {
-			GBInAppRequest.RequestBuyItem(sku, price, "inapp", "", funcCallback);
+			GBInAppRequest.RequestBuyItem(sku, price, funcCallback);
 		}
 		
         /**
@@ -46,6 +49,7 @@ namespace GB.Billing {
          * @param itemInfo  indicates if it's a product type or a product name or product information.
          *                  required if MyCard, must set item name (product name) 
          */
+
 		public static void BuyItem(string sku, int price, string itemInfo, Action<string, GBException> funcCallback) {
 			GBInAppRequest.RequestBuyItem(sku, price, itemInfo, "", funcCallback);
 		}

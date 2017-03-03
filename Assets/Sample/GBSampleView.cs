@@ -49,19 +49,13 @@ public class GBSampleView : MonoBehaviour {
 	/// Initialize GBSDK 
 	/// </summary>
 	void SetUp() {
-/*
-		GBPlatformConfiguration config = new GBPlatformConfiguration.Builder()
-		.enableAdmob(UnitId)
-		.enablePlayGameService()
-		.Build();
 
-		GBPlatform.InitializeWithConfig(config);
-*/		
 		GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
 
 		// AdMob Initialize
 		GBAdManager.Instance.Init("ca-app-pub-5698820917568735/9991786004");
 		GBAdManager.Instance.LoadAd(null);
+
 		// Google Play Games Initialize
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         .Build();
@@ -209,6 +203,8 @@ public class GBSampleView : MonoBehaviour {
 		}
 
 		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
+			
+			GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
 		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory", buttonStyle)) {
@@ -241,7 +237,7 @@ public class GBSampleView : MonoBehaviour {
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "BuyItem", buttonStyle)) {
 			
-			GBInAppManager.BuyItem("gb_coin_1000", 1000, null, (string paymentKey, GBException exception) => {
+			GBInAppManager.BuyItem("gb_coin_1000", 1000, (string paymentKey, GBException exception) => {
 				if (exception == null) {
 					GBLog.verbose("paymentKey = " + paymentKey);
 					PrintLog("BuyItem paymentKey::" + paymentKey);
