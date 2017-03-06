@@ -17,6 +17,11 @@ public class GBSessionManager {
 	public static bool isAllowedEULA() {
 		return GBManager.Instance.PluginManager.IsAllowedEULA();
 	}
+
+	public static bool isConnectedChannel() {
+		return GBManager.Instance.PluginManager.IsConnectedChannel();
+	}
+
 /*
 	public static string getAccessToken() {
 		return GBManager.Instance.PluginManager.GetAccessToken();
@@ -50,9 +55,6 @@ public class GBSessionManager {
 		GBSessionRequest.RequestLogout(callback);
 	}
 
-	public static void Unregister(Action<SessionState, GBException> callback) {
-		GBSessionRequest.RequestUnregister(callback);
-	}
 /*
 	public static void GetProfile(Action<bool, GBException> callback) {
 		GBSessionRequest.RequestProfile(callback);

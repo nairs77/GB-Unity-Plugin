@@ -11,6 +11,8 @@ namespace GB.Account {
 		private static readonly string GET_IS_READY = "isReady";
 		private static readonly string GET_IS_OPENED = "isOpened";
 		private static readonly string GET_ALLOWED_EULA = "isAllowedEULA";
+
+		private static readonly string GET_IS_CONNECT_CHANNEL = "isConnectedChannel";
 		private static readonly string SET_ALLOWED_EULA = "setAllowedEULA";
 		private static readonly string GET_IS_ALREAD_LOGIN = "isAlreadyLogin";
 		private static readonly string GB_GAME_LANGUAGE = "setGameLanguage";			
@@ -33,6 +35,9 @@ namespace GB.Account {
 			return AndroidSessionHelper.CallStatic<bool>(GET_ALLOWED_EULA);
 		}
 		
+		public bool IsConnectedChannel() {
+			return AndroidSessionHelper.CallStatic<bool>(GET_IS_CONNECT_CHANNEL);
+		}
 		public void SetAllowedEULA(bool isAllowed) { 
 			AndroidSessionHelper.CallStatic(SET_ALLOWED_EULA, isAllowed);
 		}
@@ -59,7 +64,7 @@ namespace GB.Account {
 			}));
 		}
 			
-		public void LinkServiceWithAuthType(AuthType authType, GBRequest callbackObject) {
+		public void ConnectChannel(AuthType authType, GBRequest callbackObject) {
 			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable (() => {
 				AndroidSessionHelper.CallStatic("LinkServiceWithAuthType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());
 			}));				

@@ -108,7 +108,7 @@ public class GBPluginManager : IGBNativePlugin
 
 	public void ConnectChannel(AuthType authType, GBRequest callbackObject) {
 	//public void LinkServiceWithAuthType(AuthType authType, GBRequest callbackObject) {
-		SessionHelper.LinkServiceWithAuthType(authType, callbackObject);
+		SessionHelper.ConnectChannel(authType, callbackObject);
 	}
 
 	// public void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, GBRequest callbackObject) {
@@ -132,6 +132,10 @@ public class GBPluginManager : IGBNativePlugin
 
 	public bool IsAllowedEULA() {
 		return SessionHelper.IsAllowedEULA();
+	}
+
+	public bool IsConnectedChannel() {
+		return SessionHelper.IsConnectedChannel();
 	}
 /*
 	public string GetAccessToken() {

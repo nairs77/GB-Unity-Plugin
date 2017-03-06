@@ -55,7 +55,7 @@ public class GBSampleView : MonoBehaviour {
 		// AdMob Initialize
 		GBAdManager.Instance.Init("ca-app-pub-5698820917568735/9991786004");
 		GBAdManager.Instance.LoadAd(null);
-
+ 
 		// Google Play Games Initialize
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         .Build();
@@ -105,32 +105,6 @@ public class GBSampleView : MonoBehaviour {
 */							
 	}
 
-/*
-	void permissionCallback(GBPermissionResult result){
-
-		GBPermissionResult.GBPermission permission = result.Permissions [0];
-		PrintLog ("Permission name = " + permission.PermissionName);
-		if (result.PermissionStatus == GBPermissionStatus.USER_DENIED) {
-			if (permission.PermissionName.Equals ("GET_ACCOUNTS") && permission.Status == GBPermissionStatus.USER_DENIED) {
-				GBPermissionManager.ShowDetailPermissionView (false, permission.PermissionName, permissionCallback);
-			} 
-			else if (permission.PermissionName.Equals ("READ_PHONE_STATE") && permission.Status == GBPermissionStatus.USER_DENIED) {
-				GBPermissionManager.ShowDetailPermissionView (false, permission.PermissionName, permissionCallback);
-			}
-		} 
-		else if (result.PermissionStatus == GBPermissionStatus.PERMISSION_VIEW_CLOSE) {
-			if (permission.PermissionName.Equals ("GET_ACCOUNTS") && permission.Status == GBPermissionStatus.USER_DENIED) {
-				GBSessionManager.Login(AuthType.GUEST, sessionCallback);				
-			}
-			else if (permission.PermissionName.Equals ("READ_PHONE_STATE") && permission.Status == GBPermissionStatus.USER_DENIED) {
-				Application.Quit ();
-			}
-		}
-		else if (result.PermissionStatus == GBPermissionStatus.SNACKBAR_DETAIL) {
-			GBPermissionManager.ShowDetailPermissionView (true, permission.PermissionName, permissionCallback);
-		}
-	}
-*/
 	void sessionCallback(SessionState state, GBException exception){
 
 		if (state.Equals(SessionState.ACCESS_FAILED)) {
@@ -140,10 +114,11 @@ public class GBSampleView : MonoBehaviour {
 				isLogin = true;
 
 				// Sign In Play Game Service
-				Social.localUser.Authenticate((bool success) => {
+#if !UNITY_EDITOR && UNITY_ANDROID				
+				// Social.localUser.Authenticate((bool success) => {
 					
-				});
-
+				// });
+#endif
 			} 
 			else if (state.Equals (SessionState.CLOSED)) {
 				PrintLog ("Session Closed!!! - LogOut");
@@ -188,14 +163,7 @@ public class GBSampleView : MonoBehaviour {
 
 		List<string> skus = new List<string>();
 
-		#if UNITY_ANDROID
-		skus.Add("GB_coin_1000");
-		skus.Add("GB_coin_2000");
-		#elif UNITY_IPHONE
-		//skus.Add("Sample01");
-		skus.Add("GB_product_id_7695245");
-		skus.Add("GB_product_id_3234233");
-		#endif
+
 
 		if(GUI.Button(new Rect(MARGIN, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Login", buttonStyle)) {
 			//GBSessionManager.Login(AuthType.GOOGLE, sessionCallback);
@@ -209,8 +177,13 @@ public class GBSampleView : MonoBehaviour {
 		}
 
 		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
-			
-			GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
+				// GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);		
+			if (!GBSessionManager.isConnectedChannel()) {
+				GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
+			} else {
+				// Button Disable
+			}
+
 		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory", buttonStyle)) {
@@ -269,15 +242,7 @@ public class GBSampleView : MonoBehaviour {
 		}		
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Show Ad (Reward Video)", buttonStyle)) {
-
-
-			GBAdManager.Instance.ShowAd();			
-
-			
-			// if (mInterstitial.IsLoaded()) {
-			// 	Debug.Log("IsLoaded()");
-			// 	mInterstitial.Show();
-			// }
+			GBAdManager.Instance.ShowAd();
 		}				
 					
 		GUI.Label(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, labalHeight), sdkLog, labelStyle);		

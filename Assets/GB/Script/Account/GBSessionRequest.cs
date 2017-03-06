@@ -27,17 +27,19 @@ namespace GB.Account
 
 		static Action<bool,string> wrapperCallback = (success, result) => {
 			
+			print("[Session Callback : " + result);
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
-			
-			SessionState state = (SessionState)System.Enum.Parse(typeof(SessionState), response[API_SESSION_EVENT_KEY]);
 
-			GBLog.verbose(TAG + "Session Request callback!!! - " + state.ToString());
-			if (state.Equals(SessionState.ACCESS_FAILED)) {
-				sessionStateCallback(state, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
-			} else {
-				sessionStateCallback(state, null);
-			}				
+			GBLog.verbose(TAG + "Session - ", response.ToString());			
+			//SessionState state = (SessionState)System.Enum.Parse(typeof(SessionState), response[API_SESSION_EVENT_KEY]);
+
+			// GBLog.verbose(TAG + "Session Request callback!!! - " + state.ToString());
+			// if (state.Equals(SessionState.ACCESS_FAILED)) {
+			// 	sessionStateCallback(state, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
+			// } else {
+			// 	sessionStateCallback(state, null);
+			// }				
 		};
 		
 		public static void RequestLogin(Action<SessionState, GBException> callback) {

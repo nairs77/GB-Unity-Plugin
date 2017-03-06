@@ -19,12 +19,22 @@
             </intent-filter>
         </activity>
 
+        <!-- Facebook -->
         <activity android:name="com.facebook.FacebookLoginActivity"
             android:label="@string/app_name"/>
         <activity android:name="com.facebook.PermissionSelectActivity"/>
-        <activity android:name="com.vungle.publisher.VideoFullScreenAdActivity" />
+        
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_application_id" />
         <meta-data android:name="com.facebook.sdk.ApplicationName" android:value="@string/app_name" />
+        <!-- Vungle -->
+        <activity android:name="com.vungle.publisher.VideoFullScreenAdActivity" />
+
+        <!-- AppLovin -->
+        <activity android:name="com.applovin.adview.AppLovinInterstitialActivity" />
+        <activity android:name="com.applovin.adview.AppLovinConfirmationActivity" />
+        <meta-data android:name="applovin.sdk.key" 
+            android:value="wsGT89gFuGFIZrLsp6MrS_TQaRU_HuBCkSftbL6UcMnAB61_DOqgOI5zkaz0S9CAbt2CC8gqUS_gZ0fnPURonX" />
+
 
     </application>
 

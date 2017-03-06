@@ -24,6 +24,8 @@ public interface IGBNativePlugin {
 
 	bool IsOpened();
 	bool IsReady();
+
+	bool IsConnectedChannel();
 	//string getAccessToken();
 
 	/* Profile */
