@@ -26,14 +26,14 @@ public class GBSessionManager {
 		return GBManager.Instance.PluginManager.GetRefreshToken();
 	}
 */
-	public static void Login(AuthType authType, Action<SessionState, GBException> callback) {
+	public static void Login(Action<SessionState, GBException> callback) {
+		GBSessionRequest.RequestLogin(callback);
+	}
+
+	public static void LoginWithAuthType(AuthType authType, Action<SessionState, GBException> callback) {
 		GBSessionRequest.RequestLogin(authType, callback);
 	}
 /*
-	public static void Login(AuthType authType, string snsAccessToken, Action<SessionState, GBException> callback) {
-		GBSessionRequest.RequestLogin(authType, snsAccessToken, callback);
-	}
-
 	public static void LoginByUI(Action<SessionState, GBException> callback) {
 		GBSessionRequest.RequestLoginByUI (callback);
 	}

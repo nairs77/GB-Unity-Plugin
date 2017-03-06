@@ -40,6 +40,14 @@ namespace GB.Account
 			}				
 		};
 		
+		public static void RequestLogin(Action<SessionState, GBException> callback) {
+			GameObject gameObject = new GameObject("RequestLogin" + DateTime.Now.Ticks);
+			GBSessionRequest accountRequest = gameObject.AddComponent<GBSessionRequest>();
+
+			sessionStateCallback = callback;
+
+			accountRequest.RequestLoginWithCallback(wrapperCallback);						
+		}
 		public static void RequestLogin(AuthType authType, Action<SessionState, GBException> callback) {
 						
 			GameObject gameObject = new GameObject("RequestLogin" + DateTime.Now.Ticks);

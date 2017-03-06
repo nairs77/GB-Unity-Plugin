@@ -30,6 +30,44 @@ System requirements:
 * To deploy on iOS:
     * XCode 6 or above
 
+## Configuration & Initialization GeBros API
+
+In order to save game progress, handle multiplayer invitations and
+turn notifications, or require access to a player's Google+ social graph,
+the default configuration needs to be replaced with a custom configuration.
+To do this use the **PlayGamesClientConfiguration**.  If your game does not
+use these features, then there is no need to
+initialize the platform configuration.  Once the instance is initialized,
+make it your default social platform by calling **PlayGamesPlatform.Activate**:
+
+```csharp
+    using GB;
+    using GooglePlayGames;
+
+    GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
+
+    // AdMob Initialize
+    GBAdManager.Instance.Init(/* Insert Campaign ID*/);
+    GBAdManager.Instance.LoadAd(null);
+
+    // Google Play Games Initialize
+    PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+    .Build();
+
+    PlayGamesPlatform.InitializeInstance(config);
+    // recommended for debugging:
+    PlayGamesPlatform.DebugLogEnabled = true;
+    // Activate the Google Play Games platform
+    PlayGamesPlatform.Activate();
+```
+
+
+After activated, you can access the Play Games platform through
+**Social.Active**. You should only call **PlayGamesPlatform.Activate** once in
+your application. Making this call will not display anything on the screen and
+will not interact with the user in any way.
+
+
 ## Configure Your Game
 
 To use the plugin, you must first [configure your

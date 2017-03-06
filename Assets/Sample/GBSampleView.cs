@@ -197,14 +197,20 @@ public class GBSampleView : MonoBehaviour {
 		skus.Add("GB_product_id_3234233");
 		#endif
 
-		if(GUI.Button(new Rect(MARGIN, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "LoginWithAuthType", buttonStyle)) {
+		if(GUI.Button(new Rect(MARGIN, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Login", buttonStyle)) {
+			//GBSessionManager.Login(AuthType.GOOGLE, sessionCallback);
 
-			GBSessionManager.Login(AuthType.GOOGLE, sessionCallback);
+			// Already have a last session?
+			if (GBSessionManager.hasAccount()) {
+				GBSessionManager.Login(sessionCallback);
+			} else {
+				GBSessionManager.LoginWithAuthType(AuthType.GOOGLE, sessionCallback);
+			}
 		}
 
 		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
 			
-			GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
+			//GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
 		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory", buttonStyle)) {
