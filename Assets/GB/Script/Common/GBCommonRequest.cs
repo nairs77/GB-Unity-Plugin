@@ -7,32 +7,6 @@ namespace GB {
 
 	public class GBCommonRequest : GBRequest {
 		
-		public static void RequestGlobalServerInfo(string branchURL, Action<bool, string> callback)
-		{
-			GBLog.verbose("Call - RequestGlobalServerInfo");
-
-			GameObject gameObject = new GameObject("RequestGlobalServerInfo" + DateTime.Now.Ticks);
-			GBCommonRequest request = gameObject.AddComponent<GBCommonRequest>();
-			
-			Action<bool,string> wrapperCallback = (success, result) => {
-				GBLog.verbose("Wrapper callback called");
-				
-				JSONNode root = JSON.Parse(result);
-				var response = root[API_RESPONSE_RESULT_KEY];
-							
-				if (success) {
-					// TODO : Change API
-					//GBConfig.SetServerList(result);
-					GBSettings.SetGBServers(result);					
-					callback(success, result);	
-				} else {
-					callback(success, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()).getErrorMessage());
-				}
-			};
-			
-			request.RequestGlobalServerInfoWithCallback(branchURL, wrapperCallback);
-		}
-
 		public static void SetActiveMarket(GBSettings.Market market, Action<bool, string> callback) {
 			GameObject gameObject = new GameObject("GetRuntimePermission" + DateTime.Now.Ticks);
 			GBCommonRequest request = gameObject.AddComponent<GBCommonRequest>();
@@ -63,11 +37,6 @@ namespace GB {
 			};
 
 			request.GetRuntimePermissionWithCallback(permission, isNecessary, wrapperCallback);
-		}
-
-		private void RequestGlobalServerInfoWithCallback(string branchURL, Action<bool, string> callback) {
-			GBRequest callbackObject = createRequestCallbackObject(callback);
-			GBManager.Instance.PluginManager.GetGlobalServerInfo(branchURL, callbackObject);
 		}
 
 		private void GetRuntimePermissionWithCallback(string permission, bool isNecessary, Action<bool, string> callback) {

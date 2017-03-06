@@ -11,7 +11,6 @@ public class GBPluginManager : IGBNativePlugin
 	private static ICommonHelper _commonHelper = null;
 	private static ISessionHelper _sessionHelper = null;
 	private static IIabHelper _inAppHelper = null;
-	private static IUserHelper _userHelper = null;
 	private static IPlayGameClient _gameClient = null;
 
 	private static ICommonHelper CommonHelper {
@@ -54,21 +53,6 @@ public class GBPluginManager : IGBNativePlugin
 			return _sessionHelper;
 		}
 	}
-
-	private static IUserHelper UserHelper {
-		get {
-			if (_userHelper == null) {
-#if UNITY_ANDROID
-				_userHelper = new GBUserAndroidHelper();
-#elif UNITY_IPHONE
-				_userHelper = new GBUseriOSHelper();
-#endif
-			}
-
-			return _userHelper;
-		}
-	}
-	
 	private static IPlayGameClient GameClient {
 		get {
 			if (_gameClient == null) {
@@ -98,11 +82,10 @@ public class GBPluginManager : IGBNativePlugin
 		CommonHelper.ConfigureSDKWithGameInfo(clientSecretKey, gameCode, platformInfo, (int)logLevel);
 	}
 
-	public void GetGlobalServerInfo(string branchURL, GBRequest callbackObject) {
-		CommonHelper.RequestGlobalServerInfo (branchURL, callbackObject);
-	}
-	
 	/* Session */
+	public void Login(GBRequest callbackObject) {
+		SessionHelper.Login(callbackObject);
+	}	
 	public void Login(AuthType authType, GBRequest callbackObject) {
 		SessionHelper.Login(authType, callbackObject);
 	}
@@ -143,8 +126,8 @@ public class GBPluginManager : IGBNativePlugin
 	public bool IsOpened() {
 		return SessionHelper.IsOpened();
 	}
-	public bool HasAccount() {
-		return SessionHelper.HasToken();
+	public bool IsReady() {
+		return SessionHelper.IsReady();
 	}
 
 	public bool IsAllowedEULA() {
@@ -165,22 +148,6 @@ public class GBPluginManager : IGBNativePlugin
 		SessionHelper.RequestProfile(callbackObject);
 	}
 */	
-	/* Friends */
-	public void RequestFriends(GBRequest callbackObject) {
-		UserHelper.RequestFriends (callbackObject);
-	}
-
-	public void AddFriend(int userKey, GBRequest callbackObject) {
-		UserHelper.AddFriend (userKey, callbackObject);
-	}
-	public void UpdateFriendsStatus(int userKey, GBUser.FriendStatus status, GBRequest callbackObject) {
-		UserHelper.UpdateFriendStatus (userKey, status, callbackObject);
-	}
-
-	public void RequestSearchInFriends(string searchText, GBRequest callbackObject) {
-		UserHelper.RequestSearchUsers (searchText, callbackObject);
-	}
-	//void RequestInvitedUserCount(GBRequest callbackObject);
 	
 	/* Billing */
 	public void StartSetup(string userKey, GBRequest callbackObject) {

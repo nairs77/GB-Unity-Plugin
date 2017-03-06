@@ -201,8 +201,8 @@ public class GBSampleView : MonoBehaviour {
 			//GBSessionManager.Login(AuthType.GOOGLE, sessionCallback);
 
 			// Already have a last session?
-			if (GBSessionManager.hasAccount()) {
-				GBSessionManager.Login(sessionCallback);
+			if (GBSessionManager.isReady()) {
+				GBSessionManager.Login(sessionCallback);			
 			} else {
 				GBSessionManager.LoginWithAuthType(AuthType.GOOGLE, sessionCallback);
 			}
@@ -210,7 +210,7 @@ public class GBSampleView : MonoBehaviour {
 
 		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
 			
-			//GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
+			GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
 		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory", buttonStyle)) {

@@ -11,9 +11,11 @@ namespace GB
 
 	public sealed class GBSession : IParseObject {		
 		
+
 		public int userKey { get; private set; }			
 
         public AuthType authType { get; private set; }
+
 /*
 		public string nickName { get; private set; }		
 		public int emailCert { get; private set; }			
@@ -57,18 +59,18 @@ namespace GB
 			
 			System.Text.StringBuilder sb = new System.Text.StringBuilder();
 			sb.Append("\n userKey=").Append(userKey);
-			sb.Append("\n country_code").Append(countryCode);
-			sb.Append("\n nickName=").Append(nickName);
-			sb.Append("\n emailCert=").Append(emailCert);
-			sb.Append("\n profileImage=").Append(profileImage);
-			sb.Append("\n greetingMessage=").Append(greetingMessage);
-			sb.Append("\n joinType=").Append(joinType);
-			sb.Append("\n joinDate=").Append(joinDate);
-			sb.Append("\n quit=").Append(quit);
-			sb.Append("\n quitDate=").Append(quitDate);
-			sb.Append("\n blocked=").Append(blocked);
-			sb.Append("\n blockedDate=").Append(blockedDate);
-			sb.Append("\n phoneCert=").Append(phoneCert);		
+			// sb.Append("\n country_code").Append(countryCode);
+			// sb.Append("\n nickName=").Append(nickName);
+			// sb.Append("\n emailCert=").Append(emailCert);
+			// sb.Append("\n profileImage=").Append(profileImage);
+			// sb.Append("\n greetingMessage=").Append(greetingMessage);
+			// sb.Append("\n joinType=").Append(joinType);
+			// sb.Append("\n joinDate=").Append(joinDate);
+			// sb.Append("\n quit=").Append(quit);
+			// sb.Append("\n quitDate=").Append(quitDate);
+			// sb.Append("\n blocked=").Append(blocked);
+			// sb.Append("\n blockedDate=").Append(blockedDate);
+			// sb.Append("\n phoneCert=").Append(phoneCert);		
 			return sb.ToString();
 		}
 	}

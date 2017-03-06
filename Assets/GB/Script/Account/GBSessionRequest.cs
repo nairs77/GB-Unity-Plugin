@@ -279,6 +279,10 @@ namespace GB.Account
 			accountRequest.ReauestCheckExistAccountWithCallback (authType, email, userId, checkCallback);
 		}
 */
+		private void RequestLoginWithCallback(Action<bool, string> callback) {		
+			GBRequest callbackObject = createRequestCallbackObject(callback);
+			GBManager.Instance.PluginManager.Login(callbackObject);
+		}
 		private void RequestLoginWithCallback(AuthType authType, Action<bool, string> callback) {		
 			GBRequest callbackObject = createRequestCallbackObject(callback);
 			GBManager.Instance.PluginManager.Login(authType, callbackObject);

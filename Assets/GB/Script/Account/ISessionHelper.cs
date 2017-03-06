@@ -7,10 +7,11 @@ using System.Collections;
 public interface ISessionHelper {
 
 	bool IsOpened();
-	bool HasToken();
+	bool IsReady();
 	bool IsAllowedEULA();
 	// string GetAccessToken();
 	// string GetRefreshToken();
+	void Login(GBRequest callbackObject);	
 	void Login(AuthType authType, GBRequest callbackObject);
 //	void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject);
 	// void LoginByUI(GBRequest callbackObject);

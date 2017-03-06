@@ -10,8 +10,8 @@ public class GBSessionManager {
 		return GBManager.Instance.PluginManager.IsOpened();
 	}
 
-	public static bool hasAccount() {
-		return GBManager.Instance.PluginManager.HasAccount();
+	public static bool isReady() {
+		return GBManager.Instance.PluginManager.IsReady();
 	}
 
 	public static bool isAllowedEULA() {

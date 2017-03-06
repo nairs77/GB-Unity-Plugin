@@ -8,10 +8,8 @@ namespace GB.Account {
 	public class GBSessionAndroidHelper : GBAndroidHelper, ISessionHelper {
 		private static readonly string NATIVE_SESSION_CLASS_PACKAGE = "com.gebros.platform.unity.AuthorizationPlugin";
 
-		private static readonly string GET_HAS_TOKEN = "hasToken";
+		private static readonly string GET_IS_READY = "isReady";
 		private static readonly string GET_IS_OPENED = "isOpened";
-		private static readonly string GET_ACCESS_TOKEN = "getAccessToken";
-		private static readonly string GET_REFRESH_TOKEN = "getRefreshToken";
 		private static readonly string GET_ALLOWED_EULA = "isAllowedEULA";
 		private static readonly string SET_ALLOWED_EULA = "setAllowedEULA";
 		private static readonly string GET_IS_ALREAD_LOGIN = "isAlreadyLogin";
@@ -43,59 +41,24 @@ namespace GB.Account {
 			return AndroidSessionHelper.CallStatic<bool>(GET_IS_ALREAD_LOGIN);	
 		}
 		
-		public bool HasToken() {
-			return AndroidSessionHelper.CallStatic<bool>(GET_HAS_TOKEN);
-		}
-
-		public string GetAccessToken() {
-			return AndroidSessionHelper.CallStatic<string> (GET_ACCESS_TOKEN);
-		}
-
-		public string GetRefreshToken() {
-			return AndroidSessionHelper.CallStatic<string> (GET_REFRESH_TOKEN);
+		public bool IsReady() {
+			return AndroidSessionHelper.CallStatic<bool>(GET_IS_READY);
 		}
 
 		public void Login(AuthType authType, GBRequest callbackObject) {			
 
 		  UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
-			//if (authType.Equals(AuthType.NONE)) {
 		  		AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());				
-			// if (authType == AuthType.NONE) {				
-		  	// 	AndroidSessionHelper.CallStatic("Login", callbackObject.GetCallbackGameObjectName());
-		  	// } else {
-		  	// 	AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());
-		  	// }				
 		  }));
 
 		}
 
-		public void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject) {			
-			
+		public void Login(GBRequest callbackObject) {						
 			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
-			//if (authType.Equals(AuthType.NONE)) {
-			
-			AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, snsAccessToken, callbackObject.GetCallbackGameObjectName());				
-			// if (authType == AuthType.NONE) {
-			// 	AndroidSessionHelper.CallStatic("Login", callbackObject.GetCallbackGameObjectName());
-			// } else {
-			// 	AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, snsAccessToken, callbackObject.GetCallbackGameObjectName());
-			// }				
-		}));
-			
-		}
-/*		
-		public void LoginByUI(GBRequest callbackObject) {
-			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable (() => {
-				AndroidSessionHelper.CallStatic("LoginByUI", callbackObject.GetCallbackGameObjectName());
+				AndroidSessionHelper.CallStatic("Login", callbackObject.GetCallbackGameObjectName());				
 			}));
 		}
-
-		public void LoginByUI(LoginUIType loginUIType, GBRequest callbackObject){
-			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {
-				AndroidSessionHelper.CallStatic("LoginByUI", (int)loginUIType, callbackObject.GetCallbackGameObjectName());
-			}));
-		}
-*/
+			
 		public void LinkServiceWithAuthType(AuthType authType, GBRequest callbackObject) {
 			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable (() => {
 				AndroidSessionHelper.CallStatic("LinkServiceWithAuthType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());

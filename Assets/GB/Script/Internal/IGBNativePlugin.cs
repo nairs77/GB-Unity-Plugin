@@ -13,6 +13,9 @@ public interface IGBNativePlugin {
 
 	/* Session */
 	void Login(AuthType authType, GBRequest callbackObject);
+
+	void Login(GBRequest callbackObject);
+
 //	void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject);
 	void ConnectChannel(AuthType authType, GBRequest callbackObject);
 //	void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, GBRequest callbackObject);
@@ -20,7 +23,7 @@ public interface IGBNativePlugin {
 	void Unregister(GBRequest callbackObject);
 
 	bool IsOpened();
-	bool HasAccount();
+	bool IsReady();
 	//string getAccessToken();
 
 	/* Profile */

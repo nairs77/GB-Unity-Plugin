@@ -17,11 +17,9 @@ public enum SessionState {
 	 * @var Unregister 게임 탈퇴 성공
 	 * @var JOIN 회원 가입 성공
 	 */
-	ACCESS,
-	ACCESS_FAILED,
+	NONE,
+	READY,
 	OPEN,
-	TOKEN_REISSUED,
 	CLOSED,
-	Unregister,
-	JOIN
+	ACCESS_FAILED,	
 }
