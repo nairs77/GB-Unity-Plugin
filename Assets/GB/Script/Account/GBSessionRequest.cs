@@ -30,8 +30,10 @@ namespace GB.Account
 			print("[Session Callback : " + result);
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
+			
+			GBUser.Instance.UpdateProfileInfo(response);			
+			GBSession newSession = GBUser.Instance.currentSession;
 
-			GBLog.verbose(TAG + "Session - ", response.ToString());			
 			//SessionState state = (SessionState)System.Enum.Parse(typeof(SessionState), response[API_SESSION_EVENT_KEY]);
 
 			// GBLog.verbose(TAG + "Session Request callback!!! - " + state.ToString());
@@ -125,16 +127,6 @@ namespace GB.Account
 			sessionStateCallback = callback;
 
 			accountRequest.RequestLogoutWithCallback(wrapperCallback);
-		}
-
-		public static void RequestUnregister(Action<SessionState, GBException> callback) {
-			GameObject gameObject = new GameObject("UnregisterCallbackTemp" + DateTime.Now.Ticks);
-			GBSessionRequest accountRequest = gameObject.AddComponent<GBSessionRequest>();
-			
-			sessionStateCallback = callback;
-
-			accountRequest.RequestUnregisterWithCallback(wrapperCallback);
-
 		}
 
 		/*
@@ -318,11 +310,6 @@ namespace GB.Account
 		private void RequestLogoutWithCallback(Action<bool, string> callback) {
 			GBRequest callbackObject = createRequestCallbackObject(callback);
 			GBManager.Instance.PluginManager.Logout(callbackObject);
-		}
-
-		private void RequestUnregisterWithCallback(Action<bool, string> callback) {
-			GBRequest callbackObject = createRequestCallbackObject(callback);
-			GBManager.Instance.PluginManager.Unregister(callbackObject);
 		}
 /*
 		private void RequestProfileWithCallback(Action<bool, string> callback) {

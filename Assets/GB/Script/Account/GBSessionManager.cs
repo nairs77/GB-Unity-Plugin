@@ -1,6 +1,5 @@
-using UnityEngine;
 using System;
-using System.Collections;
+using SimpleJSON;
 using GB;
 using GB.Account;
 
@@ -18,19 +17,20 @@ public class GBSessionManager {
 		return GBManager.Instance.PluginManager.IsAllowedEULA();
 	}
 
-	public static bool isConnectedChannel() {
-		return GBManager.Instance.PluginManager.IsConnectedChannel();
+	// public static bool isConnectedChannel() {
+	// 	return GBManager.Instance.PluginManager.IsConnectedChannel();
+	// }
+
+	public static GBSession getActiveSession() {
+		if (GBUser.Instance.currentSession == null) {
+			string sessionInfo =  GBManager.Instance.PluginManager.GetActiveSession();
+			JSONNode root = JSON.Parse(sessionInfo);
+			GBLog.verbose("[Session Callback : " + sessionInfo); 
+		}
+
+		return GBUser.Instance.currentSession;
 	}
 
-/*
-	public static string getAccessToken() {
-		return GBManager.Instance.PluginManager.GetAccessToken();
-	}
-
-	public static string getRefreshToken() {
-		return GBManager.Instance.PluginManager.GetRefreshToken();
-	}
-*/
 	public static void Login(Action<SessionState, GBException> callback) {
 		GBSessionRequest.RequestLogin(callback);
 	}

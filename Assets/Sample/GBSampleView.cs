@@ -177,12 +177,15 @@ public class GBSampleView : MonoBehaviour {
 		}
 
 		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
+			GBSession session = GBSessionManager.getActiveSession();
+
+			Debug.Log("session = " + session.ToString());
 				// GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);		
-			if (!GBSessionManager.isConnectedChannel()) {
-				GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
-			} else {
-				// Button Disable
-			}
+			// if (!GBSessionManager.isConnectedChannel()) {
+			// 	GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);
+			// } else {
+			// 	// Button Disable
+			// }
 
 		}
 

@@ -13,6 +13,7 @@ namespace GB.Account {
 		private static readonly string GET_ALLOWED_EULA = "isAllowedEULA";
 
 		private static readonly string GET_IS_CONNECT_CHANNEL = "isConnectedChannel";
+		private static readonly string GET_ACTIVE_SESSION = "getActiveSession";
 		private static readonly string SET_ALLOWED_EULA = "setAllowedEULA";
 		private static readonly string GET_IS_ALREAD_LOGIN = "isAlreadyLogin";
 		private static readonly string GB_GAME_LANGUAGE = "setGameLanguage";			
@@ -35,8 +36,12 @@ namespace GB.Account {
 			return AndroidSessionHelper.CallStatic<bool>(GET_ALLOWED_EULA);
 		}
 		
-		public bool IsConnectedChannel() {
-			return AndroidSessionHelper.CallStatic<bool>(GET_IS_CONNECT_CHANNEL);
+		// public bool IsConnectedChannel() {
+		// 	return AndroidSessionHelper.CallStatic<bool>(GET_IS_CONNECT_CHANNEL);
+		// }
+
+		public string GetActiveSession() {
+			return AndroidSessionHelper.CallStatic<string>(GET_ACTIVE_SESSION);
 		}
 		public void SetAllowedEULA(bool isAllowed) { 
 			AndroidSessionHelper.CallStatic(SET_ALLOWED_EULA, isAllowed);
@@ -79,12 +84,6 @@ namespace GB.Account {
 		public void Logout(GBRequest callbackObject) {
 			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {
 				AndroidSessionHelper.CallStatic ("Logout", callbackObject.GetCallbackGameObjectName ());
-			}));
-		}
-
-		public void Unregister(GBRequest callbackObject) {
-			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
-				AndroidSessionHelper.CallStatic("Unregister", callbackObject.GetCallbackGameObjectName());
 			}));
 		}
 /*

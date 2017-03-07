@@ -119,10 +119,6 @@ public class GBPluginManager : IGBNativePlugin
 		SessionHelper.Logout(callbackObject);
 	}
 
-	public void Unregister(GBRequest callbackObject) {
-		SessionHelper.Unregister (callbackObject);
-	}
-	
 	public bool IsOpened() {
 		return SessionHelper.IsOpened();
 	}
@@ -134,8 +130,12 @@ public class GBPluginManager : IGBNativePlugin
 		return SessionHelper.IsAllowedEULA();
 	}
 
-	public bool IsConnectedChannel() {
-		return SessionHelper.IsConnectedChannel();
+	// public bool IsConnectedChannel() {
+	// 	return SessionHelper.IsConnectedChannel();
+	// }
+
+	public string GetActiveSession() {
+		return SessionHelper.GetActiveSession();
 	}
 /*
 	public string GetAccessToken() {

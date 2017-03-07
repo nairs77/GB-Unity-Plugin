@@ -15,49 +15,28 @@ namespace GB.Account {
 		public static extern bool isAllowedEULA();
 		
 		[DllImport ("__Internal")]
-		public static extern bool hasAccount();
+		public static extern bool isReady();
 		
 		[DllImport ("__Internal")]
-		public static extern string getAccessToken();
-		
-		[DllImport ("__Internal")]
-		public static extern string getRefreshToken();	
+		public static extern bool isConnectedChannel();
 
 		[DllImport ("__Internal")]
 		public static extern void setAllowedEULA(bool isAllowed);
 		
 		[DllImport ("__Internal")]
+		public static extern void Login(string callbackObjectName);
+
+		[DllImport ("__Internal")]
 		public static extern void Login(int authType, string callbackObjectName);
 
 		[DllImport ("__Internal")]
-		public static extern void LoginWithToken(int authType, string snsAccessToken, string callbackObjectName);
-
-		[DllImport ("__Internal")]
-		public static extern void LoginByNativeUI(string callbackObjectName);
-
-		[DllImport ("__Internal")]
-		public static extern void LoginByNativeUIWithViewType(int loginUIType ,string callbackObjectName);
-
-		[DllImport ("__Internal")]
-		public static extern void LinkNativeServiceWithAuthType(int authType, string callbackObjectName);
-
-		[DllImport ("__Internal")]
-		public static extern void LinkNativeServiceWithAuthTypeWithToken(int authType, string snsAccessToken, string callbackObjectName);
+		public static extern void ConnectChannel(int authType, string callbackObjectName);
 
 		[DllImport ("__Internal")]
 		public static extern void Logout(string callbackObjectName);
 
 		[DllImport ("__Internal")]
-		public static extern void Unregister(string callbackObjectName);
-
-		[DllImport ("__Internal")]
-		public static extern void RequestProfile(string callbackObjectName);
-
-		[DllImport ("__Internal")]
-		public static extern void ShowMain();
-
-		[DllImport ("__Internal")]
-//		public static extern void ShowClickWrap(string callbackObjectName);
+		public static extern void ShowClickWrap(string callbackObjectName);
 
 		[DllImport ("__Internal")]
 		public static extern void ShowNativeEULA();
@@ -89,18 +68,14 @@ namespace GB.Account {
 			return isAllowedEULA();
 		}
 
-		public bool HasToken() {
-			return hasAccount(); 
+		public bool IsReady() {
+			return isReady(); 
 		}
 
-		public string GetAccessToken() {
-			return getAccessToken();
+		public bool IsConnectedChannel() {
+			return isConnectedChannel();
 		}
-		
-		public string GetRefreshToken() {
-			return getRefreshToken(); 
-		}
-		
+	
 		public void SetAllowedEULA(bool isAllowed) {
 			setAllowedEULA(isAllowed);
 		}
@@ -113,16 +88,12 @@ namespace GB.Account {
 			setGameLanguage((int)languageType);
 		}
 
+		public void Login(GBRequest callbackObject) {
+			Login(callbackObject.GetCallbackGameObjectName());
+		}
+
 		public void Login(AuthType authType, GBRequest callbackObject) {
 			Login(authType.TypeValue, callbackObject.GetCallbackGameObjectName());
-		}
-
-		public void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject) {
-			LoginWithToken(authType.TypeValue, snsAccessToken, callbackObject.GetCallbackGameObjectName());
-		}
-
-		public void LoginWithType(AuthType authType, GBRequest callbackObject) {
-			Login (authType.TypeValue, callbackObject.GetCallbackGameObjectName());
 		}
 /*
 		public void LoginByUI(GBRequest callbackObject) {
@@ -133,8 +104,8 @@ namespace GB.Account {
 			LoginByNativeUIWithViewType((int)loginUIType, callbackObject.GetCallbackGameObjectName());
 		}
 */
-		public void LinkServiceWithAuthType(AuthType authType, GBRequest callbackObject) {
-			LinkNativeServiceWithAuthType(authType.TypeValue, callbackObject.GetCallbackGameObjectName());
+		public void ConnectChannel(AuthType authType, GBRequest callbackObject) {
+			ConnectChannel(authType.TypeValue, callbackObject.GetCallbackGameObjectName());
 		}
 /*
 		public void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, GBRequest callbackObject) {
@@ -145,30 +116,10 @@ namespace GB.Account {
 			Logout(callbackObject.GetCallbackGameObjectName());
 		}
 
-		public void Unregister(GBRequest callbackObject) {
-			Unregister(callbackObject.GetCallbackGameObjectName());
-		}
-/*
-		public void RequestProfile(GBRequest callbackObject) {
-			RequestProfile(callbackObject.GetCallbackGameObjectName());
-		}
-
-		public void ShowGBMain() {
-			ShowMain();
-		}
-
-		public void ShowClickWrap(GBRequest callbackObject) {
-			ShowClickWrap(callbackObject.GetCallbackGameObjectName());
-		}
-*/
 		public void ShowEULA() {
 			ShowNativeEULA();
 		}
-		
-		public void ShowViewByType(GBProfileViewType type) {
-			ShowNativeViewByType((int)type);
-		}
-		
+				
 		public void HideGBStart() {
 			
 		}

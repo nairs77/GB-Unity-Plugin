@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
-
+using GB;
 //public delegate void SessionHandler(bool success, string eventObject);
 
 public interface ISessionHelper {
@@ -10,7 +10,9 @@ public interface ISessionHelper {
 	bool IsReady();
 	bool IsAllowedEULA();
 
-	bool IsConnectedChannel();
+	//bool IsConnectedChannel();
+
+	string GetActiveSession();
 
 	void Login(GBRequest callbackObject);	
 	void Login(AuthType authType, GBRequest callbackObject);
@@ -20,6 +22,5 @@ public interface ISessionHelper {
 	void ConnectChannel(AuthType authType, GBRequest callbackObject);
 	// void LinkServiceWithAuthType(AuthType authType, string snsAccessToken,  GBRequest callbackObject);
 	void Logout(GBRequest callbackObject);
-	void Unregister(GBRequest callbackObject);
 }
 

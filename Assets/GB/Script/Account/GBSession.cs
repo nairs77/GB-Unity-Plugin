@@ -12,25 +12,12 @@ namespace GB
 	public sealed class GBSession : IParseObject {		
 		
 
-		public int userKey { get; private set; }			
+		public string userKey { get; private set; }			
 
         public AuthType authType { get; private set; }
 
-/*
-		public string nickName { get; private set; }		
-		public int emailCert { get; private set; }			
-		public string profileImage { get; private set; }
-		public string greetingMessage { get; private set; }
-		public int joinType { get; private set; }
-		public long joinDate { get; private set; }
-		public int quit { get; private set; }
-		public long quitDate { get; private set; }
-		public int blocked { get; private set; }
-		public long blockedDate { get; private set; }
-		public int policyAgree { get; private set; }
-		public int phoneCert { get; private set; }	
-		public string countryCode { get; private set; }
-*/		
+		public string userId { get; private set; }
+
 		public GBSession(JSONNode root)
 		{
 			this.parseJSON(root);
@@ -38,21 +25,16 @@ namespace GB
 		
 		public void parseJSON(JSONNode root)
 		{
-			userKey = root["userkey"].AsInt;
-            authType = root["authtype"].AsInt;
-			// nickName = root["nickname"];
-			// emailCert = root["email_cert"].AsInt;
-			// profileImage = root["profile_img"];
-			// greetingMessage = root["greeting_msg"];
-			// countryCode = root["country_code"];
-			// joinType = root["join_type"].AsInt;
-			// joinDate = System.Int64.Parse(root["join_date"]);
-			// quit = root["quit"].AsInt;
-			// quitDate = System.Int64.Parse(root["quit_date"]);
-			// blocked = root["blocked"].AsInt;
-			// blockedDate = System.Int64.Parse(root["blocked_date"]);
-			// policyAgree = root["policy_agree"].AsInt;
-			// phoneCert = root["phone_cert"].AsInt;		
+			//GBLog.verbose("root = " + root.ToString());
+			Debug.Log("root = " + root.ToString());
+			Debug.Log("userKey = " + root["ACCOUNT_SEQ"]);
+			userKey = root["ACCOUNT_SEQ"]; 
+    //        authType = (AuthType)root["CHANNEL_TYPE"].AsInt;
+			 userId = root["CHANNEL_USER_ID"];
+		}
+
+		public bool isConnectedChannel() {
+			return authType == AuthType.FACEBOOK ? true : false;
 		}
 		
 		public override string ToString() {

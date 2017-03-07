@@ -20,12 +20,12 @@ public interface IGBNativePlugin {
 	void ConnectChannel(AuthType authType, GBRequest callbackObject);
 //	void LinkServiceWithAuthType(AuthType authType, string snsAccessToken, GBRequest callbackObject);
 	void Logout(GBRequest callbackObject);
-	void Unregister(GBRequest callbackObject);
 
 	bool IsOpened();
 	bool IsReady();
+	//bool IsConnectedChannel();
 
-	bool IsConnectedChannel();
+	string GetActiveSession();
 	//string getAccessToken();
 
 	/* Profile */
