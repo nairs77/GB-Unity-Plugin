@@ -29,6 +29,6 @@ public class GBUser
 
 	// Profile
 	public void UpdateProfileInfo(JSONNode result) {
-		this.currentSession = new GBSession(result["state"]);	
+		this.currentSession = new GBSession(result);	
 	}
 }

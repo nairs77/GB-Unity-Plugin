@@ -11,7 +11,6 @@ namespace GB
 
 	public sealed class GBSession : IParseObject {		
 		
-
 		public string userKey { get; private set; }			
 
         public AuthType authType { get; private set; }
@@ -25,12 +24,9 @@ namespace GB
 		
 		public void parseJSON(JSONNode root)
 		{
-			//GBLog.verbose("root = " + root.ToString());
-			Debug.Log("root = " + root.ToString());
-			Debug.Log("userKey = " + root["ACCOUNT_SEQ"]);
 			userKey = root["ACCOUNT_SEQ"]; 
-    //        authType = (AuthType)root["CHANNEL_TYPE"].AsInt;
-			 userId = root["CHANNEL_USER_ID"];
+            authType = (AuthType)root["CHANNEL_TYPE"].AsInt;
+			userId = root["CHANNEL_USER_ID"];
 		}
 
 		public bool isConnectedChannel() {

@@ -71,7 +71,7 @@ namespace GB.Account {
 			
 		public void ConnectChannel(AuthType authType, GBRequest callbackObject) {
 			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable (() => {
-				AndroidSessionHelper.CallStatic("LinkServiceWithAuthType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());
+				AndroidSessionHelper.CallStatic("ConnectChannel", authType.TypeValue, callbackObject.GetCallbackGameObjectName());
 			}));				
 		}
 /*

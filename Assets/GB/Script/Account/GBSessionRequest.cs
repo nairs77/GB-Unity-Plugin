@@ -28,6 +28,7 @@ namespace GB.Account
 		static Action<bool,string> wrapperCallback = (success, result) => {
 			
 			print("[Session Callback : " + result);
+
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
 			
