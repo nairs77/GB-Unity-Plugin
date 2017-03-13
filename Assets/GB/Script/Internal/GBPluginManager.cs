@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using GB;
 using GB.Account;
 using GB.Billing;
-using GB.PlayGameService;
 
 public class GBPluginManager : IGBNativePlugin
 {
 	private static ICommonHelper _commonHelper = null;
 	private static ISessionHelper _sessionHelper = null;
 	private static IIabHelper _inAppHelper = null;
-	private static IPlayGameClient _gameClient = null;
 
 	private static ICommonHelper CommonHelper {
 		get {
@@ -53,19 +51,6 @@ public class GBPluginManager : IGBNativePlugin
 			return _sessionHelper;
 		}
 	}
-	private static IPlayGameClient GameClient {
-		get {
-			if (_gameClient == null) {
-	#if UNITY_ANDROID
-				_gameClient = new GPGClient();
-	#elif UNITY_IPHONE
-				_gameClient = new GameCenterClient(); 
-	#endif
-			}
-				
-			return _gameClient;
-		}
-	}
 
 	public GBPluginManager() {}
 
@@ -87,7 +72,7 @@ public class GBPluginManager : IGBNativePlugin
 		SessionHelper.Login(callbackObject);
 	}	
 	public void Login(AuthType authType, GBRequest callbackObject) {
-		SessionHelper.Login(authType, callbackObject);
+		SessionHelper.LoginWithAuthType(authType, callbackObject);
 	}
 
 	// public void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject) {
@@ -246,68 +231,5 @@ public class GBPluginManager : IGBNativePlugin
 
 	public string GetDeviceModel() {
 		return CommonHelper.GetDeviceModel();
-	}
-
-	public void SendPushMessage(string userKey, string title, string message) {
-		CommonHelper.SendPushMessage(userKey, title, message);
-	}
-	public void ShowToast(string message) {
-		CommonHelper.ShowToast (message);
-	}
-
-	public void ShowAlert() {
-		CommonHelper.ShowAlert();
-	}
-
-	public void GetRuntimePermission(string permission, bool isNecessary, GBRequest callbackObject) {
-		CommonHelper.GetRuntimePermission (permission, isNecessary, callbackObject);
-	}
-
-	public bool CheckRuntimePermission(string permission) {
-		return CommonHelper.CheckRuntimePermission (permission);
-	}
-	
-	/* Play Game Service */
-	public void SignIn(GBRequest callbackObject) {
-		GameClient.SignIn(callbackObject);
-	}
-	public void SignOut(GBRequest callbackObject) {
-		GameClient.SignOut(callbackObject);
-	}
-	public bool IsAuthenticated() {
-		return GameClient.IsAuthenticated();
-	}
-	public void ShowLeaderboardUI(string leaderboardId, GBRequest callbackObject) {
-		GameClient.ShowLeaderboardUI(leaderboardId, callbackObject);
-	}
-	public void ShowAchievementsUI(GBRequest callbackObject) {
-		GameClient.ShowAchievementsUI(callbackObject);
-	}
-	public void ReportProgress(string achId, double step, GBRequest callbackObject) {
-		GameClient.ReportProgress(achId, step, callbackObject);
-	}
-	public void FetchQuestById(string eventId, GBRequest callbackObject) {
-		GameClient.FetchQuestById(eventId, callbackObject);		
-	}
-	/*
-	public void IncrementAchievement(string achId, int step, GBRequest callbackObject) {
-		GameClient.IncrementAchievement(achId, step, callbackObject);
-	}	
-	*/
-	public void SubmitScore(long score, string ldId, GBRequest callbackObject) {
-		GameClient.SubmitScore(score, ldId, callbackObject);
-	}
-	
-	/* Event */
-	public void IncrementEvent(string eventId, uint stepsToIncrement) {
-		GameClient.IncrementEvent(eventId, stepsToIncrement);
-	}
-	
-	public void ShowAllQuestsUI(GBRequest callbackObject) {
-		GameClient.ShowAllQuestsUI(callbackObject);
-	}
-	
-	public void ClaimMilestone(IQuestMilestone milestone, GBRequest callbackObject) {
-		GameClient.ClaimMilestone(milestone, callbackObject);
 	}
 }

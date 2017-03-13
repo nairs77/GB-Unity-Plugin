@@ -55,7 +55,7 @@ public class GBSampleView : MonoBehaviour {
 		// AdMob Initialize
 		GBAdManager.Instance.Init("ca-app-pub-5698820917568735/9991786004");
 		GBAdManager.Instance.LoadAd(null);
- 
+#if UNITY_ANDROID 
 		// Google Play Games Initialize
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         .Build();
@@ -65,7 +65,7 @@ public class GBSampleView : MonoBehaviour {
 		PlayGamesPlatform.DebugLogEnabled = true;
 		// Activate the Google Play Games platform
 		PlayGamesPlatform.Activate();		
-
+#endif
 	// 	mRewardBasedVideo = RewardBasedVideoAd.Instance;
 
 	// 	mRewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;

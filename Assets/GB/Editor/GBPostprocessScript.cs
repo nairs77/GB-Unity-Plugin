@@ -34,10 +34,10 @@ public class GBPostprocessScript : MonoBehaviour
 		/* Only Unity 4.3.4 or earlier
 		GBPostprocessScript.ReplaceOpenGL(pathToBuildProject);
 		*/
-		GBPostprocessScript.ReplaceApplicationMain(pathToBuildProject);
+		//GBPostprocessScript.ReplaceApplicationMain(pathToBuildProject);
 
 		/* Change Your FrameworkPath */
-		string frameworkPath = "/Users/joyuser/Work/Release/iOS/Framework/SDK/Light/";
+		string frameworkPath = "/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/" + "Framework";
 		
 		Process buildProcess = new Process();
 		buildProcess.StartInfo.FileName = "python";

@@ -10,12 +10,10 @@ public interface ISessionHelper {
 	bool IsReady();
 	bool IsAllowedEULA();
 
-	//bool IsConnectedChannel();
-
 	string GetActiveSession();
 
 	void Login(GBRequest callbackObject);	
-	void Login(AuthType authType, GBRequest callbackObject);
+	void LoginWithAuthType(AuthType authType, GBRequest callbackObject);
 //	void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject);
 	// void LoginByUI(GBRequest callbackObject);
 	// void LoginByUI(LoginUIType loginUIType, GBRequest callbackObject);

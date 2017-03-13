@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using GB;
 using GB.Account;
 using GB.Billing;
-using GB.PlayGameService;
 
 public interface IGBNativePlugin {
 
@@ -57,44 +56,12 @@ public interface IGBNativePlugin {
 	/* app */
 	// void ShowGBMain();
 
-	/* Push */
-	void SendPushMessage(string userKey, string title, string message);
-	
+
 	/* Utility */
 	string GetMCC();
+
 	string GetCurrentLanguage();
+
 	string GetDeviceId();
-
-	void ShowToast(string message);
-	void ShowAlert();
-	
-	/* Play Game */
-	/* Android : Google Play Game Service */
-	/* iOS : Game Center */
-	
-	void SignIn(GBRequest callbackObject);
-	void SignOut(GBRequest callbackObject);
-	bool IsAuthenticated();
-	void ShowLeaderboardUI(string ldId, GBRequest callbackObject);
-	void ShowAchievementsUI(GBRequest callbackObject);
-	/*
-	void UnlockAchievement(string achId, double step, GBRequest callbackObject);
-	void IncrementAchievement(string achId, int step, GBRequest callbackObject);
-	*/
-	void ReportProgress(string achId, double step, GBRequest callbackObject);
-	
-	void SubmitScore(long score, string leaderBoardId, GBRequest callbackObject);
-	void FetchQuestById(string eventId, GBRequest callbackObject);
-
-	/* Event */
-	void IncrementEvent(string eventId, uint stepsToIncrement);
-	
-	/* Quest */
-	void ShowAllQuestsUI(GBRequest callbackObject);
-	void ClaimMilestone(IQuestMilestone milestone, GBRequest callbackObject);
-
-	/* Analytics */
-	// void LogEvent (EventType eventType, string eventName, double valueToSum, int paramNum, string[] paramKey, string[] paramValue);
-	// void LogPurchase (EventType eventType, double purchaseAmount, string currency, int paramNum, string[] paramKey, string[] paramValue);
 }
 

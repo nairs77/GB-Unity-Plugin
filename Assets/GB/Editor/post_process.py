@@ -54,13 +54,8 @@ facebookAppID = "539935412817527"
 sns_setting = [{
 	"CFBundleTypeRole" : "Editor",
 	"CFBundleURLName" : "%s" % (bundle_identifier),
-	"CFBundleURLSchemes" : ["fb%s" % facebookAppID, "%s" % (bundle_identifier), "tw.%s" % (bundle_identifier)]
+	"CFBundleURLSchemes" : ["fb%s" % facebookAppID]
 }]
-
-jas_setting = {
-    "Use Duplicate Account Change" : True
-}
-plist["GB Application Settings"] = jas_setting
 
 plist["CFBundleURLTypes"] = sns_setting
 
@@ -77,31 +72,20 @@ project = XcodeProject.Load(projectPath + '/Unity-iPhone.xcodeproj/project.pbxpr
 log('Loaded project.pbxproj.')	
 
 
-result = project.add_file(frameworkPath + 'FacebookSDK.framework', tree='SDKROOT')	
-log('Added Facebook SDK Framework')
-#log('Added %s' + result + 'Framework')
+result = project.add_file(frameworkPath + 'GBSdk.framework', tree='SDKROOT')	
+log('Added GBSdk SDK Framework')
 
-project.add_file(frameworkPath + 'GB.framework', tree='SDKROOT')
-project.add_file(frameworkPath + 'GBResource.bundle', tree='SDKROOT')
-log('Added GB / Resource Framework')
-
-project.add_file(frameworkPath + 'GoogleOpenSource.framework', tree='SDKROOT')
-project.add_file(frameworkPath + 'GooglePlus.framework', tree='SDKROOT')
-
-# Google+ dependent framework
-project.add_file('System/Library/Frameworks/MediaPlayer.framework', tree='SDKROOT')
-project.add_file('System/Library/Frameworks/AddressBook.framework', tree='SDKROOT')
-project.add_file('System/Library/Frameworks/AssetsLibrary.framework', tree='SDKROOT')
+project.add_file(frameworkPath + 'GoogleMobileAds.framework', tree='SDKROOT')
+project.add_file(frameworkPath + 'UnityAds.framework', tree='SDKROOT')
+project.add_file(frameworkPath + 'AppLovinSDK.framework', tree='SDKROOT')
 
 project.add_framework_search_paths(frameworkPath)
-
-log('Added Framework Search path')
 
 log('------------------------------------------------------------\n')
 log('			2-1. iOS9 Delete / Changed Library path          \n')
 log('------------------------------------------------------------\n')
-#project.add_file('usr/lib/libiconv.2.tbd', true='SDKROOT')
-#project.remove_file_by_path('usr/lib/libiconv.2.dylib')
+# project.add_file('usr/lib/libiconv.2.tbd', true='SDKROOT')
+# project.remove_file_by_path('usr/lib/libiconv.2.dylib')
 
 
 log('------------------------------------------------------------\n')
@@ -113,4 +97,3 @@ project.saveFormat3_2()
 log('------------------------------\n'
 	'      	  Saved Project.       \n'
 	'------------------------------')
-

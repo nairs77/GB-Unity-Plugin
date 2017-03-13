@@ -20,7 +20,7 @@ namespace GB.Billing {
 		public static extern void RequestProductsInfo(string skus, string callbackObjectName);
 		
 		[DllImport (IOS_ATTR_INTERNAL)]
-		public static extern void AddPayment(string sku, int price, string callbackObjectName);
+		public static extern void BuyItem(string sku, int price, string callbackObjectName);
 
 		[DllImport (IOS_ATTR_INTERNAL)]
 		public static extern void ReStoreItems(string callbackObjectName);
@@ -40,15 +40,15 @@ namespace GB.Billing {
 		}
 
 		public void BuyItem(string sku, int price, GBRequest callbackObject) {
-			AddPayment(sku, 0, callbackObject.GetCallbackGameObjectName());
+			BuyItem(sku, 0, callbackObject.GetCallbackGameObjectName());
 		}
 		
 		public void BuyItem(string sku, int price, string itemInfo, GBRequest callbackObject) {
-			AddPayment(sku, 0, callbackObject.GetCallbackGameObjectName());
+			BuyItem(sku, 0, callbackObject.GetCallbackGameObjectName());
 		}
         
         public void BuyItem(string sku, int price, string itemInfo, string toUserkey, GBRequest callbackObject) {
-            AddPayment(sku, 0, callbackObject.GetCallbackGameObjectName());
+            BuyItem(sku, 0, callbackObject.GetCallbackGameObjectName());
         }		
 
 		public void RestoreItems(GBRequest callbackObject) {

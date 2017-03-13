@@ -52,6 +52,7 @@ public class AdMobDependencies : AssetPostprocessor
             });
 */            
 #elif UNITY_IOS
+/*
         Type iosResolver = Google.VersionHandler.FindClass(
             "Google.IOSResolver", "Google.IOSResolver");
         if (iosResolver == null) {
@@ -63,6 +64,7 @@ public class AdMobDependencies : AssetPostprocessor
             namedArgs: new Dictionary<string, object>() {
                 { "version", "7.13+" }
             });
+*/            
 #endif  // UNITY_IOS
     }
 

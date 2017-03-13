@@ -131,26 +131,7 @@ namespace GB {
 /*
 		public static void SetGameLanguage(LanguageType languageType) {
 			GBManager.Instance.PluginManager.SetGameLanguage(languageType);	
-		}
-		
-		public static void SendPushMessage(string userKey, string title, string message) {
-			GBManager.Instance.PluginManager.SendPushMessage(userKey, title, message);
-		}
-		public static void ShowToast(string message) {
-			GBManager.Instance.PluginManager.ShowToast(message);
-		}
+		}		
 */		
-		public static void ShowAlert() {
-			GBManager.Instance.PluginManager.ShowAlert();
-		}
-
-		public static void GetRuntimePermission(string permission, bool isNecessary, Action<bool, string> callback) {
-			GBCommonRequest.GetRuntimePermission (permission, isNecessary, callback);
-		}
-
-		public static bool CheckRuntimePermission(string permission) {
-			return GBManager.Instance.PluginManager.CheckRuntimePermission (permission);
-		}
-			
 	}
 }
