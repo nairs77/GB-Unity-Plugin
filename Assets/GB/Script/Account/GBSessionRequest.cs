@@ -31,9 +31,16 @@ namespace GB.Account
 
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
-			
-			GBUser.Instance.UpdateProfileInfo(response);			
-			GBSession newSession = GBUser.Instance.currentSession;
+
+			SessionState state = (SessionState)System.Enum.Parse(typeof(SessionState), response[API_SESSION_EVENT_KEY]);
+
+			if (state.Equals(SessionState.ACCESS_FAILED)) {
+				sessionStateCallback(state, new GBException(response[API_RESPONSE_ERROR_KEY].ToString()));
+			} else {
+				GBUser.Instance.UpdateProfileInfo(response["data"]);
+				sessionStateCallback(state, null);
+			}				
+
 
 			//SessionState state = (SessionState)System.Enum.Parse(typeof(SessionState), response[API_SESSION_EVENT_KEY]);
 

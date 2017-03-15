@@ -3,7 +3,7 @@ using System.Collections;
 
 /**
  * @brief Specify SessionState
- * @author chujinnoon@GB.com
+ * @author gebros.nairs77@gmail.com
  */
 
 public enum SessionState {

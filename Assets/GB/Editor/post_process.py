@@ -71,16 +71,20 @@ log('------------------------------------------------------------\n')
 project = XcodeProject.Load(projectPath + '/Unity-iPhone.xcodeproj/project.pbxproj')
 log('Loaded project.pbxproj.')	
 
-
 result = project.add_file(frameworkPath + 'GBSdk.framework', tree='SDKROOT')	
 log('Added GBSdk SDK Framework')
 
 project.add_file(frameworkPath + 'GoogleMobileAds.framework', tree='SDKROOT')
 project.add_file(frameworkPath + 'UnityAds.framework', tree='SDKROOT')
 project.add_file(frameworkPath + 'AppLovinSDK.framework', tree='SDKROOT')
-
+project.add_file(frameworkPath + 'Bolts.framework', tree='SDKROOT')
+project.add_file(frameworkPath + 'FBSDKCoreKit.framework', tree='SDKROOT')
+project.add_file(frameworkPath + 'FBSDKLoginKit.framework', tree='SDKROOT')
+project.add_file(frameworkPath + 'VungleSDK.framework', tree='SDKROOT')
 project.add_framework_search_paths(frameworkPath)
 
+project.add_file('usr/lib/libz.tbd', tree='SDKROOT')
+project.add_file('usr/lib/libsqlite3.tbd', tree='SDKROOT')
 log('------------------------------------------------------------\n')
 log('			2-1. iOS9 Delete / Changed Library path          \n')
 log('------------------------------------------------------------\n')

@@ -17,6 +17,7 @@ namespace GB
 
 		public string userId { get; private set; }
 
+		public SessionState state { get; private set; }
 		public GBSession(JSONNode root)
 		{
 			this.parseJSON(root);

@@ -9,8 +9,7 @@ public interface ISessionHelper {
 	bool IsOpened();
 	bool IsReady();
 	bool IsAllowedEULA();
-
-	string GetActiveSession();
+	bool IsConnectedChannel();
 
 	void Login(GBRequest callbackObject);	
 	void LoginWithAuthType(AuthType authType, GBRequest callbackObject);

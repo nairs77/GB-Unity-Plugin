@@ -36,9 +36,9 @@ namespace GB.Account {
 			return AndroidSessionHelper.CallStatic<bool>(GET_ALLOWED_EULA);
 		}
 		
-		// public bool IsConnectedChannel() {
-		// 	return AndroidSessionHelper.CallStatic<bool>(GET_IS_CONNECT_CHANNEL);
-		// }
+		public bool IsConnectedChannel() {
+		 	return AndroidSessionHelper.CallStatic<bool>(GET_IS_CONNECT_CHANNEL);
+		}
 
 		public string GetActiveSession() {
 			return AndroidSessionHelper.CallStatic<string>(GET_ACTIVE_SESSION);
@@ -105,18 +105,6 @@ namespace GB.Account {
 			}));
 		}
 */
-		public void HideGBStart() {
-			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {
-				AndroidSessionHelper.CallStatic("HideGBStart");
-			}));
-			
-		}
-
-		public void ShowEULA() {
-			UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
-				AndroidSessionHelper.CallStatic("ShowEULA");
-			}));
-		}
 			
 		public void SetGameLanguage(LanguageType type) {
 			AndroidSessionHelper.CallStatic(GB_GAME_LANGUAGE, (int)type);

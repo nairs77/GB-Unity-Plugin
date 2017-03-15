@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using GB;
 using GB.Account;
 using GB.Billing;
-//using GB.PlayGameService;
 using GoogleMobileAds.Api;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
@@ -53,9 +52,16 @@ public class GBSampleView : MonoBehaviour {
 		GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
 
 		// AdMob Initialize
-		GBAdManager.Instance.Init("ca-app-pub-5698820917568735/9991786004");
+		string adMobId = string.Empty;
+#if UNITY_ANDROID
+		adMobId = "ca-app-pub-5698820917568735/9991786004";
+#elif UNITY_IPHONE
+		adMobId = "ca-app-pub-5698820917568735/4794152808";
+#endif	
+		GBAdManager.Instance.Init(adMobId);
 		GBAdManager.Instance.LoadAd(null);
-#if UNITY_ANDROID 
+
+#if (UNITY_ANDROID && !NO_GPGS)
 		// Google Play Games Initialize
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         .Build();
@@ -66,43 +72,6 @@ public class GBSampleView : MonoBehaviour {
 		// Activate the Google Play Games platform
 		PlayGamesPlatform.Activate();		
 #endif
-	// 	mRewardBasedVideo = RewardBasedVideoAd.Instance;
-
-	// 	mRewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
-    // // has failed to load.
-	// 	mRewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
-	// 	// is opened.
-	// 	mRewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
-	// 	// has started playing.
-	// 	mRewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
-	// 	// has rewarded the user.
-	// 	mRewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
-	// 	// is closed.
-	// 	mRewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
-	// 	// is leaving the application.
-	// 	mRewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;		
-/*
-		mInterstitial = new InterstitialAd("ca-app-pub-5698820917568735/3329803608");
-
-		mInterstitial.OnAdLoaded += HandleRewardBasedVideoLoaded;
-    // has failed to load.
-		mInterstitial.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
-		// is opened.
-		mInterstitial.OnAdOpening += HandleRewardBasedVideoOpened;
-		// has started playing.
-		// mInterstitial.OnAd .OnAdStarted += HandleRewardBasedVideoStarted;
-		// // has rewarded the user.
-		// mInterstitial.OnAdRewarded += HandleRewardBasedVideoRewarded;
-		// is closed.
-		mInterstitial.OnAdClosed += HandleRewardBasedVideoClosed;
-		// is leaving the application.
-		mInterstitial.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
-		AdRequest request = new AdRequest.Builder()
-			.AddTestDevice("C85608B21885A69E8EA9FB9AD8683CEC")  // My test device.
-			.Build();
-		// Load the interstitial with the request.
-		mInterstitial.LoadAd(request);		
-*/							
 	}
 
 	void sessionCallback(SessionState state, GBException exception){
@@ -119,6 +88,8 @@ public class GBSampleView : MonoBehaviour {
 					
 				// });
 #endif
+				PrintLog("Session Success = " + GBUser.Instance.currentSession.userKey);
+				
 			} 
 			else if (state.Equals (SessionState.CLOSED)) {
 				PrintLog ("Session Closed!!! - LogOut");
@@ -162,24 +133,26 @@ public class GBSampleView : MonoBehaviour {
 		textStyle.fontSize = 50;
 
 		List<string> skus = new List<string>();
-
-
-
+#if (!UNITY_EDITOR && UNITY_ANDROID)
+		skus.Add("gb_coin_1000");
+#elif (UNITY_EDITOR && UNITY_IPHONE)
+		skus.Add("sample_coin_100");
+#endif			
 		if(GUI.Button(new Rect(MARGIN, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Login", buttonStyle)) {
-			//GBSessionManager.Login(AuthType.GOOGLE, sessionCallback);
-
 			// Already have a last session?
 			if (GBSessionManager.isReady()) {
 				GBSessionManager.Login(sessionCallback);			
 			} else {
+				// Default AuthType.GOOGLE
 				GBSessionManager.LoginWithAuthType(AuthType.GOOGLE, sessionCallback);
 			}
 		}
 
 		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
-			GBSession activeSession = GBSessionManager.getActiveSession();
+			// Check Session Open or not
+			bool isOpened = GBSessionManager.isOpened();
 
-			if (!activeSession.isConnectedChannel()) {
+			if (isOpened && !GBSessionManager.isConnectedChannel()) {
 				GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);		
 			} else {
 				// Button Disable
@@ -193,6 +166,7 @@ public class GBSampleView : MonoBehaviour {
 		}
 
 		if (GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory With Info", buttonStyle)) {
+			
 			GBInAppManager.QueryInventory(skus, (GBInventory inv, GBException exception) => { 
 				if (exception == null) {
 					GBLog.verbose("Success Query Inventory"); 
@@ -215,8 +189,7 @@ public class GBSampleView : MonoBehaviour {
 		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "BuyItem", buttonStyle)) {
-			
-			GBInAppManager.BuyItem("gb_coin_1000", 1000, (string paymentKey, GBException exception) => {
+			GBInAppManager.BuyItem(skus[0], 0, (string paymentKey, GBException exception) => {
 				if (exception == null) {
 					GBLog.verbose("paymentKey = " + paymentKey);
 					PrintLog("BuyItem paymentKey::" + paymentKey);
@@ -240,6 +213,10 @@ public class GBSampleView : MonoBehaviour {
 				}
 			});
 		}		
+
+		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Load Ad (Reward Video)", buttonStyle)) {
+			
+		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Show Ad (Reward Video)", buttonStyle)) {
 			GBAdManager.Instance.ShowAd();

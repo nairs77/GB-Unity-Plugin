@@ -17,11 +17,8 @@ namespace GB.Account {
 		[DllImport ("__Internal")]
 		public static extern bool isReady();
 
-		// [DllImport ("__Internal")]
-		// public static extern bool setAllowedEULA();
-
 		[DllImport ("__Internal")]
-		public static extern string getActiveSession();
+		public static extern bool isConnectedChannel();
 	
 		[DllImport ("__Internal")]
 		public static extern void Login(string callbackObjectName);
@@ -52,8 +49,8 @@ namespace GB.Account {
 		// 	setAllowedEULA(isAllowed);
 		// }
 		
-		public string GetActiveSession() {
-			return getActiveSession();
+		public bool IsConnectedChannel() {
+			return isConnectedChannel();
 		}
 		
 		// public void SetGameLanguage(LanguageType languageType) {

@@ -1,7 +1,0 @@
-﻿using System;
-
-namespace Joycity.Callback
-{
-	public delegate void JoypleDelegate<T> (T result) where T : IResult;
-}
-

@@ -22,9 +22,8 @@ public interface IGBNativePlugin {
 
 	bool IsOpened();
 	bool IsReady();
-	//bool IsConnectedChannel();
+	bool IsConnectedChannel();
 
-	string GetActiveSession();
 	//string getAccessToken();
 
 	/* Profile */
@@ -42,12 +41,10 @@ public interface IGBNativePlugin {
 	void QueryInventory(List<string> skus, GBRequest callbackObject);
 	void QueryInventoryItemInfo(List<string> skus, GBRequest callbackObject);
     
-	void BuyItem(string sku, int price, GBRequest callbackObject);
+	void BuyItem(string userKey, string sku, int price, GBRequest callbackObject);
     
-	void BuyItem(string sku, int price, string itemInfo, GBRequest callbackObject);    
-    
-    void BuyItem(string sku, int price, string itemInfo, string toUserKey, GBRequest callbackObject);
-    
+	void BuyItem(string userKey, string sku, int price, string itemInfo, GBRequest callbackObject);    
+        
 	void RestoreItems(GBRequest callbackObject);
 	
 	void GetPromotionItem(string userKey, GBRequest callbackObject);

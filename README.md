@@ -32,13 +32,7 @@ System requirements:
 
 ## Configuration & Initialization GeBros API
 
-In order to save game progress, handle multiplayer invitations and
-turn notifications, or require access to a player's Google+ social graph,
-the default configuration needs to be replaced with a custom configuration.
-To do this use the **PlayGamesClientConfiguration**.  If your game does not
-use these features, then there is no need to
-initialize the platform configuration.  Once the instance is initialized,
-make it your default social platform by calling **PlayGamesPlatform.Activate**:
+In order to require access to user Social authentication, handle  payment (In App Purchase) and show Google Admob or require access to a player Google Play Game Service, the default configuration needs to be replaced with a custom configurations.
 
 ```csharp
     using GB;

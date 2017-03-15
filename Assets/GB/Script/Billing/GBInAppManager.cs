@@ -39,7 +39,8 @@ namespace GB.Billing {
          */
 
 		public static void BuyItem(string sku, int price, Action<string, GBException> funcCallback) {
-			GBInAppRequest.RequestBuyItem(sku, price, funcCallback);
+			GBSession currentSession = GBUser.Instance.currentSession;
+			GBInAppRequest.RequestBuyItem(currentSession.userKey, sku, price, funcCallback);
 		}
 		
         /**
@@ -51,12 +52,9 @@ namespace GB.Billing {
          */
 
 		public static void BuyItem(string sku, int price, string itemInfo, Action<string, GBException> funcCallback) {
-			GBInAppRequest.RequestBuyItem(sku, price, itemInfo, "", funcCallback);
+			GBSession currentSession = GBUser.Instance.currentSession;
+			GBInAppRequest.RequestBuyItem(currentSession.userKey, sku, price, itemInfo, funcCallback);
 		}
-                      
-        public static void SendPresent(string sku, int price, string itemName, string toUserKey, Action<string, GBException> funcCallback) {
-            GBInAppRequest.RequestBuyItem(sku, price, itemName, toUserKey, funcCallback);
-        }
 	
 		public static void RestoreItems(Action<List<string>, GBException> funcCallback) {
 			GBInAppRequest.RequestRestoreItems(funcCallback);
