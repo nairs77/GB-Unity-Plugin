@@ -62,6 +62,7 @@ plist["CFBundleURLTypes"] = sns_setting
 if len(facebookAppID) > 0:
     plist["FacebookAppID"] = facebookAppID
 
+plist["AppLovinSdkKey"] = "wsGT89gFuGFIZrLsp6MrS_TQaRU_HuBCkSftbL6UcMnAB61_DOqgOI5zkaz0S9CAbt2CC8gqUS_gZ0fnPURonX"
 plistlib.writePlist(plist, plist_path)
 
 log('------------------------------------------------------------\n')
@@ -81,15 +82,14 @@ project.add_file(frameworkPath + 'Bolts.framework', tree='SDKROOT')
 project.add_file(frameworkPath + 'FBSDKCoreKit.framework', tree='SDKROOT')
 project.add_file(frameworkPath + 'FBSDKLoginKit.framework', tree='SDKROOT')
 project.add_file(frameworkPath + 'VungleSDK.framework', tree='SDKROOT')
+project.add_file('System/Library/Frameworks/AdSupport.framework', tree='SDKROOT')
 project.add_framework_search_paths(frameworkPath)
 
-project.add_file('usr/lib/libz.tbd', tree='SDKROOT')
-project.add_file('usr/lib/libsqlite3.tbd', tree='SDKROOT')
 log('------------------------------------------------------------\n')
 log('			2-1. iOS9 Delete / Changed Library path          \n')
 log('------------------------------------------------------------\n')
-# project.add_file('usr/lib/libiconv.2.tbd', true='SDKROOT')
-# project.remove_file_by_path('usr/lib/libiconv.2.dylib')
+project.add_file('usr/lib/libz.tbd', tree='SDKROOT')
+project.add_file('usr/lib/libsqlite3.tbd', tree='SDKROOT')
 
 
 log('------------------------------------------------------------\n')
@@ -97,7 +97,8 @@ log('			3. Set Flag in Project Build Setting             \n')
 log('------------------------------------------------------------\n')
 project.add_other_ldflags('-ObjC')
 project.add_single_valued_flag('ENABLE_BITCODE', 'NO')
-project.saveFormat3_2()
+project.add_single_valued_flag('ENABLE_MODULES', 'YES')
+project.save()
 log('------------------------------\n'
 	'      	  Saved Project.       \n'
 	'------------------------------')

@@ -14,6 +14,7 @@
 #import <GBSdk/GBSession.h>
 #import <GBSdk/GBDeviceUtil.h>
 #import <GBSdk/GBInApp.h>
+#import <StoreKit/StoreKit.h>
 
 #pragma mark - Common
 
@@ -116,12 +117,13 @@ void RequestProducts(const char *skus, const char *callbackObjectName)
                                  NSMutableString *validateProductIds = [[NSMutableString alloc] initWithCapacity:0];
                                  
                                  for (int i=0; i < count; i++) {
-                                     NSString *productID = [[products objectAtIndex:i] productIdentifier];
+                                     //NSString *productID = [[products objectAtIndex:i] productIdentifier];
+                                     SKProduct *product = [products objectAtIndex:i];
                                      
                                      if (i != 0)
                                          [validateProductIds appendString:@","];
                                      else
-                                         [validateProductIds appendString:productID];
+                                         [validateProductIds appendString:[product productIdentifier]];
                                  }
                                  
                                  SendToUnity([objectName UTF8String], 1, [validateProductIds UTF8String]);

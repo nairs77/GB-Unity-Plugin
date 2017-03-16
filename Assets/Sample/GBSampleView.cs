@@ -135,7 +135,7 @@ public class GBSampleView : MonoBehaviour {
 		List<string> skus = new List<string>();
 #if (!UNITY_EDITOR && UNITY_ANDROID)
 		skus.Add("gb_coin_1000");
-#elif (UNITY_EDITOR && UNITY_IPHONE)
+#elif (!UNITY_EDITOR && UNITY_IPHONE)
 		skus.Add("sample_coin_100");
 #endif			
 		if(GUI.Button(new Rect(MARGIN, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Login", buttonStyle)) {
@@ -144,7 +144,11 @@ public class GBSampleView : MonoBehaviour {
 				GBSessionManager.Login(sessionCallback);			
 			} else {
 				// Default AuthType.GOOGLE
+#if (!UNITY_EDITOR && UNITY_ANDROID)				
 				GBSessionManager.LoginWithAuthType(AuthType.GOOGLE, sessionCallback);
+#elif (!UNITY_EDITOR && UNITY_IPHONE)
+				GBSessionManager.LoginWithAuthType(AuthType.GUEST, sessionCallback);
+#endif
 			}
 		}
 
