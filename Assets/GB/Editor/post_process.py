@@ -49,7 +49,7 @@ plist = plistlib.readPlist(plist_path)
 
 bundle_identifier = plist["CFBundleIdentifier"]
 
-facebookAppID = "539935412817527"
+facebookAppID = "379212652436292"
 
 sns_setting = [{
 	"CFBundleTypeRole" : "Editor",
