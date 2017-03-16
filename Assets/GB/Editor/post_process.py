@@ -59,6 +59,33 @@ sns_setting = [{
 
 plist["CFBundleURLTypes"] = sns_setting
 
+'''
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>fbapi</string>
+    <string>fbapi20130214</string>
+    <string>fbapi20130410</string>
+    <string>fbapi20130702</string>
+    <string>fbapi20131010</string>
+    <string>fbapi20131219</string>    
+    <string>fbapi20140410</string>
+    <string>fbapi20140116</string>
+    <string>fbapi20150313</string>
+    <string>fbapi20150629</string>
+    <string>fbapi20160328</string> 
+    <string>fbauth</string>
+    <string>fbauth2</string>
+    <string>fb-messenger-api20140430</string>
+</array>	
+'''
+fb_schmes = [{
+	"item 1" : "fbauth",
+	"item 2" : "fbauth2",
+	"item 3" : "fbapi",
+}]
+
+plist["LSApplicationQueriesSchemes"] = fb_schmes
+
 if len(facebookAppID) > 0:
     plist["FacebookAppID"] = facebookAppID
 
