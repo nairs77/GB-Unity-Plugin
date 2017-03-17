@@ -79,9 +79,7 @@ plist["CFBundleURLTypes"] = sns_setting
 </array>	
 '''
 fb_schmes = [{
-	"item 1" : "fbauth",
-	"item 2" : "fbauth2",
-	"item 3" : "fbapi",
+	"fbauth", "fbauth2", "fbapi",
 }]
 
 plist["LSApplicationQueriesSchemes"] = fb_schmes
