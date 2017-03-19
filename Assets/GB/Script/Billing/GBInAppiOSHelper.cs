@@ -15,7 +15,8 @@ namespace GB.Billing {
 
 		[DllImport (IOS_ATTR_INTERNAL)]
 		public static extern void RequestProducts(string skus, string callbackObjectName);
-
+		
+		[DllImport (IOS_ATTR_INTERNAL)]
 		public static extern void RequestProductsInfo(string skus, string callbackObjectName);
 		
 		[DllImport (IOS_ATTR_INTERNAL)]

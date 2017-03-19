@@ -78,9 +78,9 @@ plist["CFBundleURLTypes"] = sns_setting
     <string>fb-messenger-api20140430</string>
 </array>	
 '''
-fb_schmes = [{
+fb_schmes = [
 	"fbauth", "fbauth2", "fbapi",
-}]
+]
 
 plist["LSApplicationQueriesSchemes"] = fb_schmes
 
@@ -122,7 +122,7 @@ log('			3. Set Flag in Project Build Setting             \n')
 log('------------------------------------------------------------\n')
 project.add_other_ldflags('-ObjC')
 project.add_single_valued_flag('ENABLE_BITCODE', 'NO')
-project.add_single_valued_flag('ENABLE_MODULES', 'YES')
+project.add_single_valued_flag('CLANG_ENABLE_MODULES', 'YES')
 project.save()
 log('------------------------------\n'
 	'      	  Saved Project.       \n'
