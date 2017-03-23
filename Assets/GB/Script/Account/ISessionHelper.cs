@@ -13,9 +13,7 @@ public interface ISessionHelper {
 
 	void Login(GBRequest callbackObject);	
 	void LoginWithAuthType(AuthType authType, GBRequest callbackObject);
-//	void Login(AuthType authType, string snsAccessToken, GBRequest callbackObject);
-	// void LoginByUI(GBRequest callbackObject);
-	// void LoginByUI(LoginUIType loginUIType, GBRequest callbackObject);
+
 	void ConnectChannel(AuthType authType, GBRequest callbackObject);
 	// void LinkServiceWithAuthType(AuthType authType, string snsAccessToken,  GBRequest callbackObject);
 	void Logout(GBRequest callbackObject);

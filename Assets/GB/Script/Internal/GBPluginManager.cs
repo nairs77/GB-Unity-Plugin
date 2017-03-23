@@ -145,12 +145,12 @@ public class GBPluginManager : IGBNativePlugin
 		InAppHelper.QueryInventoryItemInfo (skus, callbackObject);
 	}
 		
-	public void BuyItem(string userKey, string sku, int price, GBRequest callbackObject) {
-		InAppHelper.BuyItem (userKey, sku, price, callbackObject);
+	public void BuyItem(string sku, int price, GBRequest callbackObject) {
+		InAppHelper.BuyItem (sku, price, callbackObject);
 	}
 	
-	public void BuyItem(string userKey, string sku, int price, string itemInfo, GBRequest callbackObject) { 
-		InAppHelper.BuyItem (userKey, sku, price, itemInfo, callbackObject);
+	public void BuyItem(string sku, int price, string itemInfo, GBRequest callbackObject) { 
+		InAppHelper.BuyItem (sku, price, itemInfo, callbackObject);
 	}
 	public void RestoreItems(GBRequest callbackObject) {
 		InAppHelper.RestoreItems(callbackObject);

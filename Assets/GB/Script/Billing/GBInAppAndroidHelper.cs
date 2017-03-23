@@ -63,14 +63,6 @@ namespace GB.Billing {
                 InAppHelper.CallStatic(IN_APP_BUY_ITEM, param, funcCallback.GetCallbackGameObjectName());
 			}));
 		}
-        
-        public void BuyItem(string sku, int price, string itemInfo, string toUserKey, GBRequest funcCallback) {
-			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {
-               
-                string param = _makeInAppJSONParam(sku, price, itemInfo, toUserKey);
-                InAppHelper.CallStatic(IN_APP_BUY_ITEM, param, funcCallback.GetCallbackGameObjectName());                
-			}));            
-        }		
 
 		public void RestoreItems(GBRequest funcCallback) {
 			UnityActivity.Call ("runOnUiThread", new AndroidJavaRunnable (() => {

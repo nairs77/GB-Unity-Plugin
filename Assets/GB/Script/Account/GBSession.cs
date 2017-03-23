@@ -33,6 +33,10 @@ namespace GB
 		public bool isConnectedChannel() {
 			return authType == AuthType.FACEBOOK ? true : false;
 		}
+
+		public string getUserKey() {
+			return userKey;
+		}
 		
 		public override string ToString() {
 			

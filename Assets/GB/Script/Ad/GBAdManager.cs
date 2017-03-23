@@ -56,25 +56,43 @@ public class GBAdManager : MonoBehaviour
         }
     }
 
+    public void Init(string adUnitId, onRewardVideoAdComplete callback) {
+        if (isInit == false) {
+            mUnitAdId = adUnitId;
+
+            // Ad event fired when the rewarded video ad
+            // has been received.
+            rewardbasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
+            // has failed to load.
+            rewardbasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+            // is opened.
+            rewardbasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
+            // has started playing.
+            rewardbasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
+            // has rewarded the user.
+            rewardbasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
+            // is closed.
+            rewardbasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
+            // is leaving the application.
+            rewardbasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
+            OnRewardComplete = callback;
+
+            AdRequest request = new AdRequest.Builder().Build();
+            rewardbasedVideo.LoadAd(request, adUnitId);                    
+            isInit = true;
+        }
+    }
+
+    private void RequestAd() {
+        AdRequest request = new AdRequest.Builder().Build();
+        rewardbasedVideo.LoadAd(request, mUnitAdId);        
+    }
+/* 
     public void Init(string adUnitId)
     {
         if(isInit == false)
         {
             mUnitAdId = adUnitId;
-            //GBLog.verbose("Setting Ad"); 
-#if UNITY_EDITOR
-
-            
-#elif UNITY_ANDROID && USE_AD // 중국 빌드가 아닌 경우에만 등록.           
-          //  AppLovin.InitializeSdk();
-
-          //  adUnitIds.Add((int)ADTYPE.VUNGLE, "ca-app-pub-6040866524746900/3616703670");
-          //  adUnitIds.Add((int)ADTYPE.UNITY_AD, "ca-app-pub-6040866524746900/5093436871");
-          //  adUnitIds.Add((int)ADTYPE.APPLOVIN, "ca-app-pub-6040866524746900/9354534874");
-#elif UNITY_IPHONE
-            // AppLovin.SetSdkKey("RMOJTDsRIt8RHfWb2xznOgJie0ul6LaXh-rFBhhTZrwrURQWNNHm3aSibLRhh1DO_3eBmKfJ9Z9e0Z9NyR701a");
-            // AppLovin.InitializeSdk();
-#endif
 
             // Ad event fired when the rewarded video ad
             // has been received.
@@ -113,7 +131,7 @@ public class GBAdManager : MonoBehaviour
             RequestAd(mUnitAdId);
         }
     }
-
+*/
     public void ShowAd()
     {              
         if(indicate == null)
@@ -162,8 +180,6 @@ public class GBAdManager : MonoBehaviour
         GBLog.verbose("[HandleRewardBasedVideoLoaded]");
 
         HideIndicate(); 
-
-        ShowAd();
     }
 
     void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
@@ -173,6 +189,8 @@ public class GBAdManager : MonoBehaviour
         HideIndicate();
      
         GBLog.verbose("[HandleRewardBasedVideoFailedToLoad] : " + args.Message);
+
+        RequestAd();
     }
 
     void HandleRewardBasedVideoOpened(object sender, EventArgs args)
@@ -208,9 +226,10 @@ public class GBAdManager : MonoBehaviour
         {
             HideIndicate();
 
-            // if(OnRewardComplete != null)
-            //     OnRewardComplete(_adType);
+            if(OnRewardComplete != null)
+                OnRewardComplete();
 
+            RequestAd();
             isRewarded = false;
         }
         else
@@ -220,8 +239,8 @@ public class GBAdManager : MonoBehaviour
     }
     void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
     {
-        // if (OnRewardComplete != null)
-        //     OnRewardComplete(_adType);
+        if (OnRewardComplete != null)
+             OnRewardComplete();
 
         isRewarded = false;
 

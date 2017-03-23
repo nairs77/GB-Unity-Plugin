@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace GB.Billing {	
 	public class GBInAppManager {
 
-		// public static void StartSetup(string userKey, Action<bool, GBException> funcCallback) {
-		// 	GBInAppRequest.RequestStartSetup(userKey, funcCallback);
-		// }
+		public static void StartSetup(string userKey, Action<bool, GBException> funcCallback) {
+			GBInAppRequest.RequestStartSetup(userKey, funcCallback);
+		}
 		public static void QueryInventory(List<string> skus, Action<List<string>, GBException> funcCallback) {
 			if (GBSettings.GetMarketType() == GBSettings.MarketType.AGENCY) {
 				//GBManager.ShowToast("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
@@ -19,14 +19,6 @@ namespace GB.Billing {
 		}
 	
 		public static void QueryInventory(List<string>skus, Action<GBInventory, GBException> funcCallback) {
-			if (GBSettings.GetMarketType() == GBSettings.MarketType.AGENCY) {
-				//GBManager.ShowToast("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
-				GBLog.verbose("Not Supported API : Current Market - " + GBSettings.GetMarketToString());
-				funcCallback(null, null);
-
-				return;
-			}
-				
 			GBInAppRequest.RequestQueryInventory(skus, funcCallback);			
 		}
 
@@ -39,8 +31,7 @@ namespace GB.Billing {
          */
 
 		public static void BuyItem(string sku, int price, Action<string, GBException> funcCallback) {
-			GBSession currentSession = GBUser.Instance.currentSession;
-			GBInAppRequest.RequestBuyItem(currentSession.userKey, sku, price, funcCallback);
+			GBInAppRequest.RequestBuyItem(sku, price, funcCallback);
 		}
 		
         /**
@@ -52,8 +43,7 @@ namespace GB.Billing {
          */
 
 		public static void BuyItem(string sku, int price, string itemInfo, Action<string, GBException> funcCallback) {
-			GBSession currentSession = GBUser.Instance.currentSession;
-			GBInAppRequest.RequestBuyItem(currentSession.userKey, sku, price, itemInfo, funcCallback);
+			GBInAppRequest.RequestBuyItem(sku, price, itemInfo, funcCallback);
 		}
 	
 		public static void RestoreItems(Action<List<string>, GBException> funcCallback) {

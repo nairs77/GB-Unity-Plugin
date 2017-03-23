@@ -43,7 +43,7 @@ public class GBInAppRequest : GBRequest {
 			var response = root[API_RESPONSE_RESULT_KEY];
 			
 			if (success) {				
-				string queryItems = response[API_RESPONSE_DATA_KEY];
+				string queryItems = response[API_RESPONSE_DATA_KEY]["valid"];
 								
 				List<string> validateIdentifiers = new List<string>(queryItems.Split(','));
 				callback(validateIdentifiers, null);
@@ -77,7 +77,7 @@ public class GBInAppRequest : GBRequest {
 		inAppRequest.RequestQueryInventoryItemWithCallback(skus, wrapperCallback);
 	}
 	
-	public static void RequestBuyItem(string userKey, string sku, int price, Action<string, GBException> callback) {
+	public static void RequestBuyItem(string sku, int price, Action<string, GBException> callback) {
 		GameObject oldBuyItemObject = GameObject.Find("RequestBuyItem");
 		if (oldBuyItemObject) {
 			GBLog.verbose(TAG + "have old object");
@@ -89,6 +89,8 @@ public class GBInAppRequest : GBRequest {
 		
 		Action<bool,string> wrapperCallback = (success, result) => {
 			
+			Debug.Log("result = " + result);
+
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
 			var data = response[API_RESPONSE_DATA_KEY];
@@ -104,10 +106,10 @@ public class GBInAppRequest : GBRequest {
 			}
 		};
 		
-		inAppRequest.RequestBuyItemWithCallback(userKey, sku, price, wrapperCallback);
+		inAppRequest.RequestBuyItemWithCallback(sku, price, wrapperCallback);
 	}
 	
-	public static void RequestBuyItem(string userKey, string sku, int price, string itemInfo, Action<string, GBException> callback) {
+	public static void RequestBuyItem(string sku, int price, string itemInfo, Action<string, GBException> callback) {
 		GameObject oldBuyItemObject = GameObject.Find("RequestBuyItem");
 		if (oldBuyItemObject) {
 			GBLog.verbose(TAG + "have old object");
@@ -134,7 +136,7 @@ public class GBInAppRequest : GBRequest {
 			}
 		};
 		
-		inAppRequest.RequestBuyItemWithCallback(userKey, sku, price, itemInfo, wrapperCallback);
+		inAppRequest.RequestBuyItemWithCallback(sku, price, itemInfo, wrapperCallback);
 	}	
 
 	public static void RequestRestoreItems(Action<List<string>, GBException> callback) {
@@ -144,7 +146,7 @@ public class GBInAppRequest : GBRequest {
 		Action<bool,string> wrapperCallback = (success, result) => {
 
 			GBLog.verbose(TAG + "Callback Restore Items...!!!");
-
+			GBLog.verbose(TAG + "result = " + result);
 			JSONNode root = JSON.Parse(result);
 			var response = root[API_RESPONSE_RESULT_KEY];
 			var data = response[API_RESPONSE_DATA_KEY];
@@ -201,14 +203,14 @@ public class GBInAppRequest : GBRequest {
 		GBManager.Instance.PluginManager.QueryInventoryItemInfo(skus, callbackObject);				
 	}	
 
-	private void RequestBuyItemWithCallback(string userKey, string sku, int price, Action<bool, string> callback) {
+	private void RequestBuyItemWithCallback(string sku, int price, Action<bool, string> callback) {
 		GBRequest callbackObject = createRequestCallbackObject(callback);
-		GBManager.Instance.PluginManager.BuyItem(userKey, sku, price, callbackObject);		
+		GBManager.Instance.PluginManager.BuyItem(sku, price, callbackObject);		
 	}
 	
-	private void RequestBuyItemWithCallback(string userKey, string sku, int price, string itemInfo, Action<bool, string> callback) {
+	private void RequestBuyItemWithCallback(string sku, int price, string itemInfo, Action<bool, string> callback) {
 		GBRequest callbackObject = createRequestCallbackObject(callback);
-		GBManager.Instance.PluginManager.BuyItem(userKey, sku, price, itemInfo, callbackObject);		
+		GBManager.Instance.PluginManager.BuyItem(sku, price, itemInfo, callbackObject);		
 	}	
 
 	private void RequestRestoreItemsWithCallback(Action<bool, string> callback) {
@@ -261,8 +263,8 @@ public class GBInAppRequest : GBRequest {
 */		
 	}	
     
-    private void RequestBuyItemWithCallback(string userKey, string sku, int price, string itemInfo, string toUserkey, Action<bool, string> callback) {
+    private void RequestBuyItemWithCallback(string sku, int price, string itemInfo, string toUserkey, Action<bool, string> callback) {
 		GBRequest callbackObject = createRequestCallbackObject(callback);
-		GBManager.Instance.PluginManager.BuyItem(userKey, sku, price, itemInfo, callbackObject);				
+		GBManager.Instance.PluginManager.BuyItem(sku, price, itemInfo, callbackObject);				
     }
 }

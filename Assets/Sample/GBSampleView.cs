@@ -39,7 +39,6 @@ public class GBSampleView : MonoBehaviour {
 	GUIStyle buttonStyle;
 	GUIStyle labelStyle;
 	GUIStyle textStyle;
-
     void Start() {
 		SetUp();
     }
@@ -50,17 +49,7 @@ public class GBSampleView : MonoBehaviour {
 	void SetUp() {
 
 		GBManager.ConfigureSDKWithGameInfo("", 1, GBSettings.LogLevel.DEBUG);
-
-		// AdMob Initialize
-		string adMobId = string.Empty;
-#if UNITY_ANDROID
-		adMobId = "ca-app-pub-5698820917568735/9991786004";
-#elif UNITY_IPHONE
-		adMobId = "ca-app-pub-5698820917568735/4794152808";
-#endif	
-		GBAdManager.Instance.Init(adMobId);
-		GBAdManager.Instance.LoadAd(null);
-
+		
 #if (UNITY_ANDROID && !NO_GPGS)
 		// Google Play Games Initialize
 		PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
@@ -72,6 +61,16 @@ public class GBSampleView : MonoBehaviour {
 		// Activate the Google Play Games platform
 		PlayGamesPlatform.Activate();		
 #endif
+
+		string adMobId = string.Empty;
+#if UNITY_ANDROID
+		adMobId = "ca-app-pub-5698820917568735/9991786004";
+#elif UNITY_IPHONE
+		adMobId = "ca-app-pub-5698820917568735/4794152808";
+#endif	
+		// GBAdManager.Instance.Init(adMobId);
+		// GBAdManager.Instance.LoadAd(onRewardVideoAdCompleted);
+		GBAdManager.Instance.Init(adMobId, onRewardAdCompleted);
 	}
 
 	void sessionCallback(SessionState state, GBException exception){
@@ -83,11 +82,16 @@ public class GBSampleView : MonoBehaviour {
 				isLogin = true;
 
 				// Sign In Play Game Service
-#if !UNITY_EDITOR && UNITY_ANDROID				
+#if (!UNITY_EDITOR && UNITY_ANDROID && !NO_GPGS)				
 				// Social.localUser.Authenticate((bool success) => {
 					
 				// });
 #endif
+				string userKey = GBUser.Instance.getActiveSession().getUserKey();
+				GBInAppManager.StartSetup(userKey, (bool success, GBException e) => {
+
+				});
+			
 				PrintLog("Session Success = " + GBUser.Instance.currentSession.userKey);
 				
 			} 
@@ -96,7 +100,6 @@ public class GBSampleView : MonoBehaviour {
 				isLogin = false;
 			}
 			else {
-				// SessionState Join, REISSUED..
 			}	
 		}
 	}
@@ -134,7 +137,7 @@ public class GBSampleView : MonoBehaviour {
 
 		List<string> skus = new List<string>();
 #if (!UNITY_EDITOR && UNITY_ANDROID)
-		skus.Add("gb_coin_1000");
+		skus.Add("sample_coin_10");
 #elif (!UNITY_EDITOR && UNITY_IPHONE)
 		skus.Add("sample_coin_100");
 #endif			
@@ -157,16 +160,16 @@ public class GBSampleView : MonoBehaviour {
 			bool isOpened = GBSessionManager.isOpened();
 
 			if (isOpened && !GBSessionManager.isConnectedChannel()) {
-				GBSessionManager.ConnectChannel(AuthType.FACEBOOK, sessionCallback);		
+				GBSessionManager.ConnectChannel(AuthType.FACEBOOK, (SessionState state, GBException exception) => {
+					
+				});
 			} else {
 				// Button Disable
 			}
 		}
 
-		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory", buttonStyle)) {
-			GBInAppManager.QueryInventory(skus, (List<string> validateIdentifiers, GBException exception) => {
-
-			});
+		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Logout", buttonStyle)) {
+			GBSessionManager.Logout(sessionCallback);
 		}
 
 		if (GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Query Inventory With Info", buttonStyle)) {
@@ -193,15 +196,37 @@ public class GBSampleView : MonoBehaviour {
 		}
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "BuyItem", buttonStyle)) {
-			GBInAppManager.BuyItem(skus[0], 0, (string paymentKey, GBException exception) => {
+
+			GBInAppManager.QueryInventory(skus, (GBInventory inv, GBException exception) => { 
 				if (exception == null) {
-					GBLog.verbose("paymentKey = " + paymentKey);
-					PrintLog("BuyItem paymentKey::" + paymentKey);
+					GBLog.verbose("Success Query Inventory"); 
+
+					if (inv == null) {
+						GBLog.verbose("inventory is empty !!!");
+						return;
+					}
+
+					List<GBInAppItem> itemList = inv.getInventory();
+
+					foreach(GBInAppItem item in itemList) {
+						//GBLog.verbose("validate id =" + item.productId);
+						GBLog.verbose("item = " + item.ToString());
+					}
+
+					GBInAppManager.BuyItem(skus[0], 0, (string paymentKey, GBException ex) => {
+						if (exception == null) {
+							GBLog.verbose("paymentKey = " + paymentKey);
+							PrintLog("BuyItem paymentKey::" + paymentKey);
+						} else {
+							GBLog.verbose ("error = " + exception.getErrorMessage());	
+							PrintLog("BuyItem exception::" + exception.getErrorCode() + " MSG:::" + exception.getErrorMessage());
+						}				
+					});					
 				} else {
-					GBLog.verbose ("error = " + exception.getErrorMessage());	
-					PrintLog("BuyItem exception::" + exception.getErrorCode() + " MSG:::" + exception.getErrorMessage());
-				}				
-			});
+					GBLog.verbose("error = " + exception.getErrorMessage());
+				}
+			});			
+
 		}		
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Restore Item", buttonStyle)) {
@@ -218,10 +243,6 @@ public class GBSampleView : MonoBehaviour {
 			});
 		}		
 
-		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Load Ad (Reward Video)", buttonStyle)) {
-			
-		}
-
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Show Ad (Reward Video)", buttonStyle)) {
 			GBAdManager.Instance.ShowAd();
 		}				
@@ -230,18 +251,21 @@ public class GBSampleView : MonoBehaviour {
 		GUI.EndScrollView();
 	}
 	
-	void onHandleNativeEvent(string result) {
-		PrintLog("onHandleNativeEvent result = " + result);
-		JSONNode root = JSONNode.Parse(result);
-		var response = root["result"];
-
-		string eventKey = response["eventKey"];
-		PrintLog("onHandleNativeEvent event name = " + eventKey);
-		if (eventKey.Equals("onMarketAccountStateChange")) {
-			// TO-DO : JSON PARSING
-			PrintLog("onHandleNativeEvent [event name] = " + eventKey);
-		} 
+	void onRewardAdCompleted() {
+		PrintLog("Ad Completed!!!");
 	}
+	// void onHandleNativeEvent(string result) {
+	// 	PrintLog("onHandleNativeEvent result = " + result);
+	// 	JSONNode root = JSONNode.Parse(result);
+	// 	var response = root["result"];
+
+	// 	string eventKey = response["eventKey"];
+	// 	PrintLog("onHandleNativeEvent event name = " + eventKey);
+	// 	if (eventKey.Equals("onMarketAccountStateChange")) {
+	// 		// TO-DO : JSON PARSING
+	// 		PrintLog("onHandleNativeEvent [event name] = " + eventKey);
+	// 	} 
+	// }
 	
 	void PrintLog(string text) {
 		
@@ -251,50 +275,5 @@ public class GBSampleView : MonoBehaviour {
 
 	#region RewardBasedVideo callback handlers
 
-	public void HandleRewardBasedVideoRewarded(object sender, Reward args)
-	{
-		string type = args.Type;
-		double amount = args.Amount;
-		print("User rewarded with: " + amount.ToString() + " " + type);
-	}	
-
-	public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
-	{
-		print("OnLoaded!!!!");
-
-		//mRewardBasedVideo.Show();		
-	}
-
-	public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-	{
-		print("OnFailedToLoad");
-
-		print("Video Failed to load: " + args.Message);
-	}
-
-	public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
-	{
-
-	}
-
-	public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
-	{
-
-	}
-
-	public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
-	{
-    	// Create an empty ad request.
-		// AdRequest request = new AdRequest.Builder()
-		// 	.AddTestDevice("C85608B21885A69E8EA9FB9AD8683CEC")  // My test device.
-		// 	.Build();
-		// // Load the interstitial with the request.
-		// mInterstitial.LoadAd(request);					
-	}
-
-	public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
-	{
-
-	}
 	#endregion
 }

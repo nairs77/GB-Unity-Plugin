@@ -66,6 +66,6 @@
 
 + (NSDictionary *)_makeErrorResponse:(GBError *)error
 {
-    return @{@"errorCode" : [NSNumber numberWithInteger:[error code]], @"errorMessage" : [error localizedDescription]};
+    return @{@"errorCode" : [NSNumber numberWithInteger:[error code]], @"errorMessage" : @""};
 }
 @end

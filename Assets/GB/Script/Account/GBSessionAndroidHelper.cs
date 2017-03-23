@@ -55,7 +55,7 @@ namespace GB.Account {
 			return AndroidSessionHelper.CallStatic<bool>(GET_IS_READY);
 		}
 
-		public void Login(AuthType authType, GBRequest callbackObject) {			
+		public void LoginWithAuthType(AuthType authType, GBRequest callbackObject) {			
 
 		  UnityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
 		  		AndroidSessionHelper.CallStatic("LoginWithType", authType.TypeValue, callbackObject.GetCallbackGameObjectName());				

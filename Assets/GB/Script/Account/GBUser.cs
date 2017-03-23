@@ -8,7 +8,7 @@ using GB;
 public class GBUser
 {
 	// Profile
-	public GBSession currentSession { get; set; }
+	public GBSession currentSession { get; private set; }
 
 	private static GBUser _instance;
 
@@ -30,5 +30,9 @@ public class GBUser
 	// Profile
 	public void UpdateProfileInfo(JSONNode result) {
 		this.currentSession = new GBSession(result);	
+	}
+
+	public GBSession getActiveSession() {
+		return currentSession;
 	}
 }

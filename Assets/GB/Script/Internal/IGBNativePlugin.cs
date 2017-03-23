@@ -41,9 +41,9 @@ public interface IGBNativePlugin {
 	void QueryInventory(List<string> skus, GBRequest callbackObject);
 	void QueryInventoryItemInfo(List<string> skus, GBRequest callbackObject);
     
-	void BuyItem(string userKey, string sku, int price, GBRequest callbackObject);
+	void BuyItem(string sku, int price, GBRequest callbackObject);
     
-	void BuyItem(string userKey, string sku, int price, string itemInfo, GBRequest callbackObject);    
+	void BuyItem(string sku, int price, string itemInfo, GBRequest callbackObject);    
         
 	void RestoreItems(GBRequest callbackObject);
 	
