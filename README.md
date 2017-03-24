@@ -194,4 +194,4 @@ Once the plugin is initialized, you can start loading ads. To do so, you invoke 
   ...
   GBAdManager.Instance.ShowAd();
 ```
-
+## Sample
