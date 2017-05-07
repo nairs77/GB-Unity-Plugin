@@ -192,6 +192,7 @@ Once the plugin is initialized, you can start loading ads. To do so, you invoke 
 ```csharp
   GBAdManager.Instance.Init(adMobId, onRewardAdCompleted);
   ...
-  GBAdManager.Instance.ShowAd();
+  if (GBAdManager.Instance.isEnableAds())
+    GBAdManager.Instance.ShowAd();
 ```
 ## Sample
