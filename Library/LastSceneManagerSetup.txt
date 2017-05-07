@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Sample/GBSampleScene.unity
-  isLoaded: 1
-  isActive: 1
