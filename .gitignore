@@ -3,7 +3,7 @@ Library/
 ProjectSettings/
 Temp/
 obj/
-
+iOSBuild/
 # Project Generated files
 *.csproj
 .vscode/
