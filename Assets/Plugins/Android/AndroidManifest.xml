@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gebros.platform.sample">
+    package="com.gebros.cave">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name="com.gebros.platform.GBApplication">
         <activity
@@ -35,7 +38,11 @@
         <meta-data android:name="applovin.sdk.key" 
             android:value="wsGT89gFuGFIZrLsp6MrS_TQaRU_HuBCkSftbL6UcMnAB61_DOqgOI5zkaz0S9CAbt2CC8gqUS_gZ0fnPURonX" />
 
+        <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik"
+            android:value="true" />
 
+
+출처: http://seungngil.tistory.com/entry/iOS-Android-Unity에서-admob을-구현하는-방법 [To be a programmer...]
     </application>
 
 </manifest>

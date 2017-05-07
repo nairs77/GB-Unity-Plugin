@@ -64,9 +64,9 @@ public class GBSampleView : MonoBehaviour {
 
 		string adMobId = string.Empty;
 #if UNITY_ANDROID
-		adMobId = "ca-app-pub-5698820917568735/9991786004";
+		adMobId = "ca-app-pub-5698820917568735/7934468808";
 #elif UNITY_IPHONE
-		adMobId = "ca-app-pub-5698820917568735/4794152808";
+		adMobId = "ca-app-pub-5698820917568735/3504269208";
 #endif	
 		// GBAdManager.Instance.Init(adMobId);
 		// GBAdManager.Instance.LoadAd(onRewardVideoAdCompleted);
@@ -244,7 +244,8 @@ public class GBSampleView : MonoBehaviour {
 		}		
 
 		if(GUI.Button(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, BUTTON_HEIGHT), "Show Ad (Reward Video)", buttonStyle)) {
-			GBAdManager.Instance.ShowAd();
+			if (GBAdManager.Instance.isEnableAds())
+				GBAdManager.Instance.ShowAd();
 		}				
 					
 		GUI.Label(new Rect(0, posY += BUTTON_HEIGHT, scrollContentsWidth, labalHeight), sdkLog, labelStyle);		

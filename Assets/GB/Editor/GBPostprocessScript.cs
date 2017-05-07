@@ -39,11 +39,11 @@ public class GBPostprocessScript : MonoBehaviour
 		/* Change Your FrameworkPath */
 		UnityEngine.Debug.Log("--- !!!!!!!!!!! ---");
 
-		string frameworkPath = "/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/" + "Framework/";
+		string frameworkPath = "/Users/nairs77/Work/geBros/git/GB-Unity-Plugin/" + "Framework/";
 		
 		Process buildProcess = new Process();
 		buildProcess.StartInfo.FileName = "python";
-		buildProcess.StartInfo.Arguments = string.Format("/Users/nairs77/Work/git/gBros/GB-Unity-Plugin/Assets/GB/Editor/post_process.py \"{0}\" \"{1}\"", pathToBuildProject, frameworkPath);
+		buildProcess.StartInfo.Arguments = string.Format("/Users/nairs77/Work/geBros/git/GB-Unity-Plugin/Assets/GB/Editor/post_process.py \"{0}\" \"{1}\"", pathToBuildProject, frameworkPath);
 		buildProcess.StartInfo.UseShellExecute = false;
 		buildProcess.StartInfo.RedirectStandardOutput = false;
 		
