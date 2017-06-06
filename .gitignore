@@ -8,5 +8,4 @@ iOSBuild/
 *.csproj
 .vscode/
 *.sln
-*.apk
 .DS_Store
