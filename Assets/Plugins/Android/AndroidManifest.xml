@@ -3,6 +3,7 @@
     package="com.gebros.cave">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -23,10 +24,6 @@
         </activity>        
 
         <!-- Facebook -->
-        <activity android:name="com.facebook.FacebookLoginActivity"
-            android:label="@string/app_name"/>
-        <activity android:name="com.facebook.PermissionSelectActivity"/>
-        
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_application_id" />
         <meta-data android:name="com.facebook.sdk.ApplicationName" android:value="@string/app_name" />
         <!-- Vungle -->
@@ -40,9 +37,6 @@
 
         <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik"
             android:value="true" />
-
-
-출처: http://seungngil.tistory.com/entry/iOS-Android-Unity에서-admob을-구현하는-방법 [To be a programmer...]
     </application>
 
 </manifest>

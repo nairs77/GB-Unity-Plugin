@@ -43,7 +43,7 @@
         -->
         <provider
             android:name="com.facebook.internal.FacebookInitProvider"
-            android:authorities="com.gebros.platform.sample.FacebookInitProvider"
+            android:authorities="com.gebros.cave.FacebookInitProvider"
             android:exported="false" />
     </application>
 

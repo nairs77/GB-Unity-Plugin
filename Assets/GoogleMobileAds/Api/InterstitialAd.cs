@@ -13,6 +13,8 @@
 // limitations under the License.
 
 using System;
+using System.Reflection;
+
 using GoogleMobileAds.Common;
 
 namespace GoogleMobileAds.Api
@@ -24,7 +26,12 @@ namespace GoogleMobileAds.Api
         // Creates an InterstitialAd.
         public InterstitialAd(string adUnitId)
         {
-            client = GoogleMobileAdsClientFactory.BuildInterstitialClient();
+            Type googleMobileAdsClientFactory = Type.GetType(
+                "GoogleMobileAds.GoogleMobileAdsClientFactory,Assembly-CSharp");
+            MethodInfo method = googleMobileAdsClientFactory.GetMethod(
+                "BuildInterstitialClient",
+                BindingFlags.Static | BindingFlags.Public);
+            this.client = (IInterstitialClient)method.Invoke(null, null);
             client.CreateInterstitialAd(adUnitId);
 
             this.client.OnAdLoaded += (sender, args) =>
@@ -101,18 +108,6 @@ namespace GoogleMobileAds.Api
         public void Destroy()
         {
             client.DestroyInterstitial();
-        }
-
-        // Set IDefaultInAppPurchaseProcessor for InterstitialAd.
-        public void SetInAppPurchaseProcessor(IDefaultInAppPurchaseProcessor processor)
-        {
-            client.SetDefaultInAppPurchaseProcessor(processor);
-        }
-
-        // Set ICustomInAppPurchaseProcessor for InterstitialAd.
-        public void SetInAppPurchaseProcessor(ICustomInAppPurchaseProcessor processor)
-        {
-            client.SetCustomInAppPurchaseProcessor(processor);
         }
     }
 }

@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEditor;
-
+/* 
 /// AdMob dependencies file.
 [InitializeOnLoad]
 public class AdMobDependencies : AssetPostprocessor
@@ -27,7 +27,6 @@ public class AdMobDependencies : AssetPostprocessor
 #if UNITY_ANDROID
         // Setup the resolver using reflection as the module may not be
         // available at compile time.
-/*        
         Type playServicesSupport = Google.VersionHandler.FindClass(
             "Google.JarResolver", "Google.JarResolver.PlayServicesSupport");
         if (playServicesSupport == null) {
@@ -50,9 +49,7 @@ public class AdMobDependencies : AssetPostprocessor
                         "extra-google-m2repository",
                         "extra-android-m2repository"} }
             });
-*/            
 #elif UNITY_IOS
-/*
         Type iosResolver = Google.VersionHandler.FindClass(
             "Google.IOSResolver", "Google.IOSResolver");
         if (iosResolver == null) {
@@ -64,7 +61,6 @@ public class AdMobDependencies : AssetPostprocessor
             namedArgs: new Dictionary<string, object>() {
                 { "version", "7.13+" }
             });
-*/            
 #endif  // UNITY_IOS
     }
 
@@ -81,4 +77,4 @@ public class AdMobDependencies : AssetPostprocessor
         }
     }
 }
-
+*/

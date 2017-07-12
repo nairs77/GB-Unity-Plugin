@@ -142,17 +142,22 @@ public class GBSampleView : MonoBehaviour {
 		skus.Add("sample_coin_100");
 #endif			
 		if(GUI.Button(new Rect(MARGIN, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Login", buttonStyle)) {
-			// Already have a last session?
-			if (GBSessionManager.isReady()) {
-				GBSessionManager.Login(sessionCallback);			
-			} else {
-				// Default AuthType.GOOGLE
 #if (!UNITY_EDITOR && UNITY_ANDROID)				
 				GBSessionManager.LoginWithAuthType(AuthType.GOOGLE, sessionCallback);
 #elif (!UNITY_EDITOR && UNITY_IPHONE)
 				GBSessionManager.LoginWithAuthType(AuthType.GUEST, sessionCallback);
-#endif
-			}
+#endif			
+			// Already have a last session?
+// 			if (GBSessionManager.isReady()) {
+// 				GBSessionManager.Login(sessionCallback);			
+// 			} else {
+// 				// Default AuthType.GOOGLE
+// #if (!UNITY_EDITOR && UNITY_ANDROID)				
+// 				GBSessionManager.LoginWithAuthType(AuthType.GOOGLE, sessionCallback);
+// #elif (!UNITY_EDITOR && UNITY_IPHONE)
+// 				GBSessionManager.LoginWithAuthType(AuthType.GUEST, sessionCallback);
+// #endif
+// 			}
 		}
 
 		if (GUI.Button(new Rect(Screen.width / 2 + 40, posY, BUTTON_WIDTH, BUTTON_HEIGHT), "Connect Link", buttonStyle)) {
